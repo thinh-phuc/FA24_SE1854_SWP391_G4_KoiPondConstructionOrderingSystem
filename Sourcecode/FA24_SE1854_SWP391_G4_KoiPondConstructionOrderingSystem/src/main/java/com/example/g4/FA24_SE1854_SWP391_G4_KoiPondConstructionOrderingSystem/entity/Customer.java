@@ -4,10 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Data
 public class Customer {
@@ -40,8 +43,8 @@ public class Customer {
     @Column(name = "create_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createDate = LocalDateTime.now();
 
-    @Column(name = "create_by", columnDefinition = "NVARCHAR(100)")
-    private String createBy;
+//    @Column(name = "create_by", columnDefinition = "NVARCHAR(100)")
+//    private String createBy;
 
     @Column(name = "update_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime updateDate;
