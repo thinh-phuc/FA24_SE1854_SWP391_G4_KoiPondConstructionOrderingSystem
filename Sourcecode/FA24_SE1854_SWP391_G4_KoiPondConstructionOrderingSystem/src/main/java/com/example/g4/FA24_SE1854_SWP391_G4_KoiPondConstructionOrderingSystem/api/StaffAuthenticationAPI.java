@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StaffAuthenticationAPI {
     @Autowired
     StaffAuthenticationService staffAuthenticationService;
-    @PostMapping("register")
+    @PostMapping("staffregister")
     public ResponseEntity register(@Valid @RequestBody StaffRegisterRequest staffRegisterRequest){
         StaffResponse staffResponse = staffAuthenticationService.register(staffRegisterRequest);
         return ResponseEntity.ok(staffRegisterRequest);
@@ -29,7 +29,7 @@ public class StaffAuthenticationAPI {
 //        List<Staff> accountList = staffAuthenticationService.getAll();
 //        return ResponseEntity.ok(accountList);
 //    }
-    @PostMapping("login")
+    @PostMapping("stafflogin")
     public ResponseEntity login(StaffLoginRequest staffLoginRequest){
         StaffResponse newAccount = staffAuthenticationService.login(staffLoginRequest);
         return ResponseEntity.ok(newAccount);

@@ -1,5 +1,7 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -25,6 +27,7 @@ public class Staff implements UserDetails  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "staff_id")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private int staffId;
 
     @Column(name = "name", nullable = false, columnDefinition = "NVARCHAR(100)")
@@ -43,6 +46,7 @@ public class Staff implements UserDetails  {
     private String phoneNumber;
 
     @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Column(name = "note", columnDefinition = "NVARCHAR(255)")
@@ -54,7 +58,9 @@ public class Staff implements UserDetails  {
     @Column(name = "create_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createDate = LocalDateTime.now();
 
-
+    @Column(name = "is_delete" , columnDefinition = "BIT DEFAULT 0")
+    @JsonIgnore
+    boolean isDelete = false;
 
     @Column(name = "update_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime updateDate;
@@ -96,8 +102,6 @@ public class Staff implements UserDetails  {
     public boolean isEnabled() {
         return true;
     }
-//    @OneToMany(mappedBy = "account")
-//    @JsonIgnore
-//    List<Staff> students;
+
 }
 
