@@ -2,6 +2,7 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.s
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.AddStaffRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.CustomerResponse;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.LoginRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.RegisterRequest;
@@ -40,9 +41,34 @@ public class AuthenticationService implements UserDetailsService {
             } else if (e.getMessage().contains(customer.getEmail())) {
                 throw new NotFoundException("Invalid email!");
             } else if (e.getMessage().contains(customer.getPassword())) {
-                throw new NotFoundException("Invalid password!!");
+                throw new NotFoundException("Invalid password!");
             } else if (e.getMessage().contains(customer.getPhoneNumber())) {
                 throw new NotFoundException("Invalid phone number!");
+            } else if (e.getMessage().contains(customer.getRole())) {
+                throw new NotFoundException("Invalid role!");
+            } else {
+                e.printStackTrace();
+                throw new NotFoundException("Something is wrong!");
+            }
+        }
+    }
+    public CustomerResponse addStaff(AddStaffRequest addStaffRequest) {
+        Customer customer = modelMapper.map(addStaffRequest, Customer.class);
+        try {
+            customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+            Customer newCustomer = customerRepository.save(customer);
+            return modelMapper.map(newCustomer, CustomerResponse.class);
+        } catch (Exception e) {
+            if (e.getMessage().contains(customer.getName())) {
+                throw new NotFoundException("Invalid name!");
+            } else if (e.getMessage().contains(customer.getEmail())) {
+                throw new NotFoundException("Invalid email!");
+            } else if (e.getMessage().contains(customer.getPassword())) {
+                throw new NotFoundException("Invalid password!");
+            } else if (e.getMessage().contains(customer.getPhoneNumber())) {
+                throw new NotFoundException("Invalid phone number!");
+            } else if (e.getMessage().contains(customer.getRole())) {
+                throw new NotFoundException("Invalid role!");
             } else {
                 e.printStackTrace();
                 throw new NotFoundException("Something is wrong!");

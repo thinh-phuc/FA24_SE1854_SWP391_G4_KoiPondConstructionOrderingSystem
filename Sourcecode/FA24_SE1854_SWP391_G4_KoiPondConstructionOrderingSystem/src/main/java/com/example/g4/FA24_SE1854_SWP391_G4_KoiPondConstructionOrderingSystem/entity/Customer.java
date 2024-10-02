@@ -39,6 +39,12 @@ public class Customer implements UserDetails {
     @Pattern(regexp = "(84|0[3|5|7|8|9])+(\\d{8})", message = "Invalid phone number!")
     private String phoneNumber;
 
+    @Column(name = "role", columnDefinition = "VARCHAR(30)")
+    private String role = "CUSTOMER";
+
+    @Column(name = "description", columnDefinition = "NVARCHAR(500)")
+    private String description = "none";
+
     @Column(name = "note", columnDefinition = "NVARCHAR(255)")
     private String note = "none";
 
