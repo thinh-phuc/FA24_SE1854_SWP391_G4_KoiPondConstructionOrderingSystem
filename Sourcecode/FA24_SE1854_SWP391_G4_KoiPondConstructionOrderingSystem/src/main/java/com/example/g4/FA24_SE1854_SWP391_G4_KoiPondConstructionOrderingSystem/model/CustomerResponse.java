@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -33,19 +33,25 @@ public class CustomerResponse {
     @Pattern(regexp = "(84|0[3|5|7|8|9])+(\\d{8})", message = "Invalid phone number!")
     private String phoneNumber;
 
+    @Column(name = "role", columnDefinition = "VARCHAR(30)")
+    private String role;
+
+    @Column(name = "description", columnDefinition = "NVARCHAR(500)")
+    private String description;
+
     @Column(name = "note", columnDefinition = "NVARCHAR(255)")
-    private String note = "none";
+    private String note;
 
     @Column(name = "is_active", columnDefinition = "BIT DEFAULT 1")
     private Boolean isActive = true;
 
     @Column(name = "create_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createDate = LocalDateTime.now();
+    private LocalDateTime createDate;
 
     @Column(name = "update_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime updateDate = LocalDateTime.now();
     ;
 
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
-    private String updateBy="none";
+    private String updateBy;
 }
