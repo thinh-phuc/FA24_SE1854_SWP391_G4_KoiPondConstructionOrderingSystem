@@ -14,7 +14,7 @@ const MainHome = () => {
         <p className="mt-4 text-lg md:text-xl lg:text-2xl">
           Change The Way You Spend Time In Your Backyard With A Custom Pond
         </p>
-       
+
       </div>
     </div>
   );

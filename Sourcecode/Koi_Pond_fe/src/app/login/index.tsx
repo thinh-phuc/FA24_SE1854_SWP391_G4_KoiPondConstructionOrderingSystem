@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import "../../index.css";
+import background from "../../assets/images/nhatban.jpg"
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -55,11 +56,12 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue to-green flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-xl overflow-hidden">
-        <div className="bg-blue text-white py-4 px-6 text-center">
-          <h2 className="text-2xl font-bold ">Koi Pond Construction</h2>
-          <p className="text-blue">Login to your account</p>
+    <div className="min-h-screen bg-cover bg-center flex items-center justify-center p-4"
+      style={{ backgroundImage: `url(${background})` }}>
+      <div className="max-w-md w-full bg-white bg-opacity-70 rounded-lg shadow-xl overflow-hidden">
+        <div className="bg-brown text-white py-4 px-6 text-center bg-opacity-70">
+          <h2 className="text-2xl font-bold ">GRASS <span className="text-green">ROOST</span></h2>
+          <p>Login to your account</p>
         </div>
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div>
@@ -116,7 +118,7 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full bg-blue text-white font-semibold py-2 px-4 rounded-md hover:bg-blue focus:outline-none focus:ring-2 focus:ring-blue focus:ring-opacity-50 transition-colors ${loading ? "opacity-75 cursor-not-allowed" : ""}`}
+              className={`w-full bg-green text-white font-semibold py-2 px-4 rounded-md hover:bg-blue focus:outline-none focus:ring-2 focus:ring-blue focus:ring-opacity-50 transition-colors ${loading ? "opacity-75 cursor-not-allowed" : ""}`}
             >
               {loading ? (
                 <>
@@ -134,8 +136,8 @@ const LoginPage = () => {
             </a>
           </div>
         </form>
-        <div className="bg-gray py-4 px-6 text-center">
-          <p className="text-gray-600">
+        <div className="bg-brown bg-opacity-70 py-4 px-6 text-center">
+          <p className="text-gray">
             Don't have an account?{" "}
             <a href="#" className="text-blue font-semibold hover:underline focus:outline-none focus:ring-2 focus:ring-blue focus:ring-opacity-50 rounded-sm">
               Sign up

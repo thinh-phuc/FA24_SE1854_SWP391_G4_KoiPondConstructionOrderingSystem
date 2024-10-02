@@ -42,7 +42,10 @@ module.exports = {
         '1F': "#F4921F",
         40: "#40301F"
       },
-      blue: "#1e40af"
+      brown: {
+        DEFAULT: "#404040"
+      },
+      green: "#3bca88"
     },
     extend: {
       maxWidth: {
