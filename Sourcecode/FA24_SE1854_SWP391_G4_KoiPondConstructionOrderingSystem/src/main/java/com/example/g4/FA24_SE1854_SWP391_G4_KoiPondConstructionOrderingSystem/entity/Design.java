@@ -14,14 +14,18 @@ public class Design {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "design_id")
-    private int designId;
+    private Integer designId;
 
-    @Column(name = "design_profile_id")
-    private int designProfileId;
+//    @Column(name = "design_profile_id")
+//    private int designProfileId;
 
-    @Column(name = "designStatus", columnDefinition = "NVARCHAR(100)")
+    @Column(name = "status", columnDefinition = "NVARCHAR(100)")
     private String designStatus = "none";
 
     @Column(name = "design", columnDefinition = "NVARCHAR(500)")
     private String design = "none";
+
+    @ManyToOne
+    @JoinColumn(name = "design_profile_id")
+    DesignProfile designProfile;
 }

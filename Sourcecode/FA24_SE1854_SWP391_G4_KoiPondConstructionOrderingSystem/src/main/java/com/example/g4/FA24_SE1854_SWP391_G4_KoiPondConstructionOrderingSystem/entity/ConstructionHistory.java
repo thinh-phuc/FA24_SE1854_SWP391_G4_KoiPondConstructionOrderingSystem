@@ -15,7 +15,7 @@ public class ConstructionHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "construction_history_id")
-    private int constructionHistoryId;
+    private Integer constructionHistoryId;
 
     @Column(name = "start_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime startDate = LocalDateTime.now();
@@ -46,4 +46,8 @@ public class ConstructionHistory {
 
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
+
+    @ManyToOne
+    @JoinColumn(name = "design_profile_id")
+    DesignProfile designProfile;
 }

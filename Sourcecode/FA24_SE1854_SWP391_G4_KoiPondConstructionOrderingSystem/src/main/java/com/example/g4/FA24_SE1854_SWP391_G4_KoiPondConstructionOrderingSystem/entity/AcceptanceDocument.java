@@ -14,7 +14,7 @@ public class AcceptanceDocument {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "acceptance_document_id")
-    private int acceptanceDocumentId;
+    private Integer acceptanceDocumentId;
 
     @Column(name = "is_confirm", columnDefinition = "BIT DEFAULT 0")
     private boolean isConfirm = false;
@@ -45,4 +45,8 @@ public class AcceptanceDocument {
 
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
+
+    @ManyToOne
+    @JoinColumn(name = "design_profile_id")
+    DesignProfile designProfile;
 }
