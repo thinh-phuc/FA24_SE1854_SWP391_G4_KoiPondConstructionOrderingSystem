@@ -16,7 +16,7 @@ public class CustomerResponse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
-    private int customerId;
+    private Integer customerId;
 
     @Column(name = "name", nullable = false, columnDefinition = "NVARCHAR(100)")
     private String name;

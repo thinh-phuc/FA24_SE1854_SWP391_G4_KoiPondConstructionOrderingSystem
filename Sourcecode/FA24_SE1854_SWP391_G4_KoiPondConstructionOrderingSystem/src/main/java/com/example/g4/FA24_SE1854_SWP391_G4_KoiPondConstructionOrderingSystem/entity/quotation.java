@@ -15,10 +15,10 @@ public class quotation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "quotation_id")
-    private int quotationId;
+    private Integer quotationId;
 
-    @Column(name = "customer_id")
-    private int customerId;
+//    @Column(name = "customer_id")
+//    private int customerId;
 
     @Column(name = "pond_design_template_id")
     private int pondDesignTemplateId;
@@ -68,4 +68,8 @@ public class quotation {
 
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    Customer customer;
 }

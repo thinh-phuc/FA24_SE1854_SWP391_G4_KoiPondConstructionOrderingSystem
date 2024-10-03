@@ -1,11 +1,14 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,7 +17,7 @@ public class DesignProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "design_profile_id")
-    private int designProfileId;
+    private Integer designProfileId;
 
     @Column(name = "consult_id")
     private int consultId;
@@ -22,8 +25,8 @@ public class DesignProfile {
     @Column(name = "quotation_id")
     private int quotationId;
 
-    @Column(name = "customer_id")
-    private int customerId;
+//    @Column(name = "customer_id")
+//    private int customerId;
 
     @Column(name = "designer_id")
     private int designerId;
@@ -31,7 +34,7 @@ public class DesignProfile {
     @Column(name = "constructor_id")
     private int constructorId;
 
-    @Column(name = "description", columnDefinition = "NVARCHAR(150)")
+    @Column(name = "address", columnDefinition = "NVARCHAR(150)")
     private String address = "none";
 
     @Column(name = "construction_status", columnDefinition = "NVARCHAR(100)")
@@ -58,4 +61,20 @@ public class DesignProfile {
 
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
+
+    @OneToMany(mappedBy = "designProfile")
+    @JsonIgnore
+    List<ConstructionHistory> constructionHistories;
+
+    @OneToMany(mappedBy = "designProfile")
+    @JsonIgnore
+    List<AcceptanceDocument> acceptanceDocuments;
+
+    @OneToMany(mappedBy = "designProfile")
+    @JsonIgnore
+    List<Design> designs;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    Customer customer;
 }

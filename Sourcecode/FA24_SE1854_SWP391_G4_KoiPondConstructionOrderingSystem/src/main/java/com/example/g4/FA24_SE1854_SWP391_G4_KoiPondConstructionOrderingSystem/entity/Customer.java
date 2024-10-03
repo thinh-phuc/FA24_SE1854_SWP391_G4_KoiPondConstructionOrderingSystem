@@ -1,5 +1,6 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -22,7 +23,7 @@ public class Customer implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
-    private int customerId;
+    private Integer customerId;
 
     @Column(name = "name", nullable = false, columnDefinition = "NVARCHAR(100)")
     private String name;
@@ -62,6 +63,14 @@ public class Customer implements UserDetails {
 
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
+
+    @OneToMany(mappedBy = "customer")
+    @JsonIgnore
+    List<DesignProfile> designProfiles;
+
+    @OneToMany(mappedBy = "customer")
+    @JsonIgnore
+    List<quotation> quotations;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
