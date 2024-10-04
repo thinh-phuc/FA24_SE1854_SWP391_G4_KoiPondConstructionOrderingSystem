@@ -8,21 +8,12 @@ import lombok.Data;
 
 @Data
 public class AddStaffRequest {
-    @Column(name = "name", nullable = false, columnDefinition = "NVARCHAR(100)")
     private String name;
-
     @Email(message = "Invalid email!")
-    @Column(name = "email", nullable = false, length = 50, unique = true)
     private String email;
-
     @Size(min = 6, message = "Password must be at least 6 characters!")
-    @Column(name = "password", nullable = false, length = 255)
     private String password;
-
-    @Column(name = "phone_number", nullable = false, length = 20, unique = true)
     @Pattern(regexp = "(84|0[3|5|7|8|9])+(\\d{8})", message = "Invalid phone number!")
     private String phoneNumber;
-
-    @Column(name = "role", columnDefinition = "VARCHAR(30)")
     private String role = "CUSTOMER";
 }

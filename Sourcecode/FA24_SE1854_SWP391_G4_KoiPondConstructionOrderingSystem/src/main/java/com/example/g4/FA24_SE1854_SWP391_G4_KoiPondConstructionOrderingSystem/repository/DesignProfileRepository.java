@@ -5,7 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface DesignProfileRepository extends JpaRepository<DesignProfile,Integer> {
-DesignProfile findDesignProfileByDesignProfileId(Integer  id);
+public interface DesignProfileRepository extends JpaRepository<DesignProfile, Integer> {
+    DesignProfile findDesignProfileByDesignProfileId(Integer id);
+
     List<DesignProfile> findDesignProfilesByIsDeleteFalse();
 }
