@@ -70,7 +70,7 @@ public class Customer implements UserDetails {
 
     @OneToMany(mappedBy = "customer")
     @JsonIgnore
-    List<quotation> quotations;
+    List<Quotation> Quotations;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

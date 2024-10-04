@@ -1,21 +1,16 @@
-package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity;
+package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-public class DesignProfile {
+public class DesignProfileRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -28,8 +23,7 @@ public class DesignProfile {
 //    @Column(name = "quotation_id")
 //    private int quotationId;
 
-//    @Column(name = "customer_id")
-//    private int customerId;
+
 
 //    @Column(name = "designer_id")
 //    private int designerId;
@@ -64,26 +58,4 @@ public class DesignProfile {
 
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-   // @NotBlank(message = "isDelete must be  not blank")
-    @Column(name = "is_delete", columnDefinition = "BIT DEFAULT 0")
-    private Boolean isDelete = false;
-
-    @OneToMany(mappedBy = "designProfile")
-    @JsonIgnore
-    List<ConstructionHistory> constructionHistories;
-
-    @OneToMany(mappedBy = "designProfile")
-    @JsonIgnore
-    List<AcceptanceDocument> acceptanceDocuments;
-
-    @OneToMany(mappedBy = "designProfile")
-    @JsonIgnore
-    List<Design> designs;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    Customer customer;
 }
