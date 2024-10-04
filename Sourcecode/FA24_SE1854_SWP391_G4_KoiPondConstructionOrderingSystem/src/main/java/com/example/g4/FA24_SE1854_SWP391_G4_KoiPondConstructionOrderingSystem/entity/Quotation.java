@@ -1,7 +1,10 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,23 +14,24 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class quotation {
+public class Quotation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "quotation_id")
     private Integer quotationId;
 
 //    @Column(name = "customer_id")
 //    private int customerId;
 
-    @Column(name = "pond_design_template_id")
-    private int pondDesignTemplateId;
-
-    @Column(name = "consult_id")
-    private int consultId;
+//    @Column(name = "pond_design_template_id")
+//    private int pondDesignTemplateId;
+//
+//    @Column(name = "consult_id")
+//    private int consultId;
 
     @Column(name = "is_confirm", columnDefinition = "BIT DEFAULT 0")
-    private boolean isConfirm = false;
+    private Boolean isConfirm = false;
 
 
 
@@ -69,6 +73,12 @@ public class quotation {
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+   // @NotBlank(message = "isDelete must be  not blank")
+    @Column(name = "is_delete", columnDefinition = "BIT DEFAULT 0")
+    private Boolean isDelete = false;
+
+     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "customer_id")
     Customer customer;
