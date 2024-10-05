@@ -4,10 +4,10 @@ module.exports = {
   content: ["./src/**/*.tsx", "./src/**/*.css"],
   theme: {
     screens: {
-      phone: {min: "375px", max: "719px"},
+      phone: { min: "375px", max: "719px" },
       // => @media (min-width: 375px) { ... }
       ...defaultTheme.screens,
-      tablet: {min: "720px", max: "1279px"},
+      tablet: { min: "720px", max: "1279px" },
       // => @media (min-width: 720px) { ... }
 
       desktop: "1280px",
@@ -41,7 +41,11 @@ module.exports = {
         '--pre-1': "#FFC530",
         '1F': "#F4921F",
         40: "#40301F"
-      }
+      },
+      brown: {
+        DEFAULT: "#404040"
+      },
+      green: "#3bca88"
     },
     extend: {
       maxWidth: {
@@ -64,8 +68,8 @@ module.exports = {
           },
         },
         slideUp: {
-          '0%': {transform: 'translateY(100%)'},
-          '100%': {transform: 'translateY(0)'},
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0)' },
         },
       },
       animation: {

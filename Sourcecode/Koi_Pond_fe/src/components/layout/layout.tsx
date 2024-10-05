@@ -11,6 +11,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div className="flex flex-col relative">
       <Header />
       {children}
+      <hr className="border-t-2 border-gray my-4" />
       <Footer />
     </div>
   );
