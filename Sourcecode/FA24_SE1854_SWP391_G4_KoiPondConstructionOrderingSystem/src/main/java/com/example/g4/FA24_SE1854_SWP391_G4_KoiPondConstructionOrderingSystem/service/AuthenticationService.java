@@ -28,6 +28,8 @@ public class AuthenticationService implements UserDetailsService {
     PasswordEncoder passwordEncoder;
     @Autowired
     AuthenticationManager authenticationManager;
+    @Autowired
+    TokenService tokenService;
 
     public CustomerResponse register(RegisterRequest registerRequest) {
         Customer customer = modelMapper.map(registerRequest, Customer.class);
@@ -81,7 +83,9 @@ public class AuthenticationService implements UserDetailsService {
             Authentication authentication = authenticationManager.authenticate(new
                     UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
             Customer customer = (Customer) authentication.getPrincipal();
-            return modelMapper.map(customer, CustomerResponse.class);
+            CustomerResponse customerResponse = modelMapper.map(customer,CustomerResponse.class);
+            customerResponse.setToken(tokenService.generateToken(customer));
+            return customerResponse;
         } catch (Exception e) {
             throw new NotFoundException("Email or password is invalid!");
         }

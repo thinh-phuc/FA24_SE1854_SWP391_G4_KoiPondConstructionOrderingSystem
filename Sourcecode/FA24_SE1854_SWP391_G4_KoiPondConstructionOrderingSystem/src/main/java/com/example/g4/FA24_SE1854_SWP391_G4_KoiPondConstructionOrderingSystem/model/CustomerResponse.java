@@ -54,4 +54,6 @@ public class CustomerResponse {
 
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy;
+
+    String token;
 }
