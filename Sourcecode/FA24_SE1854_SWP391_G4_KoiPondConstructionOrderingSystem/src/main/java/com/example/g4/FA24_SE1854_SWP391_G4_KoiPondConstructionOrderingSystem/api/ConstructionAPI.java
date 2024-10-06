@@ -1,6 +1,8 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.api;
 
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.AcceptanceDocument;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ConstructionHistory;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.AcceptanceRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ConstructionRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateConstructionRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.ConstructionHistoryService;
@@ -23,9 +25,21 @@ public class ConstructionAPI {
         return ResponseEntity.ok(constructionHistory);
     }
 
+    @PostMapping("/api/construction/acceptance-document")
+    public ResponseEntity createAcceptanceDocument(@Valid @RequestBody AcceptanceRequest acceptanceRequest) {
+        AcceptanceDocument acceptanceDocument = constructionHistoryService.createAcceptanceDocument(acceptanceRequest);
+        return ResponseEntity.ok(acceptanceDocument);
+    }
+
     @PutMapping("/api/construction/{constructionHistoryId}")
     public ResponseEntity updateConstructionHistory(@Valid @RequestBody UpdateConstructionRequest constructionRequest, @PathVariable Integer constructionHistoryId) {
         ConstructionHistory constructionHistory = constructionHistoryService.updateConstructionHistory(constructionRequest, constructionHistoryId);
+        return ResponseEntity.ok(constructionHistory);
+    }
+
+    @PutMapping("/api/construction/finish-construction/{constructionHistoryId}")
+    public ResponseEntity finishConstruction(@PathVariable Integer constructionHistoryId) {
+        ConstructionHistory constructionHistory = constructionHistoryService.finishConstruction(constructionHistoryId);
         return ResponseEntity.ok(constructionHistory);
     }
 

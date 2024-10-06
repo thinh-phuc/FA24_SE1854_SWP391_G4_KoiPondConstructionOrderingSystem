@@ -41,7 +41,7 @@ public class DesignProfile {
     private String address = "none";
 
     @Column(name = "construction_status", columnDefinition = "NVARCHAR(100)")
-    private String contructionStatus = "none";
+    private String contructionStatus = "PENDING";
 
 
 
