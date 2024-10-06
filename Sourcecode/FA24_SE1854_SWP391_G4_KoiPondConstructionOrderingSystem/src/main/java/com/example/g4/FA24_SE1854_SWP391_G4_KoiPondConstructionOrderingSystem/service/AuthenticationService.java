@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -54,6 +55,7 @@ public class AuthenticationService implements UserDetailsService {
             }
         }
     }
+
     public CustomerResponse addStaff(AddStaffRequest addStaffRequest) {
         Customer customer = modelMapper.map(addStaffRequest, Customer.class);
         try {
@@ -83,7 +85,7 @@ public class AuthenticationService implements UserDetailsService {
             Authentication authentication = authenticationManager.authenticate(new
                     UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
             Customer customer = (Customer) authentication.getPrincipal();
-            CustomerResponse customerResponse = modelMapper.map(customer,CustomerResponse.class);
+            CustomerResponse customerResponse = modelMapper.map(customer, CustomerResponse.class);
             customerResponse.setToken(tokenService.generateToken(customer));
             return customerResponse;
         } catch (Exception e) {
@@ -95,5 +97,10 @@ public class AuthenticationService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return customerRepository.findCustomerByEmail(email);
+    }
+
+    public Customer getCurrentUser() {
+        Customer customer = (Customer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return customerRepository.findCustomerByCustomerId(customer.getCustomerId());
     }
 }
