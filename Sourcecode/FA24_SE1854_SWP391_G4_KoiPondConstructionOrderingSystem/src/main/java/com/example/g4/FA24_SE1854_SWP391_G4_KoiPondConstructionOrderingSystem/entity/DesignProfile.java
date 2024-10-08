@@ -89,4 +89,9 @@ public class DesignProfile {
 
     @ManyToMany(mappedBy = "designProfiles")
     List<Customer> customers;
+
+    @ManyToOne
+    @JoinColumn(name = "quotation_id")
+    Quotation quotation;
+
 }
