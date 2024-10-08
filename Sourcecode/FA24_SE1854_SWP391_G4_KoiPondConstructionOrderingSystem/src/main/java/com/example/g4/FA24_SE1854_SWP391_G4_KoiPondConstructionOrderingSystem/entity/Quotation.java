@@ -82,4 +82,14 @@ public class Quotation {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "pond_design_template_id")
+    PondDesignTemplate pondDesignTemplate;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "consult_id")
+    Consult consult;
+
 }
