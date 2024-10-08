@@ -43,9 +43,39 @@ public class ConstructionAPI {
         return ResponseEntity.ok(constructionHistory);
     }
 
-    @GetMapping("/api/construction")
+    @GetMapping("/api/construction/get-active-constructions")
     public ResponseEntity getAllConstructionHistory(){
         List<ConstructionHistory> constructionHistories=constructionHistoryService.getAllConstructions();
         return ResponseEntity.ok(constructionHistories);
+    }
+
+    @GetMapping("/api/construction/get-construction-by-id/{constructionHistoryId}")
+    public ResponseEntity getConstructionHistoryById(@PathVariable Integer constructionHistoryId){
+        ConstructionHistory constructionHistory=constructionHistoryService.getConstructionHistoryById(constructionHistoryId);
+        return ResponseEntity.ok(constructionHistory);
+    }
+
+    @GetMapping("/api/construction/get-active-acceptance_document")
+    public ResponseEntity getAllAcceptanceDocument(){
+        List<AcceptanceDocument> acceptanceDocuments=constructionHistoryService.getAllAcceptanceDocuments();
+        return ResponseEntity.ok(acceptanceDocuments);
+    }
+
+    @GetMapping("/api/construction/get-acceptance_document-by-id/{acceptanceDocumentId}")
+    public ResponseEntity getAcceptanceDocumentById(@PathVariable Integer acceptanceDocumentId){
+        AcceptanceDocument acceptanceDocument=constructionHistoryService.getAcceptanceDocumentById(acceptanceDocumentId);
+        return ResponseEntity.ok(acceptanceDocument);
+    }
+
+    @DeleteMapping("/api/construction/deleteConstruction/{constructionHistoryId}")
+    public ResponseEntity deleteConstructionHistory(@PathVariable Integer constructionHistoryId){
+        ConstructionHistory constructionHistory=constructionHistoryService.deleteConstructionHistory(constructionHistoryId);
+        return ResponseEntity.ok(constructionHistory);
+    }
+
+    @DeleteMapping("/api/construction/deleteAcceptanceDocument/{acceptanceDocumentId}")
+    public ResponseEntity deleteAcceptanceDocument(@PathVariable Integer acceptanceDocumentId){
+        AcceptanceDocument acceptanceDocument=constructionHistoryService.deleteAcceptanceDocument(acceptanceDocumentId);
+        return ResponseEntity.ok(acceptanceDocument);
     }
 }
