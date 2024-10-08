@@ -64,7 +64,12 @@ public class Customer implements UserDetails {
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
 
-    @OneToMany(mappedBy = "customer")
+//    @OneToMany(mappedBy = "customer")
+//    @JsonIgnore
+//    List<DesignProfile> designProfiles;
+
+    @ManyToMany
+    @JoinTable(name = "customer_design_profile", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "design_profile_id"))
     @JsonIgnore
     List<DesignProfile> designProfiles;
 
