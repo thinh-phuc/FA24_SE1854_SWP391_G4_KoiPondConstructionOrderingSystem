@@ -19,13 +19,13 @@ public class ServiceQuotation {
     @Column(name = "service_quotation_id")
     Integer serviceQuotationId;
     @JsonIgnore
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     Customer customer;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "service_category_id")
-    ServiceCategory serviceCategory;
+    @JoinColumn(name = "service_request_id")
+    ServiceRequest serviceRequest;
 
 }
