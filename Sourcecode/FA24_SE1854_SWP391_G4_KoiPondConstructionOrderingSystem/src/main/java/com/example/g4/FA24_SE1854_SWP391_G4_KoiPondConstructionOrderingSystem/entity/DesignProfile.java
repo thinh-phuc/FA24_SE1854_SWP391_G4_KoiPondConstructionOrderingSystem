@@ -82,8 +82,11 @@ public class DesignProfile {
     @JsonIgnore
     List<Design> designs;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    Customer customer;
+//    @JsonIgnore
+//    @ManyToOne
+//    @JoinColumn(name = "customer_id")
+//    Customer customer;
+
+    @ManyToMany(mappedBy = "designProfiles")
+    List<Customer> customers;
 }
