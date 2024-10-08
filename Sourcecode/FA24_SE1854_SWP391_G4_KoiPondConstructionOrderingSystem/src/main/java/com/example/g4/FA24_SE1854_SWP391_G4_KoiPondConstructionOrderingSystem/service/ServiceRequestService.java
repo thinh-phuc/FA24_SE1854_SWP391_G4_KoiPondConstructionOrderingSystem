@@ -3,12 +3,14 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.s
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceCategory;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.DataNotFoundException;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.AddServiceRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceCategoryRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class ServiceRequestService implements  IServiceRequestService{
    @Autowired
    private ServiceRequestRepository serviceRequestRepository;
@@ -16,10 +18,10 @@ public class ServiceRequestService implements  IServiceRequestService{
    private ServiceCategoryRepository serviceCategoryRepository;
 
     @Override
-    public ServiceRequest addServiceRequest(ServiceRequest serviceRequest) throws Exception {
+    public ServiceRequest addServiceRequest(AddServiceRequest serviceRequest) throws Exception {
         ServiceCategory existingCategory= serviceCategoryRepository
-                .findById(serviceRequest.getServiceCategory().getServiceCategoryId())
-                .orElseThrow(()-> new DataNotFoundException("Cannot find category with id" +serviceRequest.getServiceCategory().getServiceCategoryId() ));
+                .findById(serviceRequest.getCategoryID())
+                .orElseThrow(()-> new DataNotFoundException("Cannot find category with id" +serviceRequest.getCategoryID()));
 
         ServiceRequest newRequest = ServiceRequest.builder()
                 .description(serviceRequest.getDescription())

@@ -25,10 +25,6 @@ public class ServiceDetail {
     @ManyToOne
     @JoinColumn(name = "service_quotation_id")
     ServiceQuotation serviceQuotation;
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "service_category_id")
-    ServiceCategory serviceCategory;
     @Column(name = "description", columnDefinition = "NVARCHAR(500)")
     String description = "none";
     @Column(name = "address", columnDefinition = "NVARCHAR(255)")

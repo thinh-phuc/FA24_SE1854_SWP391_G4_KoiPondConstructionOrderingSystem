@@ -42,6 +42,9 @@ public class ServiceQuotation {
     @Min(value = 1, message = "VAT must be more than 0")
     private float VAT = 0.0f;
 
+    @Column(name = "total_cost", nullable = false, columnDefinition = "FLOAT")
+    @Min(value = 1, message = "TotalCost must be more than 0")
+    private float totalCost = 0.0f;
     @Column(name = "is_confirm", columnDefinition = "BIT DEFAULT 0")
     private boolean isConfirm = false;
 

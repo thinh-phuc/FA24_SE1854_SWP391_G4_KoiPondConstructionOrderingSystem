@@ -3,9 +3,10 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.s
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceCategory;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class ServiceCategoryService implements IServiceCategoryService{
     @Autowired
     private ServiceCategoryRepository serviceCategoryRepository;
@@ -14,6 +15,7 @@ public class ServiceCategoryService implements IServiceCategoryService{
     ServiceCategory serviceCate = ServiceCategory
             .builder()
             .type(serviceCategory.getType())
+            .cost(serviceCategory.getCost())
             .description(serviceCategory.getDescription())
             .note(serviceCategory.getNote())
             .build();
@@ -30,6 +32,7 @@ public class ServiceCategoryService implements IServiceCategoryService{
     public ServiceCategory updateServiceCategory(Integer id, ServiceCategory serviceCategory) {
         ServiceCategory existingCategory = getServiceCategoryById(id);
         existingCategory.setType(serviceCategory.getType());
+        existingCategory.setCost(serviceCategory.getCost());
         existingCategory.setDescription(serviceCategory.getDescription());
         existingCategory.setNote(serviceCategory.getNote());
         return existingCategory;
