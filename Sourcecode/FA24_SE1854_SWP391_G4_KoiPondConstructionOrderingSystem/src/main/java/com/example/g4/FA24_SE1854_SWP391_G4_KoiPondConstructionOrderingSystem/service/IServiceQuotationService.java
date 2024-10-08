@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IServiceQuotationService {
     // add a new ServiceQuotation
-    ServiceQuotation addServiceQuotation(ServiceQuotation serviceQuotation);
+    ServiceQuotation addServiceQuotation(ServiceQuotation serviceQuotation) throws Exception;
 
     // Find a ServiceQuotation by its ID
     ServiceQuotation findById(Integer id);

@@ -22,7 +22,6 @@ public class ServiceRequestService implements  IServiceRequestService{
                 .orElseThrow(()-> new DataNotFoundException("Cannot find category with id" +serviceRequest.getServiceCategory().getServiceCategoryId() ));
 
         ServiceRequest newRequest = ServiceRequest.builder()
-                .status(serviceRequest.getStatus())
                 .description(serviceRequest.getDescription())
                 .address(serviceRequest.getAddress())
                 .note(serviceRequest.getNote())
