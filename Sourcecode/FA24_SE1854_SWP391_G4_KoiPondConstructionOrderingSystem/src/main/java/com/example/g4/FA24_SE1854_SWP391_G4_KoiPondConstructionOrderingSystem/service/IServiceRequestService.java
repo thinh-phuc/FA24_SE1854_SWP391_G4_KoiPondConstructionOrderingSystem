@@ -1,12 +1,13 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service;
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.AddServiceRequest;
 
 import java.util.List;
 
 public interface IServiceRequestService {
     // Method to add a new ServiceRequest
-    ServiceRequest addServiceRequest(ServiceRequest serviceRequest) throws Exception;
+    ServiceRequest addServiceRequest(AddServiceRequest serviceRequest) throws Exception;
 
     // Method to retrieve a ServiceRequest by ID
     ServiceRequest getServiceRequestById(Integer id) throws Exception;
