@@ -63,7 +63,8 @@ public class ConstructionHistoryService {
             throw new NotFoundException("Something is wrong!");
         }
     }
-    public ConstructionHistory finishConstruction(Integer id){
+
+    public ConstructionHistory finishConstruction(Integer id) {
         try {
             ConstructionHistory old = constructionHistoryRepository.findConstructionHistoryByConstructionHistoryId(id);
             if (old == null) {
@@ -85,6 +86,11 @@ public class ConstructionHistoryService {
         return constructionHistories;
     }
 
+    public List<AcceptanceDocument> getAllAcceptanceDocuments() {
+        List<AcceptanceDocument> acceptanceDocuments = acceptanceDocumentRepository.findAcceptanceDocumentsByIsActiveTrue();
+        return acceptanceDocuments;
+    }
+
     public AcceptanceDocument createAcceptanceDocument(AcceptanceRequest acceptanceRequest) {
         try {
             AcceptanceDocument acceptanceDocument = new AcceptanceDocument();
@@ -96,12 +102,46 @@ public class ConstructionHistoryService {
             acceptanceDocument.setCreateDate(LocalDateTime.now());
             Customer staff = authenticationService.getCurrentUser();
             acceptanceDocument.setCreateBy(staff.getName());
-            DesignProfile designProfile=designProfileRepository.findDesignProfileByDesignProfileId(acceptanceRequest.getDesignProfileId());
+            DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileId(acceptanceRequest.getDesignProfileId());
             acceptanceDocument.setDesignProfile(designProfile);
-            AcceptanceDocument newAcceptanceDocument=acceptanceDocumentRepository.save(acceptanceDocument);
+            AcceptanceDocument newAcceptanceDocument = acceptanceDocumentRepository.save(acceptanceDocument);
             return newAcceptanceDocument;
         } catch (Exception e) {
             throw new NotFoundException("Something is wrong!");
         }
+    }
+
+    public ConstructionHistory deleteConstructionHistory(Integer id) {
+        ConstructionHistory constructionHistory = constructionHistoryRepository.findConstructionHistoryByConstructionHistoryId(id);
+        if (constructionHistory == null) {
+            throw new NotFoundException("Not found!");
+        }
+        constructionHistory.setIsActive(false);
+        return constructionHistoryRepository.save(constructionHistory);
+    }
+
+    public AcceptanceDocument deleteAcceptanceDocument(Integer id){
+        AcceptanceDocument acceptanceDocument=acceptanceDocumentRepository.findAcceptanceDocumentByAcceptanceDocumentId(id);
+        if(acceptanceDocument==null){
+            throw new NotFoundException("Not found!");
+        }
+        acceptanceDocument.setIsActive(false);
+        return acceptanceDocumentRepository.save(acceptanceDocument);
+    }
+
+    public ConstructionHistory getConstructionHistoryById(Integer id){
+        ConstructionHistory constructionHistory=constructionHistoryRepository.findConstructionHistoryByConstructionHistoryId(id);
+        if(constructionHistory==null){
+            throw new NotFoundException("Not found!");
+        }
+        return constructionHistory;
+    }
+
+    public AcceptanceDocument getAcceptanceDocumentById(Integer id){
+        AcceptanceDocument acceptanceDocument=acceptanceDocumentRepository.findAcceptanceDocumentByAcceptanceDocumentId(id);
+        if(acceptanceDocument==null){
+            throw new NotFoundException("Not found!");
+        }
+        return acceptanceDocument;
     }
 }
