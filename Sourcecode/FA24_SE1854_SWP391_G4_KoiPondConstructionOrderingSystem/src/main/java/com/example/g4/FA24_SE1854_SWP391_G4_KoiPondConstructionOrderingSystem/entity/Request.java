@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -54,4 +55,8 @@ public class Request {
 
     @JsonIgnore
     Boolean isDeleted = false;
+
+    @OneToMany(mappedBy = "request")
+    @JsonIgnore
+    List<RequestDetail> requestDetailList;
 }

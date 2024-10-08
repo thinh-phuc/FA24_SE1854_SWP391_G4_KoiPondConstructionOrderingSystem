@@ -25,8 +25,8 @@ public class Consult {
     @Column(name = "consultant_id")
     private Integer consultantId;
 
-    @Column(name = "request_detail_id")
-    private Integer requestDetailId;
+//    @Column(name = "request_detail_id")
+//    private Integer requestDetailId;
 
     @Column(name = "description")
     private String description;
@@ -46,4 +46,12 @@ public class Consult {
     @OneToMany(mappedBy = "consult")
     @JsonIgnore
     List<Quotation> Quotations;
+
+    @ManyToOne
+    @JoinColumn(name = "request_detail_id")
+    @JsonIgnore
+    RequestDetail requestDetail;
+
+    @ManyToMany(mappedBy = "consults")
+    List<Customer> customers;
 }

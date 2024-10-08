@@ -38,8 +38,8 @@ public class RequestDetailService {
             throw new EntityNotFoundException("Detail Not Found!");
         }
 
-        oldDetail.setPondDesignTemplateId(requestDetail.getPondDesignTemplateId());
-        oldDetail.setRequestId(requestDetail.getRequestId());
+        //oldDetail.setPondDesignTemplateId(requestDetail.getPondDesignTemplateId());
+        //oldDetail.setRequestId(requestDetail.getRequestId());
         oldDetail.setNote(requestDetail.getNote());
 
         return requestDetailRepository.save(oldDetail);

@@ -37,7 +37,7 @@ public class ConsultService {
 
         oldConsult.setCustomerId(consult.getCustomerId());
         oldConsult.setConsultantId(consult.getConsultantId());
-        oldConsult.setRequestDetailId(consult.getRequestDetailId());
+        //oldConsult.setRequestDetailId(consult.getRequestDetailId());
         oldConsult.setDescription(consult.getDescription());
         oldConsult.setCreateDate(consult.getCreateDate());
         oldConsult.setConsultDate(consult.getConsultDate());

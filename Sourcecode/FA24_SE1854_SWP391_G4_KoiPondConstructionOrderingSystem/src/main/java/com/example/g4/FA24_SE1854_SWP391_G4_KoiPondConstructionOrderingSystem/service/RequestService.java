@@ -1,8 +1,10 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service;
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Request;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.RequestRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.RequestRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +15,12 @@ public class RequestService {
     @Autowired
     RequestRepository requestRepository;
 
+    @Autowired
+    ModelMapper modelMapper;
+
     //create
-    public Request create(Request request){
+    public Request create(RequestRequest requestRequest){
+        Request request = modelMapper.map(requestRequest, Request.class);
         Request newRequest = requestRepository.save(request);
         return newRequest;
     }

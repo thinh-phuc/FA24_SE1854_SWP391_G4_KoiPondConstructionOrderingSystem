@@ -1,6 +1,7 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.api;
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Request;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.RequestRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.RequestService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -18,8 +19,8 @@ public class RequestAPI {
     RequestService requestService;
 
     @PostMapping
-    public ResponseEntity createRequest(@Valid @RequestBody Request request){
-        Request newRequest = requestService.create(request);
+    public ResponseEntity createRequest(@Valid @RequestBody RequestRequest requestRequest){
+        Request newRequest = requestService.create(requestRequest);
         return ResponseEntity.ok(newRequest);
     }
 

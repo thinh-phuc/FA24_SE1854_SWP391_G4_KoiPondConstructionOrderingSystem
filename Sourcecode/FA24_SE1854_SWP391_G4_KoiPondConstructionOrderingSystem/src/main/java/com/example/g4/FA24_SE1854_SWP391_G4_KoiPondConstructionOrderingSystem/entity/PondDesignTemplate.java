@@ -94,4 +94,7 @@ public class PondDesignTemplate {
     @JsonIgnore
     List<Quotation> quotations;
 
+    @OneToMany(mappedBy = "pondDesignTemplate")
+    @JsonIgnore
+    List<RequestDetail> requestDetails;
 }
