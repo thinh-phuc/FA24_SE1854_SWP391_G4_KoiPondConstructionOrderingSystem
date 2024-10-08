@@ -12,6 +12,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="service_detail")
 public class ServiceDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

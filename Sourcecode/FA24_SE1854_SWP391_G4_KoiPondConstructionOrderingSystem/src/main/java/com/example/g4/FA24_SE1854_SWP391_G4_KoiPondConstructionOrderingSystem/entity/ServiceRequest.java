@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@Table(name="service_request")
 public class ServiceRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
