@@ -37,7 +37,7 @@ public class PondDesignTemplateAPI {
     }
 
     @DeleteMapping("{pondId}")
-    public ResponseEntity delete(Integer pondId){
+    public ResponseEntity delete(@PathVariable Integer pondId){
         PondDesignTemplate deletedTemplate = pondDesignTemplateService.delete(pondId);
         return ResponseEntity.ok(deletedTemplate);
     }

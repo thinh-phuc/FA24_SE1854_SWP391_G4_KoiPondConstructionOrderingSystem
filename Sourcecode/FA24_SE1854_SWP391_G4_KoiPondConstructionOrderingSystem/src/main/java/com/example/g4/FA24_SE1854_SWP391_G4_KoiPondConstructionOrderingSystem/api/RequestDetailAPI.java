@@ -37,7 +37,7 @@ public class RequestDetailAPI {
     }
 
     @DeleteMapping("{detailId}")
-    public ResponseEntity deleteDetail(Integer detailId){
+    public ResponseEntity deleteDetail(@PathVariable Integer detailId){
         RequestDetail deletedDetail = requestDetailService.deleteDetail(detailId);
         return ResponseEntity.ok(deletedDetail);
     }

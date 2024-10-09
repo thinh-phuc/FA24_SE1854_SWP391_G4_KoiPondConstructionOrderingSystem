@@ -36,7 +36,7 @@ public class ConsultAPI {
     }
 
     @DeleteMapping("{consultId}")
-    public ResponseEntity delete(Integer consultId){
+    public ResponseEntity delete(@PathVariable Integer consultId){
         Consult deletedConsult = consultService.deleteConsult(consultId);
         return ResponseEntity.ok(deletedConsult);
     }

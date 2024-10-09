@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 public class RequestDetail {
@@ -15,15 +17,29 @@ public class RequestDetail {
     @Column(name = "request_detail_id")
     private Integer id;
 
-    @Column(name = "pond_design_template_id")
-    private Integer pondDesignTemplateId;
+//    @Column(name = "pond_design_template_id")
+//    private Integer pondDesignTemplateId;
 
-    @Column(name = "request_id")
-    private Integer requestId;
+//    @Column(name = "request_id")
+//    private Integer requestId;
 
     @Column(name = "note")
     private String note;
 
     @JsonIgnore
     Boolean isDeleted = false;
+
+    @ManyToOne
+    @JoinColumn(name = "request_id")
+    @JsonIgnore
+    Request request;
+
+    @ManyToOne
+    @JoinColumn(name = "pond_design_template_id")
+    @JsonIgnore
+    PondDesignTemplate pondDesignTemplate;
+
+    @OneToMany(mappedBy = "requestDetail")
+    @JsonIgnore
+    List<Consult> consults;
 }
