@@ -2,10 +2,12 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.a
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.AcceptanceDocument;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ConstructionHistory;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.DesignProfile;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.AcceptanceRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ConstructionRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateConstructionRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.ConstructionHistoryService;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.DesignProfileService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ import java.util.List;
 public class ConstructionAPI {
     @Autowired
     ConstructionHistoryService constructionHistoryService;
+    @Autowired
+    DesignProfileService designProfileService;
 
     @PostMapping("/api/construction")
     public ResponseEntity createConstructionHistory(@Valid @RequestBody ConstructionRequest constructionRequest) {
@@ -65,6 +69,12 @@ public class ConstructionAPI {
     public ResponseEntity getAcceptanceDocumentById(@PathVariable Integer acceptanceDocumentId){
         AcceptanceDocument acceptanceDocument=constructionHistoryService.getAcceptanceDocumentById(acceptanceDocumentId);
         return ResponseEntity.ok(acceptanceDocument);
+    }
+
+    @GetMapping("/api/construction/get-design_profiles-by-constructor")
+    public ResponseEntity getDesignProfilesByConstructor(){
+        List<DesignProfile> designProfiles=designProfileService.getDesignProfilesByStaff();
+        return ResponseEntity.ok(designProfiles);
     }
 
     @DeleteMapping("/api/construction/deleteConstruction/{constructionHistoryId}")

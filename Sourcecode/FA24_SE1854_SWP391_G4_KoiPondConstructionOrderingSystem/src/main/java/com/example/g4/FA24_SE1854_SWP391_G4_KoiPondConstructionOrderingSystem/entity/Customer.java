@@ -68,8 +68,7 @@ public class Customer implements UserDetails {
 //    @JsonIgnore
 //    List<DesignProfile> designProfiles;
 
-    @ManyToMany
-    @JoinTable(name = "customer_design_profile", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "design_profile_id"))
+    @ManyToMany(mappedBy = "customers")
     @JsonIgnore
     List<DesignProfile> designProfiles;
 
