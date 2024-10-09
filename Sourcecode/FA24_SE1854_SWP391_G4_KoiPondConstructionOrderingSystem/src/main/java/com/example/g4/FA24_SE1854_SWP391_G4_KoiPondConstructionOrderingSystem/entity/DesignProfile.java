@@ -44,10 +44,8 @@ public class DesignProfile {
     private String contructionStatus = "PENDING";
 
 
-
     @Column(name = "description", columnDefinition = "NVARCHAR(500)")
     private String description = "none";
-
 
 
     @Column(name = "is_active", columnDefinition = "BIT DEFAULT 1")
@@ -66,7 +64,7 @@ public class DesignProfile {
     private String updateBy = "none";
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-   // @NotBlank(message = "isDelete must be  not blank")
+    // @NotBlank(message = "isDelete must be  not blank")
     @Column(name = "is_delete", columnDefinition = "BIT DEFAULT 0")
     private Boolean isDelete = false;
 
@@ -87,7 +85,8 @@ public class DesignProfile {
 //    @JoinColumn(name = "customer_id")
 //    Customer customer;
 
-    @ManyToMany(mappedBy = "designProfiles")
+    @ManyToMany
+    @JoinTable(name = "customer_design_profile", joinColumns = @JoinColumn(name = "design_profile_id"), inverseJoinColumns = @JoinColumn(name = "customer_id"))
     List<Customer> customers;
 
     @ManyToOne
