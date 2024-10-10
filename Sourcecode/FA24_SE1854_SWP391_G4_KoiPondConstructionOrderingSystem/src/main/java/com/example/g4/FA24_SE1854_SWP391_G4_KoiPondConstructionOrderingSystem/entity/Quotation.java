@@ -73,10 +73,10 @@ public class Quotation {
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-   // @NotBlank(message = "isDelete must be  not blank")
-    @Column(name = "is_delete", columnDefinition = "BIT DEFAULT 0")
-    private Boolean isDelete = false;
+//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//   // @NotBlank(message = "isDelete must be  not blank")
+//    @Column(name = "is_delete", columnDefinition = "BIT DEFAULT 0")
+//    private Boolean isDelete = false;
 
      @JsonIgnore
     @ManyToOne

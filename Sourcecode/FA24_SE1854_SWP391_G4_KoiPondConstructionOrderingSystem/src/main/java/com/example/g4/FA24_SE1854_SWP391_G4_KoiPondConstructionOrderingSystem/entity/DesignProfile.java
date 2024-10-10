@@ -63,10 +63,10 @@ public class DesignProfile {
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    // @NotBlank(message = "isDelete must be  not blank")
-    @Column(name = "is_delete", columnDefinition = "BIT DEFAULT 0")
-    private Boolean isDelete = false;
+//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//    // @NotBlank(message = "isDelete must be  not blank")
+//    @Column(name = "is_delete", columnDefinition = "BIT DEFAULT 0")
+//    private Boolean isDelete = false;
 
     @OneToMany(mappedBy = "designProfile")
     @JsonIgnore
@@ -87,10 +87,12 @@ public class DesignProfile {
 
     @ManyToMany
     @JoinTable(name = "customer_design_profile", joinColumns = @JoinColumn(name = "design_profile_id"), inverseJoinColumns = @JoinColumn(name = "customer_id"))
+    @JsonIgnore
     List<Customer> customers;
 
     @ManyToOne
     @JoinColumn(name = "quotation_id")
+    @JsonIgnore
     Quotation quotation;
 
 }
