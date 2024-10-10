@@ -78,6 +78,6 @@ public class ServiceRequestService implements  IServiceRequestService{
 
     @Override
     public List<ServiceRequest> getActiveServiceRequests() {
-        return List.of();
+        return serviceRequestRepository.findServiceRequestByIsActiveTrue();
     }
 }
