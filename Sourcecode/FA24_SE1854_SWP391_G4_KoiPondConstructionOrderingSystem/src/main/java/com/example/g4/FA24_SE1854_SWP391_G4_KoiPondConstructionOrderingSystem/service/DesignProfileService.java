@@ -4,11 +4,13 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.en
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.DesignProfile;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.DesignProfileRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.DesignProfileRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,6 +21,8 @@ public class DesignProfileService {
     ModelMapper modelMapper;
     @Autowired
     AuthenticationService authenticationService;
+    @Autowired
+    CustomerRepository customerRepository;
 
     public DesignProfile getDesignProfileById(Integer id) {
         DesignProfile oldDesignProfile = designProfileRepository.findDesignProfileByDesignProfileId(id);
@@ -27,6 +31,7 @@ public class DesignProfileService {
         }
         return oldDesignProfile;
     }
+
 
     public DesignProfile create(DesignProfileRequest designProfileRequest) {
         DesignProfile designProfile = modelMapper.map(designProfileRequest, DesignProfile.class);
@@ -44,7 +49,7 @@ public class DesignProfileService {
         oldDesignProfile.setAddress(designProfile.getAddress());
         oldDesignProfile.setContructionStatus(designProfile.getContructionStatus());
         oldDesignProfile.setDescription(designProfile.getDescription());
-        oldDesignProfile.setIsActive(designProfile.getIsActive());
+        //oldDesignProfile.setIsActive(designProfile.getIsActive());
         oldDesignProfile.setUpdateDate(designProfile.getUpdateDate());
         oldDesignProfile.setUpdateBy(designProfile.getUpdateBy());
         oldDesignProfile.setCreateBy(designProfile.getCreateBy());
@@ -55,12 +60,13 @@ public class DesignProfileService {
 
     public DesignProfile delete(Integer id) {
         DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileId(id);
-        designProfile.setIsDelete(true);
+        //designProfile.setIsDelete(true);
+        designProfile.setIsActive(false);
         return designProfileRepository.save(designProfile);
     }
 
     public List<DesignProfile> getAll() {
-        List<DesignProfile> designProfiles = designProfileRepository.findDesignProfilesByIsDeleteFalse();
+        List<DesignProfile> designProfiles = designProfileRepository.findDesignProfilesByIsActiveTrue();
         return designProfiles;
     }
 
@@ -72,6 +78,27 @@ public class DesignProfileService {
             throw new NotFoundException("No design profiles found!");
         }
         return designProfiles;
+    }
+
+    public DesignProfile assignCustomersToDesignProfile(Integer designProfileId, List<Integer> customerIds) {
+        DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileIdAndIsActiveTrue(designProfileId);
+        if(designProfile == null){
+            throw new NotFoundException("DesignProfile not found");
+        }
+
+
+        List<Customer> customers = new ArrayList<>();
+        for (Integer customerId : customerIds) {
+            Customer customer = customerRepository.findCustomerByCustomerId(customerId);
+            if (customer != null) {
+                customers.add(customer);
+            } else {
+                throw new NotFoundException("Customer not found");
+            }
+        }
+        designProfile.setCustomers(customers);
+
+        return designProfileRepository.save(designProfile);
     }
 
 }

@@ -10,7 +10,9 @@ import java.util.List;
 public interface DesignProfileRepository extends JpaRepository<DesignProfile, Integer> {
     DesignProfile findDesignProfileByDesignProfileId(Integer id);
 
-    List<DesignProfile> findDesignProfilesByIsDeleteFalse();
+    List<DesignProfile> findDesignProfilesByIsActiveTrue();
+
+    DesignProfile findDesignProfileByDesignProfileIdAndIsActiveTrue(Integer id);
 
 
     @Query("SELECT dp FROM DesignProfile dp JOIN dp.customers c WHERE c.customerId = :customerId")

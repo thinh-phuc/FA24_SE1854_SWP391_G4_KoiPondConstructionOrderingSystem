@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface DesignRepository extends JpaRepository<Design,Integer> {
     Design findDesignByDesignId(Integer id);
-    List<Design> findDesignsByIsDeleteFalse();
+    List<Design> findDesignsByIsActiveTrue();
 }

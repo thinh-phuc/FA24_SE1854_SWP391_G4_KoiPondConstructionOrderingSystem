@@ -1,5 +1,6 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service;
 
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Design;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.DesignRequest;
@@ -8,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,6 +18,8 @@ public class DesignService {
     DesignRepository designRepository;
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    AuthenticationService authenticationService;
 
 
     public Design getDesignById(Integer id){
@@ -28,11 +32,14 @@ public class DesignService {
 
     public Design create(DesignRequest designRequest){
         Design design = modelMapper.map(designRequest,Design.class);
+        design.setDesignStatus("PROCESSING");
         Design newDesign = designRepository.save(design);
+        Customer staff = authenticationService.getCurrentUser();
+        design.setCreateBy(staff.getName());
         return newDesign;
     }
     public List<Design> getAll(){
-        List<Design> designs = designRepository.findDesignsByIsDeleteFalse();
+        List<Design> designs = designRepository.findDesignsByIsActiveTrue();
         return designs;
     }
     public Design update(Integer id, Design design){
@@ -40,14 +47,21 @@ public class DesignService {
 
         oldDesign.setDesign(design.getDesign());
         oldDesign.setDesignStatus(design.getDesignStatus());
-       // oldDesign.setDesignProfileId(design.getDesignProfileId());
-       // oldDesign.setIsDelete(design.getIsDelete());
-
+        Customer staff = authenticationService.getCurrentUser();
+        oldDesign.setUpdateBy(staff.getName());
+        oldDesign.setUpdateDate(LocalDateTime.now());
         return designRepository.save(oldDesign);
     }
     public Design delete(Integer id){
         Design design = getDesignById(id);
-        design.setIsDelete(true);
+
+        design.setIsActive(false);
         return designRepository.save(design);
     }
+//    public Design finishDesign(Integer id){
+//        Design design = getDesignById(id);
+//        design.setDesignStatus("Complete");
+//        design.setDescription("Design is completed");
+//        return designRepository.save(design);
+//    }
 }

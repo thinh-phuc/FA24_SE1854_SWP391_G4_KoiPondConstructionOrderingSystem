@@ -40,6 +40,11 @@ public class DesignProfileAPI {
         DesignProfile designProfile = designProfileService.delete(designProfileId);
         return  ResponseEntity.ok(designProfile);
     }
+//    @GetMapping("/api/construction/get-design_profiles-by-design_staff")
+//    public ResponseEntity getDesignProfilesByDesigner(){
+//        List<DesignProfile> designProfiles=designProfileService.getDesignProfilesByStaff();
+//        return ResponseEntity.ok(designProfiles);
+//    }
 
 
 }

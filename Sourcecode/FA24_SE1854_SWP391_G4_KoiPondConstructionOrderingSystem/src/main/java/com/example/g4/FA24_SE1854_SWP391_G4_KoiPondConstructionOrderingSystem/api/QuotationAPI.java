@@ -42,5 +42,10 @@ public class QuotationAPI {
     return  ResponseEntity.ok(deleteQuotation);
     }
 
+    @PutMapping("/confirmQuotation/{quotationId}")
+    public ResponseEntity confirmQuotation(@PathVariable Integer quotationId){
+        Quotation quotation = quotationService.confirmQuotation(quotationId);
+        return  ResponseEntity.ok(quotation);
+    }
     }
 

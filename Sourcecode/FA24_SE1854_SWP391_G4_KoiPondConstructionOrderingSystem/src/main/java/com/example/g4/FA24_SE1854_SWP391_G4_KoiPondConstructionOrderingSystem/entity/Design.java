@@ -29,10 +29,28 @@ public class Design {
     @Column(name = "design", columnDefinition = "NVARCHAR(500)")
     private String design = "none";
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @Column(name = "is_delete", columnDefinition = "BIT DEFAULT 0")
-   // @NotBlank(message = "isDelete must not be blank")
-    private Boolean isDelete = false;
+//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//    @Column(name = "is_delete", columnDefinition = "BIT DEFAULT 0")
+//   // @NotBlank(message = "isDelete must not be blank")
+//    private Boolean isDelete = false;
+     @Column(name = "is_active", columnDefinition = "BIT DEFAULT 1")
+     private Boolean isActive = true;
+
+    @Column(name = "description", columnDefinition = "NVARCHAR(500)")
+    private String description = "none";
+
+
+    @Column(name = "create_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createDate = LocalDateTime.now();
+
+    @Column(name = "create_by", columnDefinition = "NVARCHAR(100)")
+    private String createBy = "none";
+
+    @Column(name = "update_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime updateDate = LocalDateTime.now();
+
+    @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
+    private String updateBy = "none";
 
     @JsonIgnore
     @ManyToOne
