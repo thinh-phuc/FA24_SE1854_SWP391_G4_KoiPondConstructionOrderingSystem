@@ -1,40 +1,51 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
+@Data
+@Entity
 @Getter
 @Setter
-@Builder
-@Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="service_detail")
-public class ServiceDetail {
+@Table(name = "service_payment")
+public class ServicePayment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @Column(name = "service_detail_id")
-    Integer serviceDetailId;
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    Customer customer;
+    @Column(name = "service_payment_id")
+    private Integer servicePaymentID;
 
-    @JsonIgnore
+//    @Column(name = "service_quotation_id")
+//    private Integer serviceQuotationID;
+
     @ManyToOne
     @JoinColumn(name = "service_quotation_id")
     ServiceQuotation serviceQuotation;
-    @Column(name = "description", columnDefinition = "NVARCHAR(500)")
-    String description = "none";
-    @Column(name = "address", columnDefinition = "NVARCHAR(255)")
-    String address;
+
+    @Column(name = "payment_method")
+    private String paymentMethod;
+
+//    @Column(name = "maintenance_staff_id")
+//    private Integer maintenanceStaffID;
+
+    @ManyToOne
+    @JoinColumn(name = "maintenance_staff")
+    Customer maintenanceStaff;
+
+
+//    @Column(name = "service_progress_id")
+//    private Integer serviceProgressID;
+
+    @ManyToOne
+    @JoinColumn(name = "service_progress_id")
+    ServiceProgress serviceProgress;
+
+    @Column(name = "status")
+    private String status = "PENDING";
+
     @Column(name = "is_active", columnDefinition = "BIT DEFAULT 1")
     private Boolean isActive = true;
 
@@ -49,12 +60,4 @@ public class ServiceDetail {
 
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
-
-    @OneToMany(mappedBy = "serviceDetail")
-    @JsonIgnore
-    List<ServiceProgress> serviceProgressList;
-
-    @OneToMany(mappedBy = "serviceDetail")
-    @JsonIgnore
-    List<ServiceFeedback> serviceFeedbackList;
 }
