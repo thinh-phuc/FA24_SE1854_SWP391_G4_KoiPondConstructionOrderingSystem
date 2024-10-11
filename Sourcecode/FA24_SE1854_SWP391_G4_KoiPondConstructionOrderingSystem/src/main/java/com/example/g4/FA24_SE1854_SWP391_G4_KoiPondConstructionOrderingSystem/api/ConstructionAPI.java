@@ -12,11 +12,13 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @CrossOrigin(origins = "*")
 @SecurityRequirement(name="api")
+@PreAuthorize("hasAuthority('CONSTRUCTOR')")
 @RestController
 public class ConstructionAPI {
     @Autowired
@@ -50,7 +52,7 @@ public class ConstructionAPI {
 
     @GetMapping("/api/construction/get-active-constructions")
     public ResponseEntity getAllConstructionHistory(){
-        List<ConstructionHistory> constructionHistories=constructionHistoryService.getAllConstructions();
+        List<ConstructionHistory> constructionHistories=constructionHistoryService.getAllActiveConstructionsByStaff();
         return ResponseEntity.ok(constructionHistories);
     }
 
@@ -62,7 +64,7 @@ public class ConstructionAPI {
 
     @GetMapping("/api/construction/get-active-acceptance_document")
     public ResponseEntity getAllAcceptanceDocument(){
-        List<AcceptanceDocument> acceptanceDocuments=constructionHistoryService.getAllAcceptanceDocuments();
+        List<AcceptanceDocument> acceptanceDocuments=constructionHistoryService.getAllActiveAcceptanceDocumentsByStaff();
         return ResponseEntity.ok(acceptanceDocuments);
     }
 

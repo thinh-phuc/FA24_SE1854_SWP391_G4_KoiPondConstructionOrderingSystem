@@ -86,13 +86,13 @@ public class ConstructionHistoryService {
         }
     }
 
-    public List<ConstructionHistory> getAllConstructions() {
-        List<ConstructionHistory> constructionHistories = constructionHistoryRepository.findConstructionHistorysByIsActiveTrue();
+    public List<ConstructionHistory> getAllActiveConstructionsByStaff() {
+        List<ConstructionHistory> constructionHistories = constructionHistoryRepository.findActiveConstructionHistoriesByStaff(authenticationService.getCurrentUser().getCustomerId());
         return constructionHistories;
     }
 
-    public List<AcceptanceDocument> getAllAcceptanceDocuments() {
-        List<AcceptanceDocument> acceptanceDocuments = acceptanceDocumentRepository.findAcceptanceDocumentsByIsActiveTrue();
+    public List<AcceptanceDocument> getAllActiveAcceptanceDocumentsByStaff() {
+        List<AcceptanceDocument> acceptanceDocuments = acceptanceDocumentRepository.findActiveAcceptanceDocumentsByStaff(authenticationService.getCurrentUser().getCustomerId());
         return acceptanceDocuments;
     }
 
