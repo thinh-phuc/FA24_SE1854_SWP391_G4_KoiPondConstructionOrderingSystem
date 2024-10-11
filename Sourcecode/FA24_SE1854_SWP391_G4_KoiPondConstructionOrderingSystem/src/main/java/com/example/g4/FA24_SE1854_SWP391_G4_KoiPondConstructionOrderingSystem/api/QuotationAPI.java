@@ -13,6 +13,7 @@ import java.util.List;
 @SecurityRequirement(name="api")
 @RestController
 @RequestMapping("/api/quotation")
+@CrossOrigin(origins = "*")
 public class QuotationAPI {
 @Autowired
     QuotationService quotationService;

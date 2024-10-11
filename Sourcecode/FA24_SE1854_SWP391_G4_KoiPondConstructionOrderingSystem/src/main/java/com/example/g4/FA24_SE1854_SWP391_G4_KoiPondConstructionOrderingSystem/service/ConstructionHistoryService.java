@@ -4,6 +4,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.en
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ConstructionHistory;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.DesignProfile;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.DuplicateException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.AcceptanceRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ConstructionRequest;
@@ -30,11 +31,15 @@ public class ConstructionHistoryService {
 
     public ConstructionHistory createConstructionHistory(ConstructionRequest constructionRequest) {
         try {
+            DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileId(constructionRequest.getDesignProfileId());
+            ConstructionHistory existing = constructionHistoryRepository.findConstructionHistoryByDesignProfile(designProfile);
+            if (existing != null) {
+                throw new DuplicateException("This profile already has a construction history!");
+            }
             ConstructionHistory constructionHistory = new ConstructionHistory();
             constructionHistory.setStartDate(LocalDateTime.now());
             constructionHistory.setStep(constructionRequest.getStep());
             constructionHistory.setDescription(constructionRequest.getDescription());
-            DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileId(constructionRequest.getDesignProfileId());
             designProfile.setContructionStatus("PROGRESSING");
             designProfileRepository.save(designProfile);
             Customer staff = authenticationService.getCurrentUser();
@@ -43,7 +48,7 @@ public class ConstructionHistoryService {
             ConstructionHistory newConstructionHistory = constructionHistoryRepository.save(constructionHistory);
             return newConstructionHistory;
         } catch (Exception e) {
-            throw new NotFoundException("Something is wrong!");
+            throw new NotFoundException(e.getMessage());
         }
     }
 
@@ -60,7 +65,7 @@ public class ConstructionHistoryService {
             old.setUpdateBy(staff.getName());
             return constructionHistoryRepository.save(old);
         } catch (Exception e) {
-            throw new NotFoundException("Something is wrong!");
+            throw new NotFoundException(e.getMessage());
         }
     }
 
@@ -77,7 +82,7 @@ public class ConstructionHistoryService {
             old.setUpdateBy(staff.getName());
             return constructionHistoryRepository.save(old);
         } catch (Exception e) {
-            throw new NotFoundException("Something is wrong!");
+            throw new NotFoundException(e.getMessage());
         }
     }
 
@@ -93,6 +98,11 @@ public class ConstructionHistoryService {
 
     public AcceptanceDocument createAcceptanceDocument(AcceptanceRequest acceptanceRequest) {
         try {
+            DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileId(acceptanceRequest.getDesignProfileId());
+            AcceptanceDocument existing=acceptanceDocumentRepository.findAcceptanceDocumentByDesignProfile(designProfile);
+            if(existing!=null){
+                throw new DuplicateException("This profile already has an acceptance document!");
+            }
             AcceptanceDocument acceptanceDocument = new AcceptanceDocument();
             acceptanceDocument.setConfirm(true);
             acceptanceDocument.setDescription(acceptanceRequest.getDescription());
@@ -102,12 +112,11 @@ public class ConstructionHistoryService {
             acceptanceDocument.setCreateDate(LocalDateTime.now());
             Customer staff = authenticationService.getCurrentUser();
             acceptanceDocument.setCreateBy(staff.getName());
-            DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileId(acceptanceRequest.getDesignProfileId());
             acceptanceDocument.setDesignProfile(designProfile);
             AcceptanceDocument newAcceptanceDocument = acceptanceDocumentRepository.save(acceptanceDocument);
             return newAcceptanceDocument;
         } catch (Exception e) {
-            throw new NotFoundException("Something is wrong!");
+            throw new NotFoundException(e.getMessage());
         }
     }
 
@@ -120,26 +129,28 @@ public class ConstructionHistoryService {
         return constructionHistoryRepository.save(constructionHistory);
     }
 
-    public AcceptanceDocument deleteAcceptanceDocument(Integer id){
-        AcceptanceDocument acceptanceDocument=acceptanceDocumentRepository.findAcceptanceDocumentByAcceptanceDocumentId(id);
-        if(acceptanceDocument==null){
+    public AcceptanceDocument deleteAcceptanceDocument(Integer id) {
+        AcceptanceDocument acceptanceDocument = acceptanceDocumentRepository.findAcceptanceDocumentByAcceptanceDocumentId(id);
+        if (acceptanceDocument == null) {
             throw new NotFoundException("Not found!");
         }
         acceptanceDocument.setIsActive(false);
         return acceptanceDocumentRepository.save(acceptanceDocument);
     }
 
-    public ConstructionHistory getConstructionHistoryById(Integer id){
-        ConstructionHistory constructionHistory=constructionHistoryRepository.findConstructionHistoryByConstructionHistoryId(id);
-        if(constructionHistory==null){
+    public ConstructionHistory getConstructionHistoryByDesignProfileId(Integer id) {
+        DesignProfile designProfile=designProfileRepository.findDesignProfileByDesignProfileId(id);
+        ConstructionHistory constructionHistory = constructionHistoryRepository.findConstructionHistoryByDesignProfile(designProfile);
+        if (constructionHistory == null) {
             throw new NotFoundException("Not found!");
         }
         return constructionHistory;
     }
 
-    public AcceptanceDocument getAcceptanceDocumentById(Integer id){
-        AcceptanceDocument acceptanceDocument=acceptanceDocumentRepository.findAcceptanceDocumentByAcceptanceDocumentId(id);
-        if(acceptanceDocument==null){
+    public AcceptanceDocument getAcceptanceDocumentByDesignProfileId(Integer id) {
+        DesignProfile designProfile=designProfileRepository.findDesignProfileByDesignProfileId(id);
+        AcceptanceDocument acceptanceDocument = acceptanceDocumentRepository.findAcceptanceDocumentByDesignProfile(designProfile);
+        if (acceptanceDocument == null) {
             throw new NotFoundException("Not found!");
         }
         return acceptanceDocument;

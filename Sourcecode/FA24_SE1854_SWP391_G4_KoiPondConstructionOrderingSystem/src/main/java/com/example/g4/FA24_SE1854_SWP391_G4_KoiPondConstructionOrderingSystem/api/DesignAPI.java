@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @SecurityRequirement(name="api")
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/design")
 public class DesignAPI {
     @Autowired

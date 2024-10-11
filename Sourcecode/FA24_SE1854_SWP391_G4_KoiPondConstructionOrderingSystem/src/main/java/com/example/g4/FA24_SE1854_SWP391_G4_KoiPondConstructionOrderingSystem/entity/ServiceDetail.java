@@ -23,6 +23,11 @@ public class ServiceDetail {
     Integer serviceDetailId;
     @JsonIgnore
     @ManyToOne
+    @JoinColumn(name = "customer_id")
+    Customer customer;
+
+    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "service_quotation_id")
     ServiceQuotation serviceQuotation;
     @Column(name = "description", columnDefinition = "NVARCHAR(500)")

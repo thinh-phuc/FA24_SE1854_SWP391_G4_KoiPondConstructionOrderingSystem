@@ -10,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+@CrossOrigin(origins = "*")
 @SecurityRequirement(name="api")
 @RestController
+
 @RequestMapping("/api/template")
 public class PondDesignTemplateAPI {
 
