@@ -54,9 +54,6 @@ public class QuotationService {
                 oldQuotation.setMainCost(quotation.getMainCost());
                 oldQuotation.setSubCost(quotation.getSubCost());
                 oldQuotation.setVAT(quotation.getVAT());
-               // oldQuotation.setIsConfirm(quotation.getIsConfirm());
-               // oldQuotation.setIsActive(quotation.getIsActive());
-               // oldQuotation.setCreateBy(quotation.getCreateBy());
                 oldQuotation.setUpdateDate(LocalDateTime.now());
 
                 oldQuotation.setUpdateBy(staff.getName());

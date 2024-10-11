@@ -54,7 +54,7 @@ public class DesignService {
     }
     public Design delete(Integer id){
         Design design = getDesignById(id);
-       // design.setIsDelete(true);
+
         design.setIsActive(false);
         return designRepository.save(design);
     }
