@@ -26,7 +26,7 @@ public class ServiceQuotation {
     @JoinColumn(name = "customer_id")
     Customer customer;
 
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "service_request_id")
     ServiceRequest serviceRequest;

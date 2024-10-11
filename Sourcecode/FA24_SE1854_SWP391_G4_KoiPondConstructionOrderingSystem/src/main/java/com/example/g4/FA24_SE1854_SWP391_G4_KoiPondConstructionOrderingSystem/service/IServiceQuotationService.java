@@ -8,7 +8,7 @@ import java.util.List;
 public interface IServiceQuotationService {
     // add a new ServiceQuotation
     ServiceQuotation addServiceQuotation(ServiceQuotationRequest serviceQuotation) throws Exception;
-
+    ServiceQuotation updateServiceQuotation(Integer id ,ServiceQuotationRequest serviceQuotationRequest)  throws Exception;
     // Find a ServiceQuotation by its ID
     ServiceQuotation findById(Integer id) throws Exception;
 
@@ -16,7 +16,7 @@ public interface IServiceQuotationService {
     List<ServiceQuotation> findAll();
 
     // Delete a ServiceQuotation by its ID
-    void deleteById(Integer id);
+    void deleteServiceQuotationById(Integer id);
 
     // Additional business logic methods, e.g., finding quotations by customer or service category
     List<ServiceQuotation> findByCustomerId(Integer customerId);

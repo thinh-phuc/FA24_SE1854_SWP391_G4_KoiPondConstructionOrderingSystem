@@ -4,6 +4,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.en
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.AddServiceRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.ServiceRequestService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class ServiceRequestAPI {
 
     // Create a new ServiceRequest
     @PostMapping
-    public ResponseEntity<ServiceRequest> addServiceRequest(@RequestBody AddServiceRequest serviceRequest) {
+    public ResponseEntity<ServiceRequest> addServiceRequest( @Valid @RequestBody AddServiceRequest serviceRequest) {
         try {
             ServiceRequest createdRequest = serviceRequestService.addServiceRequest(serviceRequest);
             return ResponseEntity.ok(createdRequest);
@@ -43,7 +44,7 @@ public class ServiceRequestAPI {
     // Update a ServiceRequest
     @PutMapping("/{id}")
     public ResponseEntity<ServiceRequest> updateServiceRequest(
-            @PathVariable Integer id, @RequestBody ServiceRequest serviceRequest) {
+            @PathVariable Integer id,@Valid @RequestBody ServiceRequest serviceRequest) {
         try {
             ServiceRequest updatedRequest = serviceRequestService.updateServiceRequest(id, serviceRequest);
             return ResponseEntity.ok(updatedRequest);

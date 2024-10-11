@@ -16,7 +16,7 @@ public interface IServiceDetailService {
     List<ServiceDetail> getAllServiceDetails();
 
     // Update an existing ServiceDetail
-    ServiceDetail updateServiceDetail(ServiceDetail serviceDetail);
+    ServiceDetail updateServiceDetail(Integer id ,ServiceDetailRequest serviceDetail) throws Exception;
 
     // Delete a ServiceDetail by its ID
     void deleteServiceDetailById(Integer id);

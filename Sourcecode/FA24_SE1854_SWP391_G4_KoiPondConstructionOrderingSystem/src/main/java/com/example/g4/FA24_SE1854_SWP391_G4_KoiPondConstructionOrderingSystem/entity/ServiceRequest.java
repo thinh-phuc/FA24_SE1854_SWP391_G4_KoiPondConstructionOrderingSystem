@@ -31,8 +31,8 @@ public class ServiceRequest {
     @ManyToOne
     @JoinColumn(name = "service_category_id")
     ServiceCategory serviceCategory;
-    @Column(name = "status", columnDefinition = "NVARCHAR(100)")
-    private String status = "none";
+//    @Column(name = "status", columnDefinition = "NVARCHAR(100)")
+//    private String status = "none";
     @Column(name = "description", columnDefinition = "NVARCHAR(500)")
     String description = "none";
     @Column(name = "address", columnDefinition = "NVARCHAR(255)")

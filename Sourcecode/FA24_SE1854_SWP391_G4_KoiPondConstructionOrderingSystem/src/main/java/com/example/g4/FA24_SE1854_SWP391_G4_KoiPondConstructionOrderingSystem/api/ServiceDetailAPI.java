@@ -4,6 +4,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.en
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceDetailRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.ServiceDetailService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class ServiceDetailAPI {
     private ServiceDetailService serviceDetailService;
     // Create a new ServiceDetail
     @PostMapping
-    public ResponseEntity<ServiceDetail> createServiceDetail(@RequestBody ServiceDetailRequest serviceDetailRequest) {
+    public ResponseEntity<ServiceDetail> createServiceDetail(@Valid  @RequestBody ServiceDetailRequest serviceDetailRequest) {
         try {
             ServiceDetail createdDetail = serviceDetailService.createServiceDetail(serviceDetailRequest);
             return ResponseEntity.ok(createdDetail);
@@ -47,9 +48,9 @@ public class ServiceDetailAPI {
 
     // Update a ServiceDetail
     @PutMapping("/{id}")
-    public ResponseEntity<ServiceDetail> updateServiceDetail(@PathVariable Integer id, @RequestBody ServiceDetail serviceDetail) {
+    public ResponseEntity<ServiceDetail> updateServiceDetail(@PathVariable Integer id, @RequestBody ServiceDetailRequest serviceDetail) {
         try {
-            ServiceDetail updatedDetail = serviceDetailService.updateServiceDetail(serviceDetail);
+            ServiceDetail updatedDetail = serviceDetailService.updateServiceDetail(id,serviceDetail);
             return ResponseEntity.ok(updatedDetail);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
