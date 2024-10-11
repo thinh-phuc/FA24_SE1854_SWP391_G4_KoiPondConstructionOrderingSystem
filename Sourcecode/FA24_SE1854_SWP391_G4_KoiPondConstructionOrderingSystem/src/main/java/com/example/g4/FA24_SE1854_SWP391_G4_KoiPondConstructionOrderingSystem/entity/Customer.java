@@ -81,6 +81,14 @@ public class Customer implements UserDetails {
     @JsonIgnore
     List<Consult> consults;
 
+    @OneToMany(mappedBy = "maintenanceStaff")
+    @JsonIgnore
+    List<ServicePayment> servicePayments;
+
+    @OneToMany(mappedBy = "customer")
+    @JsonIgnore
+    List<ServiceFeedback> serviceFeedbacks;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
