@@ -2,6 +2,8 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.a
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceCategory;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.ServiceCategoryService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,21 +12,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
+@SecurityRequirement(name="api")
 @RequestMapping("/api/service-categories")
 public class ServiceCategoryAPI {
     @Autowired
     private ServiceCategoryService serviceCategoryService;
 
     @PostMapping
-    public ResponseEntity<ServiceCategory> addServiceCategory(@RequestBody ServiceCategory serviceCategory) {
+    public ResponseEntity<ServiceCategory> addServiceCategory(@Valid @RequestBody ServiceCategory serviceCategory) {
         ServiceCategory createdCategory = serviceCategoryService.addServiceCategory(serviceCategory);
-        return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
+        return  ResponseEntity.ok(createdCategory);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ServiceCategory> getServiceCategoryById(@PathVariable Integer id) {
         ServiceCategory serviceCategory = serviceCategoryService.getServiceCategoryById(id);
-        return new ResponseEntity<>(serviceCategory, HttpStatus.OK);
+        return ResponseEntity.ok(serviceCategory);
     }
 
     @PutMapping("/{id}")
@@ -32,13 +35,13 @@ public class ServiceCategoryAPI {
             @PathVariable Integer id,
             @RequestBody ServiceCategory serviceCategory) {
         ServiceCategory updatedCategory = serviceCategoryService.updateServiceCategory(id, serviceCategory);
-        return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
+        return ResponseEntity.ok(updatedCategory);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteServiceCategoryById(@PathVariable Integer id) {
-        serviceCategoryService.deleteServiceCategoryById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+       serviceCategoryService.deleteServiceCategoryById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping

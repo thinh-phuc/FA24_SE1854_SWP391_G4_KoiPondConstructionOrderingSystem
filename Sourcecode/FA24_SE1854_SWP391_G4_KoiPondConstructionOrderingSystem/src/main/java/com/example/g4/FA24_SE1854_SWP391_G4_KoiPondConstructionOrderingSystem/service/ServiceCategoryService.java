@@ -35,6 +35,7 @@ public class ServiceCategoryService implements IServiceCategoryService{
         existingCategory.setCost(serviceCategory.getCost());
         existingCategory.setDescription(serviceCategory.getDescription());
         existingCategory.setNote(serviceCategory.getNote());
+        serviceCategoryRepository.save(existingCategory);
         return existingCategory;
     }
 

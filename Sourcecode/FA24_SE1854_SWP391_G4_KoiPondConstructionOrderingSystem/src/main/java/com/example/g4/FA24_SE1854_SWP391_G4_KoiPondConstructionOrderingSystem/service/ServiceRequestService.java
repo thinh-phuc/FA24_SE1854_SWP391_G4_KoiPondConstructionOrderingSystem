@@ -1,14 +1,17 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service;
 
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceCategory;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.DataNotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.AddServiceRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceCategoryRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 @Service
 public class ServiceRequestService implements  IServiceRequestService{
@@ -16,18 +19,26 @@ public class ServiceRequestService implements  IServiceRequestService{
    private ServiceRequestRepository serviceRequestRepository;
    @Autowired
    private ServiceCategoryRepository serviceCategoryRepository;
-
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    AuthenticationService authenticationService;
     @Override
     public ServiceRequest addServiceRequest(AddServiceRequest serviceRequest) throws Exception {
         ServiceCategory existingCategory= serviceCategoryRepository
                 .findById(serviceRequest.getCategoryID())
                 .orElseThrow(()-> new DataNotFoundException("Cannot find category with id" +serviceRequest.getCategoryID()));
-
-        ServiceRequest newRequest = ServiceRequest.builder()
-                .description(serviceRequest.getDescription())
-                .address(serviceRequest.getAddress())
-                .note(serviceRequest.getNote())
-                .build();
+            Customer customer = authenticationService.getCurrentUser();
+        ServiceRequest newRequest = new ServiceRequest();
+        newRequest.setDescription(serviceRequest.getDescription());
+        newRequest.setAddress(serviceRequest.getAddress());
+        newRequest.setNote(serviceRequest.getNote());
+        newRequest.setIsActive(true);
+        newRequest.setCreateBy(customer.getName());
+        newRequest.setCreateDate(LocalDateTime.now());
+        newRequest.setUpdateDate(LocalDateTime.now());
+        newRequest.setServiceCategory(existingCategory);
+        newRequest.setCustomer(customer);
         return serviceRequestRepository.save(newRequest);
     }
 
@@ -39,21 +50,24 @@ public class ServiceRequestService implements  IServiceRequestService{
 
     @Override
     public ServiceRequest updateServiceRequest(Integer id,ServiceRequest serviceRequest) throws Exception {
-           ServiceRequest existingRequest = getServiceRequestById(id);
-           if(existingRequest != null)
+           ServiceRequest existingRequest = serviceRequestRepository.findServiceRequestByServiceRequestId(id);
+           if(existingRequest == null)
            {
+               throw new DataNotFoundException("Cannot find service-request with id = "+id );
+           }
+        Customer customer = authenticationService.getCurrentUser();
                ServiceCategory existingCategory= serviceCategoryRepository
                        .findById(serviceRequest.getServiceCategory().getServiceCategoryId())
                        .orElseThrow(()-> new DataNotFoundException("Cannot find category with id" +serviceRequest.getServiceCategory().getServiceCategoryId() ));
-
-               existingRequest.setStatus(serviceRequest.getStatus());
                existingRequest.setDescription(serviceRequest.getDescription());
                existingRequest.setAddress(serviceRequest.getAddress());
                existingRequest.setNote(serviceRequest.getNote());
+               existingRequest.setUpdateDate(LocalDateTime.now());
+               existingRequest.setUpdateBy(customer.getName());
+               existingRequest.setServiceCategory(existingCategory);
                return serviceRequestRepository.save(existingRequest);
-           }
 
-        return null;
+        //return null;
     }
 
     @Override
@@ -68,7 +82,8 @@ public class ServiceRequestService implements  IServiceRequestService{
 
     @Override
     public List<ServiceRequest> findServiceRequestsByCustomerId(Integer customerId) {
-        return List.of();
+      Customer customer = customerRepository.findCustomerByCustomerId(customerId);
+        return  serviceRequestRepository.findServiceRequestsByCustomer(customer);
     }
 
     @Override
@@ -78,6 +93,6 @@ public class ServiceRequestService implements  IServiceRequestService{
 
     @Override
     public List<ServiceRequest> getActiveServiceRequests() {
-        return serviceRequestRepository.findServiceRequestByIsActiveTrue();
+        return serviceRequestRepository.findServiceRequestsByIsActiveTrue();
     }
 }
