@@ -8,5 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ServiceQuotationRepository extends JpaRepository<ServiceQuotation,Integer> {
+
 List<ServiceQuotation>findServiceQuotationsByCustomer(Customer customer);
+
+    ServiceQuotation findServiceQuotationByServiceQuotationId(Integer serviceQuotationID);
 }

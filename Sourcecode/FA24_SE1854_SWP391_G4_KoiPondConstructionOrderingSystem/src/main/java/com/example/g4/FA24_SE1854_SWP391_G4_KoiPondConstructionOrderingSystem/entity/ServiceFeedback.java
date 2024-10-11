@@ -1,39 +1,46 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Getter
-@Setter
-@Builder
-@Entity
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="service_detail")
-public class ServiceDetail {
+@Getter
+@Setter
+public class ServiceFeedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @Column(name = "service_detail_id")
-    Integer serviceDetailId;
+    @Column(name = "service_feedback_id")
+    private Integer serviceFeedbackId;
+
+//    @Column(name = "service_detail_id")
+//    private int serviceDetailId;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    Customer staff;
+    @JoinColumn(name = "service_detail_id")
+    ServiceDetail serviceDetail;
+
+//    @Column(name = "customer_id")
+//    private int customerId;
 
     @ManyToOne
-    @JoinColumn(name = "service_quotation_id")
-    ServiceQuotation serviceQuotation;
-    @Column(name = "description", columnDefinition = "NVARCHAR(500)")
-    String description = "none";
-    @Column(name = "address", columnDefinition = "NVARCHAR(255)")
-    String address;
+    @JoinColumn(name = "customer")
+    Customer customer;
+
+    @Column(name = "feedback")
+    private String feedback;
+
+    @Column(name = "rating")
+    private Integer rating;
+
+    @Column(name = "note")
+    private String note;
+
     @Column(name = "is_active", columnDefinition = "BIT DEFAULT 1")
     private Boolean isActive = true;
 
@@ -48,12 +55,4 @@ public class ServiceDetail {
 
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
-
-    @OneToMany(mappedBy = "serviceDetail")
-    @JsonIgnore
-    List<ServiceProgress> serviceProgressList;
-
-    @OneToMany(mappedBy = "serviceDetail")
-    @JsonIgnore
-    List<ServiceFeedback> serviceFeedbackList;
 }
