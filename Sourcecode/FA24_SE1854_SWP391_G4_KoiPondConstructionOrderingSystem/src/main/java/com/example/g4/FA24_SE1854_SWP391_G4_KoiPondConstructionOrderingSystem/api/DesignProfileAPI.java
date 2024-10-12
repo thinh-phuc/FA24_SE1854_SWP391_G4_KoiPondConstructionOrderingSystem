@@ -1,5 +1,6 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.api;
 
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Design;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.DesignProfile;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.DesignProfileRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.DesignProfileService;
@@ -28,6 +29,12 @@ public class DesignProfileAPI {
         List<DesignProfile> designProfiles = designProfileService.getAll();
         return ResponseEntity.ok(designProfiles);
     }
+//    @GetMapping("/view-designProfile/{designProfileId}")//*
+//    public ResponseEntity viewDesignProfile(@PathVariable Integer designProfileId){
+//        DesignProfile designProfile = designProfileService.getDesignProfileById(designProfileId);
+//        return ResponseEntity.ok(designProfile);
+//    }
+
 
     @PutMapping("{designProfileId}")
     public ResponseEntity update ( @PathVariable Integer designProfileId,@Valid @RequestBody DesignProfile designProfile ) {
@@ -40,11 +47,13 @@ public class DesignProfileAPI {
         DesignProfile designProfile = designProfileService.delete(designProfileId);
         return  ResponseEntity.ok(designProfile);
     }
-//    @GetMapping("/api/construction/get-design_profiles-by-design_staff")
+//    //dash board hiện ra những design profile của staff *
+//    @GetMapping("/get-design_profiles-by-design_staff")
 //    public ResponseEntity getDesignProfilesByDesigner(){
 //        List<DesignProfile> designProfiles=designProfileService.getDesignProfilesByStaff();
 //        return ResponseEntity.ok(designProfiles);
 //    }
+
 
 
 }

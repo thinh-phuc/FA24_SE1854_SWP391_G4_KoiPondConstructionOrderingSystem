@@ -21,6 +21,8 @@ public class DesignRequest {
     @Column(name = "design", columnDefinition = "NVARCHAR(500)")
     private String design = "none";
 
+    private Integer designProfileId;
+
 
 
 

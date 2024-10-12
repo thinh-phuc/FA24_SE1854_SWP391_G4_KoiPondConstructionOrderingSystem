@@ -1,5 +1,6 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.api;
 
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.DesignProfile;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Quotation;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.QuotationRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.QuotationService;
@@ -29,6 +30,21 @@ public class QuotationAPI {
             List<Quotation> quotationList = quotationService.getQuotationAll();
             return ResponseEntity.ok(quotationList);
     }
+
+
+    //view quotation by consult
+    @GetMapping("/view-quotation-by-consult/{consultId}")
+    public ResponseEntity getQuotationByConsult(Integer consultId ){
+        Quotation quotation = quotationService.getQuotationByConsult(consultId);
+        return ResponseEntity.ok(quotation);
+    }
+
+//   // mới làm view quotation in design profile
+//    @GetMapping("/view-quotation-by-design-profile/{designProfileId}")
+//    public ResponseEntity getQuotationByDesignProfile(Integer designProfileId ){
+//        Quotation quotation = quotationService.getQuotationByDesignProfile(designProfileId);
+//        return ResponseEntity.ok(quotation);
+//    }
 
     @PutMapping("{quotationId}")
     public ResponseEntity update ( @PathVariable Integer quotationId,@Valid @RequestBody Quotation quotation ) {

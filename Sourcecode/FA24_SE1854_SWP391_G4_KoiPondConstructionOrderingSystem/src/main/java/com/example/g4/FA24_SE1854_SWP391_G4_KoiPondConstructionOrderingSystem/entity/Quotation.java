@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -91,5 +93,9 @@ public class Quotation {
     @ManyToOne
     @JoinColumn(name = "consult_id")
     Consult consult;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "quotation")
+    List<DesignProfile> designProfileList;
 
 }

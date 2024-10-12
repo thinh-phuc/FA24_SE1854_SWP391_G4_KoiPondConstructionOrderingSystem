@@ -44,10 +44,17 @@ public class DesignAPI {
         return ResponseEntity.ok(designList);
 
     }
+    //mới làm viewdesign in deisgn profile
+    @GetMapping("/view-design/{designProfileId}")
+    public ResponseEntity viewDesign(@PathVariable Integer designProfileId){
+        List<Design> designs = designService.GetDesignByDesignProfile(designProfileId);
+        return ResponseEntity.ok(designs);
+    }
 
-//    @PutMapping("/finish-design/{designId}")
-//    public ResponseEntity finishDesign(@PathVariable Integer designId) {
-//        Design design = designService.finishDesign(designId);
-//        return ResponseEntity.ok(design);
-//    }
+
+    @PutMapping("/finish-design/{designId}")
+    public ResponseEntity finishDesign(@PathVariable Integer designId) {
+        Design design = designService.finishDesign(designId);
+        return ResponseEntity.ok(design);
+    }
 }

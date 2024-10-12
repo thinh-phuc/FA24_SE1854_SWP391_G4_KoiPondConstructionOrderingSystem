@@ -41,11 +41,6 @@ public class DesignProfileService {
 
     public DesignProfile update(Integer id, DesignProfile designProfile) {
         DesignProfile oldDesignProfile = getDesignProfileById(id);
-//            oldDesignProfile.setConsultId(designProfile.getConsultId());
-//            oldDesignProfile.setQuotationId(designProfile.getQuotationId());
-        //oldDesignProfile.setCustomerId();
-//            oldDesignProfile.setDesignerId(designProfile.getDesignerId());
-//            oldDesignProfile.setConstructorId(designProfile.getConstructorId());
         oldDesignProfile.setAddress(designProfile.getAddress());
         oldDesignProfile.setContructionStatus(designProfile.getContructionStatus());
         oldDesignProfile.setDescription(designProfile.getDescription());
