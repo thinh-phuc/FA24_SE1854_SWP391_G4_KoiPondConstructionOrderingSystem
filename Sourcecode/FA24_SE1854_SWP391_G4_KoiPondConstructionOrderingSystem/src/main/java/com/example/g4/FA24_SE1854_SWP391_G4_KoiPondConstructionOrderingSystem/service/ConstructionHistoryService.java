@@ -80,6 +80,9 @@ public class ConstructionHistoryService {
             old.setEndDate(LocalDateTime.now());
             Customer staff = authenticationService.getCurrentUser();
             old.setUpdateBy(staff.getName());
+            DesignProfile designProfile = old.getDesignProfile();
+            designProfile.setContructionStatus("COMPLETED");
+            designProfileRepository.save(designProfile);
             return constructionHistoryRepository.save(old);
         } catch (Exception e) {
             throw new NotFoundException(e.getMessage());
@@ -99,8 +102,8 @@ public class ConstructionHistoryService {
     public AcceptanceDocument createAcceptanceDocument(AcceptanceRequest acceptanceRequest) {
         try {
             DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileId(acceptanceRequest.getDesignProfileId());
-            AcceptanceDocument existing=acceptanceDocumentRepository.findAcceptanceDocumentByDesignProfile(designProfile);
-            if(existing!=null){
+            AcceptanceDocument existing = acceptanceDocumentRepository.findAcceptanceDocumentByDesignProfile(designProfile);
+            if (existing != null) {
                 throw new DuplicateException("This profile already has an acceptance document!");
             }
             AcceptanceDocument acceptanceDocument = new AcceptanceDocument();
@@ -139,7 +142,7 @@ public class ConstructionHistoryService {
     }
 
     public ConstructionHistory getConstructionHistoryByDesignProfileId(Integer id) {
-        DesignProfile designProfile=designProfileRepository.findDesignProfileByDesignProfileId(id);
+        DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileId(id);
         ConstructionHistory constructionHistory = constructionHistoryRepository.findConstructionHistoryByDesignProfile(designProfile);
         if (constructionHistory == null) {
             throw new NotFoundException("Not found!");
@@ -148,7 +151,7 @@ public class ConstructionHistoryService {
     }
 
     public AcceptanceDocument getAcceptanceDocumentByDesignProfileId(Integer id) {
-        DesignProfile designProfile=designProfileRepository.findDesignProfileByDesignProfileId(id);
+        DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileId(id);
         AcceptanceDocument acceptanceDocument = acceptanceDocumentRepository.findAcceptanceDocumentByDesignProfile(designProfile);
         if (acceptanceDocument == null) {
             throw new NotFoundException("Not found!");
