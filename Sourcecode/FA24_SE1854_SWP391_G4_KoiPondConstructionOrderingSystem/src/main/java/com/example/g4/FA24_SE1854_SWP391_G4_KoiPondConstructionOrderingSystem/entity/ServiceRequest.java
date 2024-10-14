@@ -27,7 +27,7 @@ public class ServiceRequest {
     @JoinColumn(name = "customer_id")
     Customer customer;
 
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "service_category_id")
     ServiceCategory serviceCategory;

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @CrossOrigin(origins = "*")
 @SecurityRequirement(name="api")
-@PreAuthorize("hasAuthority('CONSTRUCTOR')")
+//@PreAuthorize("hasAuthority('CONSTRUCTOR')")
 @RestController
 public class ConstructionAPI {
     @Autowired

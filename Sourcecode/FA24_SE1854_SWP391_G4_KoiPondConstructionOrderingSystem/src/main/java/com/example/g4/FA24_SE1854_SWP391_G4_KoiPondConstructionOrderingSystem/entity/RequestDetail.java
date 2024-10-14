@@ -31,12 +31,10 @@ public class RequestDetail {
 
     @ManyToOne
     @JoinColumn(name = "request_id")
-    @JsonIgnore
     Request request;
 
     @ManyToOne
     @JoinColumn(name = "pond_design_template_id")
-    @JsonIgnore
     PondDesignTemplate pondDesignTemplate;
 
     @OneToMany(mappedBy = "requestDetail")

@@ -1,7 +1,9 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.api;
 
 
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Request;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.RequestDetail;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.RequestDetailRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.RequestDetailService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @SecurityRequirement(name="api")
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api/requestDetail")
 public class RequestDetailAPI {
 
@@ -20,9 +21,9 @@ public class RequestDetailAPI {
     RequestDetailService requestDetailService;
 
     @PostMapping
-    public ResponseEntity create(@Valid @RequestBody RequestDetail requestDetail){
-        RequestDetail newDetail = requestDetailService.createDetail(requestDetail);
-        return ResponseEntity.ok(newDetail);
+    public ResponseEntity create(@Valid @RequestBody RequestDetailRequest requestDetailRequest){
+        RequestDetail newRequestDetail = requestDetailService.createRequestDetail(requestDetailRequest);
+        return ResponseEntity.ok(newRequestDetail);
     }
 
     @GetMapping
@@ -31,15 +32,23 @@ public class RequestDetailAPI {
         return ResponseEntity.ok(requestDetails);
     }
 
-    @PutMapping("{detailId}")
-    public ResponseEntity updateDetail(@PathVariable Integer detailId, @Valid @RequestBody RequestDetail requestDetail){
-        RequestDetail updatedDetail = requestDetailService.updateDetail(detailId, requestDetail);
+
+    @GetMapping("/get-requestDetail-by-id/{requestId}")
+    public ResponseEntity getRequestDetailByRequestId(@PathVariable Integer requestId){
+        List<RequestDetail> requestDetails = requestDetailService.getAllRequestDetailsByRequestId(requestId);
+        return ResponseEntity.ok(requestDetails);
+    }
+
+
+    @PutMapping("{requestDetailId}")
+    public ResponseEntity updateDetail(@PathVariable Integer requestDetailId, @Valid @RequestBody RequestDetailRequest requestDetailRequest){
+        RequestDetail updatedDetail = requestDetailService.updateRequestDetail(requestDetailId, requestDetailRequest);
         return ResponseEntity.ok(updatedDetail);
     }
 
-    @DeleteMapping("{detailId}")
-    public ResponseEntity deleteDetail(@PathVariable Integer detailId){
-        RequestDetail deletedDetail = requestDetailService.deleteDetail(detailId);
+    @DeleteMapping("{requestDetailId}")
+    public ResponseEntity deleteDetail(@PathVariable Integer requestDetailId){
+        RequestDetail deletedDetail = requestDetailService.deleteRequestDetail(requestDetailId);
         return ResponseEntity.ok(deletedDetail);
     }
 

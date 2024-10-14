@@ -91,6 +91,10 @@ public class Customer implements UserDetails {
     @JsonIgnore
     List<ServiceFeedback> serviceFeedbacks;
 
+    @OneToMany(mappedBy = "customer")
+    @JsonIgnore
+    List<Request> requests;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();

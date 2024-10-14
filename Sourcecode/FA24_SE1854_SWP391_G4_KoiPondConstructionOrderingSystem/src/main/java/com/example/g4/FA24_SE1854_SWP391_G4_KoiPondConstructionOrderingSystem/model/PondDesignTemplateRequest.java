@@ -1,24 +1,19 @@
-package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity;
+package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Data
-@Entity
-public class PondDesignTemplate {
+public class PondDesignTemplateRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "pond_design_template_id")
     Integer id;
-
-//    @Column(name = "construction_type_id", nullable = false)
-//    Integer constructionTypeId;
 
     @Column(name = "min_size", nullable = false)
     float minSize;
@@ -70,31 +65,4 @@ public class PondDesignTemplate {
 
     @Column(name = "note", columnDefinition = "NVARCHAR(255)")
     String note;
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @Column(name = "is_active", columnDefinition = "BIT DEFAULT 1")
-    Boolean isActive = true;
-
-    @Column(name = "create_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createDate = LocalDateTime.now();
-
-    @Column(name = "create_by", columnDefinition = "NVARCHAR(40)")
-    private String createBy;
-
-    @Column(name = "update_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime updateDate;
-
-    @Column(name = "update_by", columnDefinition = "NVARCHAR(40)")
-    private String updateBy;
-
-//    @JsonIgnore
-//    Boolean isDeleted = false;
-
-    @OneToMany(mappedBy = "pondDesignTemplate")
-    @JsonIgnore
-    List<Quotation> quotations;
-
-    @OneToMany(mappedBy = "pondDesignTemplate")
-    @JsonIgnore
-    List<RequestDetail> requestDetails;
 }

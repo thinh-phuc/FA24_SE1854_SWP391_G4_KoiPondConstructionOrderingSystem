@@ -1,13 +1,21 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service;
 
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Request;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.RequestDetail;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.RequestRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateRequestRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.RequestDetailRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.RequestRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.hibernate.usertype.internal.AbstractTimeZoneStorageCompositeUserType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -18,35 +26,54 @@ public class RequestService {
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
+    @Autowired
+    CustomerRepository customerRepository;
+
     //create
     public Request create(RequestRequest requestRequest){
-        Request request = modelMapper.map(requestRequest, Request.class);
+        Customer user = authenticationService.getCurrentUser();
+        requestRequest.setCustomerId(user.getCustomerId());
+
+
+        Request request = new Request();
+        request.setStatus("PENDING");
+        request.setCreateDate(LocalDateTime.now());
+        request.setDescription(requestRequest.getDescription());
+        request.setAddress(requestRequest.getAddress());
+        request.setNote(requestRequest.getNote());
+        request.setCreateBy(user.getName());
+
+
+        Customer customer = customerRepository.findCustomerByCustomerId(requestRequest.getCustomerId());
+        request.setCustomer(customer);
+
         Request newRequest = requestRepository.save(request);
         return newRequest;
     }
 
     //read
     public List<Request> getAllRequests(){
-        List<Request> requests = requestRepository.findRequestsByIsDeletedFalse();
+        List<Request> requests = requestRepository.findRequestsByIsActiveTrue();
         return requests;
     }
 
     //update
-    public Request update(Integer id, Request request){
+    public Request update(Integer id, UpdateRequestRequest updateRequestRequest){
         Request oldRequest = requestRepository.findRequestById(id);
 
         if(oldRequest == null){
             throw new EntityNotFoundException("Request not found!");
         }
 
-        oldRequest.setAddress(request.getAddress());
-        oldRequest.setNote(request.getNote());
-        oldRequest.setIsActive(request.getIsActive());
-        oldRequest.setStatus(request.getStatus());
-        oldRequest.setDescription(request.getDescription());
-        oldRequest.setCustomerId(request.getCustomerId());
-        oldRequest.setIsDeleted(request.getIsDeleted());
-        //set createDate, createBy, updateDate, updateBy
+        oldRequest.setStatus(updateRequestRequest.getStatus());
+        oldRequest.setAddress(updateRequestRequest.getAddress());
+        oldRequest.setDescription(updateRequestRequest.getDescription());
+        oldRequest.setNote(updateRequestRequest.getNote());
+        oldRequest.setUpdateDate(LocalDateTime.now());
+        oldRequest.setUpdateBy(updateRequestRequest.getUpdateBy());
 
         return requestRepository.save(oldRequest);
     }
@@ -59,7 +86,7 @@ public class RequestService {
             throw new EntityNotFoundException("Request not found!");
         }
 
-        oldRequest.setIsDeleted(true);
+        oldRequest.setIsActive(false);
         return requestRepository.save(oldRequest);
     }
 
