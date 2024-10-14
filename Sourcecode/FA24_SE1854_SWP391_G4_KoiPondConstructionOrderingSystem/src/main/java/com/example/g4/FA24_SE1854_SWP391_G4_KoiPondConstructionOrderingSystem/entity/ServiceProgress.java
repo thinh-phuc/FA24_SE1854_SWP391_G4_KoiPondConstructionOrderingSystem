@@ -24,6 +24,8 @@ public class ServiceProgress {
 //    @Column(name = "service_detail_id")
 //    private Integer serviceDetailID;
 
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "service_detail_id")
     ServiceDetail serviceDetail;
@@ -35,7 +37,10 @@ public class ServiceProgress {
     private LocalDateTime endDate;
 
     @Column(name = "step")
-    private Integer step;
+    private String step;
+
+    @Column(name = "is_comfirmed", columnDefinition = "BIT DEFAULT 0")
+    private Boolean isComfirmed = false;
 
     @Column(name = "is_paid", columnDefinition = "BIT DEFAULT 0")
     private Boolean isPaid = false;

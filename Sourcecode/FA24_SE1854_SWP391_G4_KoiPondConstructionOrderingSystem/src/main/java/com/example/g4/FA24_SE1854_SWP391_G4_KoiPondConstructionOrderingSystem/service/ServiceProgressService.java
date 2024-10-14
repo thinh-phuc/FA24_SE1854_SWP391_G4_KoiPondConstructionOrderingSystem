@@ -46,13 +46,15 @@ public class ServiceProgressService {
     }
 
 
-    public ServiceProgress updateServiceProgress(Integer id, ServiceProgressResquest updateServiceProgress) {
+    public ServiceProgress updateServiceProgress(Integer id, ServiceProgressResquest updateServiceProgressRequest) {
         try {
             ServiceProgress oldServiceProgress = serviceProgressRepository.findServiceProgressByServiceProgressID(id);
             if (oldServiceProgress == null)
                 throw new NotFoundException("Not found!");
-            oldServiceProgress.setStep(updateServiceProgress.getStep());
-            oldServiceProgress.setDescription(updateServiceProgress.getDescription());
+            oldServiceProgress.setStep(updateServiceProgressRequest.getStep());
+            oldServiceProgress.setDescription(updateServiceProgressRequest.getDescription());
+            if ("DONE".equalsIgnoreCase(updateServiceProgressRequest.getStep()))
+                oldServiceProgress.setEndDate(LocalDateTime.now());
 
             Customer staff = authenticationService.getCurrentUser();
             oldServiceProgress.setUpdateBy(staff.getName());
@@ -64,6 +66,22 @@ public class ServiceProgressService {
         }
     }
 
+    public ServiceProgress acceptServiceProgress(Integer id) {
+        try {
+            ServiceProgress serviceProgress = serviceProgressRepository.findServiceProgressByServiceProgressID(id);
+            if (serviceProgress == null)
+                throw new NotFoundException("Not found!");
+            serviceProgress.setIsComfirmed(true);
+
+            Customer customer = authenticationService.getCurrentUser();
+            serviceProgress.setUpdateBy(customer.getName());
+
+            ServiceProgress acceptedServiceProgress = serviceProgressRepository.save(serviceProgress);
+            return acceptedServiceProgress;
+        } catch (Exception e) {
+            throw new NotFoundException("Something is wrong!");
+        }
+    }
 
     public ServiceProgress deleteServiceProgress(Integer id) {
         try {
@@ -78,6 +96,10 @@ public class ServiceProgressService {
         }
     }
 
+    public ServiceProgress getServiceProgress(Integer id) {
+        ServiceProgress serviceProgress = serviceProgressRepository.findServiceProgressByServiceProgressID(id);
+        return serviceProgress;
+    }
 
     public List<ServiceProgress> getAllServiceProgress() {
         List<ServiceProgress> serviceProgresses = serviceProgressRepository.findServiceProgressesByIsActiveTrue();

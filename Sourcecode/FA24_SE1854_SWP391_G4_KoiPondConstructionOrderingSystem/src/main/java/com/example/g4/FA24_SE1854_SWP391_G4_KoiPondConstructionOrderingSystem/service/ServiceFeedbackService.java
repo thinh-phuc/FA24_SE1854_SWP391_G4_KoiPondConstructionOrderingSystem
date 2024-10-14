@@ -36,7 +36,10 @@ public class ServiceFeedbackService {
             serviceFeedback.setCustomer(customer);
 
             serviceFeedback.setFeedback(serviceFeedbackRequest.getFeedback());
-            serviceFeedback.setRating(serviceFeedbackRequest.getRating());
+            if (serviceFeedbackRequest.getRating() >= 1 && serviceFeedbackRequest.getRating() <= 5)
+                serviceFeedback.setRating(serviceFeedbackRequest.getRating());
+            else
+                serviceFeedback.setRating(5);
             serviceFeedback.setNote(serviceFeedback.getNote());
 
             Customer staff = authenticationService.getCurrentUser();
@@ -80,6 +83,11 @@ public class ServiceFeedbackService {
         } catch (Exception e) {
             throw new NotFoundException("Something is wrong!");
         }
+    }
+
+    public ServiceFeedback getServiceFeedbackById(Integer id) {
+        ServiceFeedback serviceFeedback = serviceFeedbackRepository.findServiceFeedbackByServiceFeedbackId(id);
+        return serviceFeedback;
     }
 
     public List<ServiceFeedback> getAllServiceFeedback() {

@@ -24,7 +24,7 @@ public class ServicePaymentAPI {
         return ResponseEntity.ok(servicePayment);
     }
 
-    @PutMapping("/api/service-payment/{servicePaymentId}")
+    @PatchMapping("/api/service-payment/{servicePaymentId}")
     public ResponseEntity updateServicePayment(@RequestBody @Valid ServicePaymentRequest servicePaymentRequest, @PathVariable Integer servicePaymentId) {
         ServicePayment servicePayment = servicePaymentService.updateServicePayment(servicePaymentId, servicePaymentRequest);
         return ResponseEntity.ok(servicePayment);
@@ -36,6 +36,11 @@ public class ServicePaymentAPI {
         return ResponseEntity.ok(servicePayment);
     }
 
+    @GetMapping("/api/service-payment/{servicePaymentId}")
+    public ResponseEntity getServicePayment(@PathVariable Integer servicePaymentId) {
+        ServicePayment servicePayment = servicePaymentService.getServicePaymentById(servicePaymentId);
+        return ResponseEntity.ok(servicePayment);
+    }
 
     @GetMapping("/api/service-payment")
     public ResponseEntity getServicePayment() {
