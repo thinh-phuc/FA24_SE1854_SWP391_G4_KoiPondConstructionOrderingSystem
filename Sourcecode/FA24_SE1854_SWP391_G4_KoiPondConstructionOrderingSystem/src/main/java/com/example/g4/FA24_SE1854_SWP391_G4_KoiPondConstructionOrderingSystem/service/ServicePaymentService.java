@@ -37,13 +37,13 @@ public class ServicePaymentService {
 
             servicePayment.setPaymentMethod(servicePaymentRequest.getPaymentMethod());
 
-//            Customer maintenanceStaff = customerRepository.findCustomerByCustomerId(servicePaymentRequest.getMaintenanceStaffID());
-//            servicePayment.setMaintenanceStaff(maintenanceStaff);
+            Customer maintenanceStaff = customerRepository.findCustomerByCustomerId(servicePaymentRequest.getMaintenanceStaffID());
+            servicePayment.setMaintenanceStaff(maintenanceStaff);
 
             ServiceProgress serviceProgress = serviceProgressRepository.findServiceProgressByServiceProgressID(servicePaymentRequest.getServiceProgressID());
             servicePayment.setServiceProgress(serviceProgress);
 
-            servicePayment.setStatus("PROGRESSING");
+            servicePayment.setStatus(servicePayment.getStatus());
 
             Customer staff = authenticationService.getCurrentUser();
             servicePayment.setCreateBy(staff.getName());
