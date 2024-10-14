@@ -25,7 +25,7 @@ public class ServiceFeedbackAPI {
     }
 
 
-    @PutMapping("/api/service-feedback/{serviceFeedbackId}")
+    @PatchMapping("/api/service-feedback/{serviceFeedbackId}")
     public ResponseEntity updateServiceFeedback(@Valid @RequestBody ServiceFeedbackRequest serviceFeedbackRequest, @PathVariable Integer serviceFeedbackId) {
         ServiceFeedback serviceFeedback = serviceFeedbackService.updateServiceFeedback(serviceFeedbackId, serviceFeedbackRequest);
         return ResponseEntity.ok(serviceFeedback);
@@ -34,6 +34,12 @@ public class ServiceFeedbackAPI {
     @DeleteMapping("/api/service-feedback/{serviceFeedbackId}")
     public ResponseEntity deleteServiceFeedback(@PathVariable Integer serviceFeedbackId) {
         ServiceFeedback serviceFeedback = serviceFeedbackService.deleteServiceFeedback(serviceFeedbackId);
+        return ResponseEntity.ok(serviceFeedback);
+    }
+
+    @GetMapping("/api/service-feedback/{serviceFeedbackId}")
+    public ResponseEntity getServiceFeedback(@PathVariable Integer serviceFeedbackId) {
+        ServiceFeedback serviceFeedback = serviceFeedbackService.getServiceFeedbackById(serviceFeedbackId);
         return ResponseEntity.ok(serviceFeedback);
     }
 

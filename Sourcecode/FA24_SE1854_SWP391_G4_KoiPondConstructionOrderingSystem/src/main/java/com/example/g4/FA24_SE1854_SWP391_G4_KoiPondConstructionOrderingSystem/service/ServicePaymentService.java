@@ -62,8 +62,10 @@ public class ServicePaymentService {
                 throw new NotFoundException("Not found!");
 
             oldServicePayment.setPaymentMethod(servicePaymentRequest.getPaymentMethod());
-
             oldServicePayment.setStatus(servicePaymentRequest.getStatus());
+
+            if ("COMPLETED".equalsIgnoreCase(servicePaymentRequest.getStatus()))
+                oldServicePayment.getServiceProgress().setIsPaid(true);
 
             Customer staff = authenticationService.getCurrentUser();
             oldServicePayment.setUpdateBy(staff.getName());
@@ -86,6 +88,11 @@ public class ServicePaymentService {
         } catch (Exception e) {
             throw new NotFoundException("Something is wrong!");
         }
+    }
+
+    public ServicePayment getServicePaymentById(Integer id) {
+        ServicePayment servicePayment = servicePaymentRepository.findServicePaymentByServicePaymentID(id);
+        return servicePayment;
     }
 
     public List<ServicePayment> getAllServicePayment() {
