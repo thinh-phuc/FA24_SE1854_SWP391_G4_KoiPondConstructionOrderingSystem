@@ -24,7 +24,7 @@ public class ServicePaymentAPI {
         return ResponseEntity.ok(servicePayment);
     }
 
-    @PatchMapping("/api/service-payment/{servicePaymentId}")
+    @PutMapping("/api/service-payment/{servicePaymentId}")
     public ResponseEntity updateServicePayment(@RequestBody @Valid ServicePaymentRequest servicePaymentRequest, @PathVariable Integer servicePaymentId) {
         ServicePayment servicePayment = servicePaymentService.updateServicePayment(servicePaymentId, servicePaymentRequest);
         return ResponseEntity.ok(servicePayment);

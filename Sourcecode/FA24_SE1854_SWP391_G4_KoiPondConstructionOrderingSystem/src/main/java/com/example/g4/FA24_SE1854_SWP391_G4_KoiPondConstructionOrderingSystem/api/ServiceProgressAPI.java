@@ -24,14 +24,14 @@ public class ServiceProgressAPI {
     }
 
     //Để cho nhân viên thay đổi trạng thái trong quá trình thi công
-    @PatchMapping("/api/service-progress/{serviceProgressId}")
+    @PutMapping("/api/service-progress/{serviceProgressId}")
     public ResponseEntity updateServiceProgress(@Valid @RequestBody ServiceProgressResquest  serviceProgressResquest, @PathVariable Integer serviceProgressId) {
         ServiceProgress serviceProgress = serviceProgressService.updateServiceProgress(serviceProgressId, serviceProgressResquest);
         return ResponseEntity.ok(serviceProgress);
     }
 
     //Để người dùng nhấn nút xác nhận sau khi mà nhân viên hoàn thành dịch vụ
-    @PatchMapping("/api/acceptance-service-progress/{serviceProgressId}")
+    @PutMapping("/api/acceptance-service-progress/{serviceProgressId}")
     public ResponseEntity updateServiceProgress(@PathVariable Integer serviceProgressId) {
         ServiceProgress serviceProgress = serviceProgressService.acceptServiceProgress(serviceProgressId);
         return ResponseEntity.ok(serviceProgress);

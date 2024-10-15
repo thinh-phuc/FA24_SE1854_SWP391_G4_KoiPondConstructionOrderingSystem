@@ -25,7 +25,7 @@ public class ServiceFeedbackAPI {
     }
 
 
-    @PatchMapping("/api/service-feedback/{serviceFeedbackId}")
+    @PutMapping("/api/service-feedback/{serviceFeedbackId}")
     public ResponseEntity updateServiceFeedback(@Valid @RequestBody ServiceFeedbackRequest serviceFeedbackRequest, @PathVariable Integer serviceFeedbackId) {
         ServiceFeedback serviceFeedback = serviceFeedbackService.updateServiceFeedback(serviceFeedbackId, serviceFeedbackRequest);
         return ResponseEntity.ok(serviceFeedback);
