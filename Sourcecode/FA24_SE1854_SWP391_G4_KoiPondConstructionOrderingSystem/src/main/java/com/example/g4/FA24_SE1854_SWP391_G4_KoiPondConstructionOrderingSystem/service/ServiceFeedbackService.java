@@ -27,9 +27,9 @@ public class ServiceFeedbackService {
 
     public ServiceFeedback createServiceFeedback(ServiceFeedbackRequest serviceFeedbackRequest) {
         try {
-            ServiceFeedback existingFeedback = serviceFeedbackRepository.findByCustomerIdAndServiceDetailId(serviceFeedbackRequest.getCustomerId(), serviceFeedbackRequest.getServiceDetailId());
-            if (existingFeedback != null)
-                throw new IllegalArgumentException("Customer has already submitted feedback for this service.");
+//            ServiceFeedback existingFeedback = serviceFeedbackRepository.findByCustomerIdAndServiceDetailId(serviceFeedbackRequest.getCustomerId(), serviceFeedbackRequest.getServiceDetailId());
+//            if (existingFeedback != null)
+//                throw new IllegalArgumentException("Customer has already submitted feedback for this service.");
 
             ServiceFeedback serviceFeedback = new ServiceFeedback();
 

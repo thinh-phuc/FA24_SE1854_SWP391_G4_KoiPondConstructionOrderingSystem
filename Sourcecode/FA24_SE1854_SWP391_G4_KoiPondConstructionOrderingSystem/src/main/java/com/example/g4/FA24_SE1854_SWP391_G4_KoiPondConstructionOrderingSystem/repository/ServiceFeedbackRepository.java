@@ -8,7 +8,7 @@ import java.util.List;
 public interface ServiceFeedbackRepository extends JpaRepository<ServiceFeedback, Integer> {
     ServiceFeedback findServiceFeedbackByServiceFeedbackId(Integer serviceFeedbackId);
 
-    ServiceFeedback findByCustomerIdAndServiceDetailId(Integer customerId, Integer serviceDetailId);
+//    ServiceFeedback findByCustomerIdAndServiceDetailId(Integer customerId, Integer serviceDetailId);
 
     List<ServiceFeedback> findServiceFeedbacksByIsActiveTrue();
 }
