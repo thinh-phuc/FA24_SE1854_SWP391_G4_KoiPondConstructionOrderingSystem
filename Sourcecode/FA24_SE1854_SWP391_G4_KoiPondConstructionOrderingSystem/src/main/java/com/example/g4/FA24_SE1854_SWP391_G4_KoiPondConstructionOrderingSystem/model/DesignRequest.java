@@ -14,12 +14,10 @@ public class DesignRequest {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "design_id")
     private Integer designId;
-
-    @Column(name = "status", columnDefinition = "NVARCHAR(100)")
-    private String designStatus = "none";
-
-    @Column(name = "design", columnDefinition = "NVARCHAR(500)")
-    private String design = "none";
+    private String designStatus ;
+    private String design ;
+    private Integer designProfileId;
+    private String description;
 
 
 

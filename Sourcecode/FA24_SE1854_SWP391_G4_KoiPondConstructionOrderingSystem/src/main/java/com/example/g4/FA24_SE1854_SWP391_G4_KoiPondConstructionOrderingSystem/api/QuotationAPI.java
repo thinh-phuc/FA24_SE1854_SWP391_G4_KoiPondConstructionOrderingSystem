@@ -2,6 +2,7 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.a
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Quotation;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.QuotationRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.QuotationResponse;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.QuotationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -20,7 +21,7 @@ public class QuotationAPI {
 
     @PostMapping
     public ResponseEntity create (@Valid @RequestBody QuotationRequest quotationRequest) {
-    Quotation newQuotation = quotationService.create(quotationRequest);
+    QuotationResponse newQuotation = quotationService.create(quotationRequest);
     return ResponseEntity.ok(newQuotation);
     }
 
@@ -31,7 +32,7 @@ public class QuotationAPI {
     }
 
     @PutMapping("{quotationId}")
-    public ResponseEntity update ( @PathVariable Integer quotationId,@Valid @RequestBody Quotation quotation ) {
+    public ResponseEntity update ( @PathVariable Integer quotationId,@Valid @RequestBody QuotationRequest quotation ) {
             Quotation updateQuotation = quotationService.update(quotationId,quotation);
              return ResponseEntity.ok(updateQuotation);
     }
