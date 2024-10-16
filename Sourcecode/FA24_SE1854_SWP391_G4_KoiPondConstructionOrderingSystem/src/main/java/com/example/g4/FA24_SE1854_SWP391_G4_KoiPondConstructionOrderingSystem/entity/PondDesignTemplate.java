@@ -15,7 +15,7 @@ public class PondDesignTemplate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "pond_design_template_id")
-    Integer id;
+    Integer pondDesignTemplateId;
 
 //    @Column(name = "construction_type_id", nullable = false)
 //    Integer constructionTypeId;

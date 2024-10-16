@@ -33,7 +33,7 @@ public class RequestDetailAPI {
     }
 
 
-    @GetMapping("/get-requestDetail-by-id/{requestId}")
+    @GetMapping("/get-requestDetail-by-RequestId/{requestId}")
     public ResponseEntity getRequestDetailByRequestId(@PathVariable Integer requestId){
         List<RequestDetail> requestDetails = requestDetailService.getAllRequestDetailsByRequestId(requestId);
         return ResponseEntity.ok(requestDetails);

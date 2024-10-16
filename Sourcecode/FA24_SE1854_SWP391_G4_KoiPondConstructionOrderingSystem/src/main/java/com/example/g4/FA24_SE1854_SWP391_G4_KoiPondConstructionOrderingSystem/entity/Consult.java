@@ -19,11 +19,11 @@ public class Consult {
     @Column(name = "consult_id")
     private Integer id;
 
-    @Column(name = "customer_id")
-    private Integer customerId;
+//    @Column(name = "customer_id")
+//    private Integer customerId;
 
-    @Column(name = "consultant_id")
-    private Integer consultantId;
+//    @Column(name = "consultant_id")
+//    private Integer consultantId;
 
 //    @Column(name = "request_detail_id")
 //    private Integer requestDetailId;
@@ -51,6 +51,8 @@ public class Consult {
     @JoinColumn(name = "request_detail_id")
     RequestDetail requestDetail;
 
-    @ManyToMany(mappedBy = "consults")
+    @ManyToMany
+    @JoinTable(name = "customer_consult", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "consult_id"))
+    //@JsonIgnore
     List<Customer> customers;
 }

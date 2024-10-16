@@ -38,11 +38,21 @@ public class RequestDetailService {
     //create
     public RequestDetail createRequestDetail(RequestDetailRequest requestDetailRequest){
         RequestDetail requestDetail = new RequestDetail();
-        PondDesignTemplate pondDesignTemplate = pondDesignTemplateRepository.findPondDesignTemplateById(requestDetailRequest.getPondDesignTemplateId());
+
         Request request = requestRepository.findRequestById(requestDetailRequest.getRequestId());
-        requestDetail.setPondDesignTemplate(pondDesignTemplate);
+        if(request == null){
+            throw new EntityNotFoundException("Request not found!");
+        }
         requestDetail.setRequest(request);
+
+        PondDesignTemplate pondDesignTemplate = pondDesignTemplateRepository.findPondDesignTemplateByPondDesignTemplateId(requestDetailRequest.getPondDesignTemplateId());
+        if(pondDesignTemplate == null){
+            throw new EntityNotFoundException("Pond Design Template not found!");
+        }
+        requestDetail.setPondDesignTemplate(pondDesignTemplate);
+
         requestDetail.setNote(requestDetailRequest.getNote());
+
         RequestDetail newRequestDetail = requestDetailRepository.save(requestDetail);
         return newRequestDetail;
     }
@@ -65,13 +75,19 @@ public class RequestDetailService {
 
     //update
     public RequestDetail updateRequestDetail(Integer id, RequestDetailRequest requestDetailRequest){
-        RequestDetail oldDetail = requestDetailRepository.findRequestDetailById(id);
+        RequestDetail oldDetail = requestDetailRepository.findRequestDetailByRequestDetailId(id);
 
         if(oldDetail == null){
             throw new EntityNotFoundException("Request Detail Not Found!");
         }
 
         oldDetail.setNote(requestDetailRequest.getNote());
+
+        PondDesignTemplate pondDesignTemplate = pondDesignTemplateRepository.findPondDesignTemplateByPondDesignTemplateId(requestDetailRequest.getPondDesignTemplateId());
+        if(pondDesignTemplate == null){
+            throw new EntityNotFoundException("Pond design template not found!");
+        }
+        oldDetail.setPondDesignTemplate(pondDesignTemplate);
 
         return requestDetailRepository.save(oldDetail);
     }
@@ -86,11 +102,10 @@ public class RequestDetailService {
         oldDetail.setIsDeleted(true);
 
         return requestDetailRepository.save(oldDetail);
-
     }
 
     public RequestDetail getRequestDetailById(Integer id){ //lớp này để check xem có thông tin sẵn trong list ko để update hoặc delete. Mục đích tạo ra lớp này để sau này cần thì gọi ra cho dễ
-        RequestDetail oldRequestDetail = requestDetailRepository.findRequestDetailById(id);
+        RequestDetail oldRequestDetail = requestDetailRepository.findRequestDetailByRequestDetailId(id);
 
         if(oldRequestDetail == null){
             throw new EntityNotFoundException("Request Detail does not exist!");
@@ -100,9 +115,4 @@ public class RequestDetailService {
 
         return oldRequestDetail;
     }
-
-//    public List<PondDesignTemplate> getAllPondDesignTemplates(){
-//        List<PondDesignTemplate> pondDesignTemplates = pondDesignTemplateRepository.findTemplatesByIsActiveTrue();
-//        return pondDesignTemplates;
-//    }
 }

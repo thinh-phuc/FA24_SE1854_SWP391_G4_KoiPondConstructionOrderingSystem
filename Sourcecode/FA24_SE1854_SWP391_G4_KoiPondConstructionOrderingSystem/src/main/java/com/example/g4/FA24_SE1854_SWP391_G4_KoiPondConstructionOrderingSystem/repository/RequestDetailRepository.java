@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RequestDetailRepository extends JpaRepository<RequestDetail, Integer> {
-    RequestDetail findRequestDetailById(Integer id);
+    RequestDetail findRequestDetailByRequestDetailId(Integer id);
 
 
     List<RequestDetail> findRequestDetailsByIsDeletedFalse();

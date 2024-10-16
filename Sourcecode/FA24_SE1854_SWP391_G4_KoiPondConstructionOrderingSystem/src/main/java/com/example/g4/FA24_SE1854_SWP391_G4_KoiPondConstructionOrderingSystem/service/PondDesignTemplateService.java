@@ -43,7 +43,7 @@ public class PondDesignTemplateService {
 
     //update
     public PondDesignTemplate updateTemplate(Integer id, PondDesignTemplate pondDesignTemplate){
-        PondDesignTemplate oldPondDesignTemplate = pondDesignTemplateRepository.findPondDesignTemplateById(id);
+        PondDesignTemplate oldPondDesignTemplate = pondDesignTemplateRepository.findPondDesignTemplateByPondDesignTemplateId(id);
 
         if(oldPondDesignTemplate == null){
             throw new EntityNotFoundException("Pond Design Template does not exist!");
@@ -89,7 +89,7 @@ public class PondDesignTemplateService {
 
 
     public PondDesignTemplate getPondDesignTemplateById(Integer id){ //lớp này để check xem có thông tin sẵn trong list ko để update hoặc delete. Mục đích tạo ra lớp này để sau này cần thì gọi ra cho dễ
-        PondDesignTemplate oldPondDesignTemplate = pondDesignTemplateRepository.findPondDesignTemplateById(id);
+        PondDesignTemplate oldPondDesignTemplate = pondDesignTemplateRepository.findPondDesignTemplateByPondDesignTemplateId(id);
 
         if(oldPondDesignTemplate == null){
             throw new EntityNotFoundException("Pond Design Template does not exist!");

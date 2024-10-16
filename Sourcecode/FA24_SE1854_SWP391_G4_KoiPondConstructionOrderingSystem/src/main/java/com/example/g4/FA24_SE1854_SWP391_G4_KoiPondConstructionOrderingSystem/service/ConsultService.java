@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,23 +33,29 @@ public class ConsultService {
     @Autowired
     CustomerRepository customerRepository;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
     //create
     public Consult createConsult(ConsultRequest consultRequest){
         Consult consult = new Consult();
 
-        consult.setConsultantId(consultRequest.getConsultantId());
-
-        Customer customer = customerRepository.findCustomerByCustomerId(consultRequest.getCustomerId());
-        if(customer == null){
-            throw new EntityNotFoundException("Customer ID not found!");
-        }
-        consult.setCustomerId(consultRequest.getCustomerId());
         consult.setCreateDate(LocalDateTime.now());
         consult.setDescription(consultRequest.getDescription());
         consult.setConsultDate(LocalDateTime.now());
         consult.setIsCustomerConfirm(false);
 
-        RequestDetail requestDetail = requestDetailRepository.findRequestDetailById(consultRequest.getRequestDetailId());
+        List<Customer> customers = new ArrayList<>();
+        Customer staff = authenticationService.getCurrentUser();
+        customers.add(staff);
+        Customer customer1 = customerRepository.findCustomerByCustomerId(consultRequest.getCustomerId());
+        if(customer1 == null){
+            throw new EntityNotFoundException("Customer's ID not found!");
+        }
+        customers.add(customer1);
+        consult.setCustomers(customers);
+
+        RequestDetail requestDetail = requestDetailRepository.findRequestDetailByRequestDetailId(consultRequest.getRequestDetailId());
         if(requestDetail == null){
             throw new EntityNotFoundException("Request Detail not found!");
         }
@@ -71,21 +78,22 @@ public class ConsultService {
         if(oldConsult == null){
             throw new EntityNotFoundException("Consult Not Found!");
         }
-
-        Customer customer = customerRepository.findCustomerByCustomerId(consultRequest.getCustomerId());
-        if(customer == null){
-            throw new EntityNotFoundException("Customer ID not found!");
+//-------Update customer's ID-------
+        List<Customer> customers = new ArrayList<>();
+        Customer staff = authenticationService.getCurrentUser();
+        customers.add(staff);
+        Customer customer1 = customerRepository.findCustomerByCustomerId(consultRequest.getCustomerId());
+        if(customer1 == null){
+            throw new EntityNotFoundException("Customer's ID not found!");
         }
-        oldConsult.setCustomerId(consultRequest.getCustomerId());
-
-        oldConsult.setConsultantId(consultRequest.getConsultantId());
-        //oldConsult.setRequestDetailId(consult.getRequestDetailId());
+        customers.add(customer1);
+        oldConsult.setCustomers(customers);
+//-----------------------------------
         oldConsult.setDescription(consultRequest.getDescription());
-        //oldConsult.setCreateDate(consult.getCreateDate());
         oldConsult.setConsultDate(consultRequest.getConsultDate());
         oldConsult.setIsCustomerConfirm(consultRequest.getIsCustomerConfirm());
 
-        RequestDetail requestDetail = requestDetailRepository.findRequestDetailById(consultRequest.getRequestDetailId());
+        RequestDetail requestDetail = requestDetailRepository.findRequestDetailByRequestDetailId(consultRequest.getRequestDetailId());
         if(requestDetail == null){
             throw new EntityNotFoundException("Request Detail not found!");
         }
@@ -118,6 +126,4 @@ public class ConsultService {
 
         return oldConsult;
     }
-
-
 }

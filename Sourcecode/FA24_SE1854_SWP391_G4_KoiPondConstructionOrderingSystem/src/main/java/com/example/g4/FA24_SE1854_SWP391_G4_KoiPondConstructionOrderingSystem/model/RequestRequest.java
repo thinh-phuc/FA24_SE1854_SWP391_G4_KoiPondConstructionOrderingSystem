@@ -15,7 +15,7 @@ public class RequestRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "request_id")
-    Integer id;
+    Integer requestId;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "customer_id", nullable = false)
@@ -30,6 +30,7 @@ public class RequestRequest {
     @Column(name = "note", columnDefinition = "NVARCHAR(255)")
     String note;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "create_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createDate = LocalDateTime.now();
 

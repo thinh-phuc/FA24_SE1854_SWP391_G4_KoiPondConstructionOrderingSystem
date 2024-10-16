@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface PondDesignTemplateRepository extends JpaRepository<PondDesignTemplate, Integer> {
-    PondDesignTemplate findPondDesignTemplateById(Integer id);
+    PondDesignTemplate findPondDesignTemplateByPondDesignTemplateId(Integer id);
 
     List<PondDesignTemplate> findPondDesignTemplatesByIsActiveTrue();
 

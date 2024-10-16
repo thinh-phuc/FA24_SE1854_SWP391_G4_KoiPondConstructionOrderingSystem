@@ -20,8 +20,8 @@ public class ConsultRequest {
     @Column(name = "customer_id")
     private Integer customerId;
 
-    @Column(name = "consultant_id")
-    private Integer consultantId;
+//    @Column(name = "consultant_id")
+//    private Integer consultantId;
 
     @Column(name = "description")
     private String description;
