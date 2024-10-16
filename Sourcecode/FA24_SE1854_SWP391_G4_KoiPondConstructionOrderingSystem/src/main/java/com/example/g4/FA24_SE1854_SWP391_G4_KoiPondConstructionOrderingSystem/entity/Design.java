@@ -20,8 +20,7 @@ public class Design {
     @Column(name = "design_id")
     private Integer designId;
 
-//    @Column(name = "design_profile_id")
-//    private int designProfileId;
+
 
     @Column(name = "status", columnDefinition = "NVARCHAR(100)")
     private String designStatus = "none";
@@ -29,10 +28,7 @@ public class Design {
     @Column(name = "design", columnDefinition = "NVARCHAR(500)")
     private String design = "none";
 
-//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-//    @Column(name = "is_delete", columnDefinition = "BIT DEFAULT 0")
-//   // @NotBlank(message = "isDelete must not be blank")
-//    private Boolean isDelete = false;
+
      @Column(name = "is_active", columnDefinition = "BIT DEFAULT 1")
      private Boolean isActive = true;
 

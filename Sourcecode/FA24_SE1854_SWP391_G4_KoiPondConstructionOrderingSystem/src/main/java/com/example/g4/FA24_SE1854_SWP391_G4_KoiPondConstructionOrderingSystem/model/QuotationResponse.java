@@ -1,18 +1,16 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class QuotationRequest {
+public class QuotationResponse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -25,5 +23,8 @@ public class QuotationRequest {
     private float mainCost = 0.0f;
     private float subCost = 0.0f;
     private float VAT = 0.0f;
-
+    private float total = 0.0f;
+    private Boolean isActive = true;
+    private LocalDateTime createDate = LocalDateTime.now();
+    private String createBy ;
 }

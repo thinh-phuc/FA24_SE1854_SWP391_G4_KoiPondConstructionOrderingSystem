@@ -30,7 +30,7 @@ public class DesignProfileAPI {
     }
 
     @PutMapping("{designProfileId}")
-    public ResponseEntity update ( @PathVariable Integer designProfileId,@Valid @RequestBody DesignProfile designProfile ) {
+    public ResponseEntity update ( @PathVariable Integer designProfileId,@Valid @RequestBody DesignProfileRequest designProfile ) {
         DesignProfile updateDesignProfile = designProfileService.update(designProfileId,designProfile);
         return ResponseEntity.ok(updateDesignProfile);
     }

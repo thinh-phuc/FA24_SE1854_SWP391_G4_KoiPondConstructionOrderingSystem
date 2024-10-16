@@ -22,21 +22,6 @@ public class DesignProfile {
     @Column(name = "design_profile_id")
     private Integer designProfileId;
 
-//    @Column(name = "consult_id")
-//    private int consultId;
-//
-//    @Column(name = "quotation_id")
-//    private int quotationId;
-
-//    @Column(name = "customer_id")
-//    private int customerId;
-
-//    @Column(name = "designer_id")
-//    private int designerId;
-//
-//    @Column(name = "constructor_id")
-//    private int constructorId;
-
     @Column(name = "address", columnDefinition = "NVARCHAR(150)")
     private String address = "none";
 
@@ -63,11 +48,6 @@ public class DesignProfile {
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
 
-//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-//    // @NotBlank(message = "isDelete must be  not blank")
-//    @Column(name = "is_delete", columnDefinition = "BIT DEFAULT 0")
-//    private Boolean isDelete = false;
-
     @OneToMany(mappedBy = "designProfile")
     @JsonIgnore
     List<ConstructionHistory> constructionHistories;
@@ -80,19 +60,12 @@ public class DesignProfile {
     @JsonIgnore
     List<Design> designs;
 
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name = "customer_id")
-//    Customer customer;
-
     @ManyToMany
     @JoinTable(name = "customer_design_profile", joinColumns = @JoinColumn(name = "design_profile_id"), inverseJoinColumns = @JoinColumn(name = "customer_id"))
-    @JsonIgnore
     List<Customer> customers;
 
     @ManyToOne
     @JoinColumn(name = "quotation_id")
-    @JsonIgnore
     Quotation quotation;
 
 }

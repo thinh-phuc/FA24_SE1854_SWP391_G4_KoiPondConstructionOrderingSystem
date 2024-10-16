@@ -33,9 +33,9 @@ public class ManagerAPI {
         CustomerResponse staff=authenticationService.addStaff(addStaffRequest);
         return ResponseEntity.ok(staff);
     }
-//    @PutMapping("/api/manager/{designProfileId}")
-//    public ResponseEntity assignStaff(@PathVariable Integer designProfileId, @RequestBody List<Integer> customers ){
-//        DesignProfile designProfile = designProfileService.assignCustomersToDesignProfile(designProfileId,customers);
-//        return ResponseEntity.ok(designProfile);
-//    }
+    @PutMapping("/api/manager/{designProfileId}")
+    public ResponseEntity assignStaff(@PathVariable Integer designProfileId, @RequestBody List<Integer> customers ){
+        DesignProfile designProfile = designProfileService.assignCustomersToDesignProfile(designProfileId,customers);
+        return ResponseEntity.ok(designProfile);
+    }
 }

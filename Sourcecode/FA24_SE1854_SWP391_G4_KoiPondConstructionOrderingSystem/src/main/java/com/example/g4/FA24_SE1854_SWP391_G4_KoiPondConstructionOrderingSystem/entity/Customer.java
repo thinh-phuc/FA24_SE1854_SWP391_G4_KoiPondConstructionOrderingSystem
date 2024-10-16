@@ -99,6 +99,7 @@ public class Customer implements UserDetails {
     }
 
     @Override
+
     public String getUsername() {
         return this.email;
     }

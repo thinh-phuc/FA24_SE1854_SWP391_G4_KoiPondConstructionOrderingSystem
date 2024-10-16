@@ -52,6 +52,8 @@ public class Consult {
     @JsonIgnore
     RequestDetail requestDetail;
 
+
     @ManyToMany(mappedBy = "consults")
+            @JsonIgnore
     List<Customer> customers;
 }

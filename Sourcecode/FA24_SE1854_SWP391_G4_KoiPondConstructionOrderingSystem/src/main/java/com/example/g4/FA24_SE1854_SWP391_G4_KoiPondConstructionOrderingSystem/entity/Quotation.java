@@ -21,14 +21,7 @@ public class Quotation {
     @Column(name = "quotation_id")
     private Integer quotationId;
 
-//    @Column(name = "customer_id")
-//    private int customerId;
 
-//    @Column(name = "pond_design_template_id")
-//    private int pondDesignTemplateId;
-//
-//    @Column(name = "consult_id")
-//    private int consultId;
 
     @Column(name = "is_confirm", columnDefinition = "BIT DEFAULT 0")
     private Boolean isConfirm = false;
@@ -54,10 +47,6 @@ public class Quotation {
     @Min(value = 1, message = "TotalCost must be more than 0")
     private float totalCost = 0.0f;
 
-
-
-
-
     @Column(name = "is_active", columnDefinition = "BIT DEFAULT 1")
     private Boolean isActive = true;
 
@@ -73,13 +62,8 @@ public class Quotation {
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
 
-//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-//   // @NotBlank(message = "isDelete must be  not blank")
-//    @Column(name = "is_delete", columnDefinition = "BIT DEFAULT 0")
-//    private Boolean isDelete = false;
-
-     @JsonIgnore
     @ManyToOne
+
     @JoinColumn(name = "customer_id")
     Customer customer;
 
@@ -87,7 +71,7 @@ public class Quotation {
     @JoinColumn(name = "pond_design_template_id")
     PondDesignTemplate pondDesignTemplate;
 
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "consult_id")
     Consult consult;

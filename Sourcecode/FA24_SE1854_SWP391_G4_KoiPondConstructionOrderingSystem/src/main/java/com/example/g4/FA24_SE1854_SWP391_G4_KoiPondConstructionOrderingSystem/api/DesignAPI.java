@@ -44,10 +44,10 @@ public class DesignAPI {
         return ResponseEntity.ok(designList);
 
     }
-
-//    @PutMapping("/finish-design/{designId}")
-//    public ResponseEntity finishDesign(@PathVariable Integer designId) {
-//        Design design = designService.finishDesign(designId);
-//        return ResponseEntity.ok(design);
-//    }
+    // moi lam
+    @PutMapping("/finish-design/{designId}")
+    public ResponseEntity finishDesign(@PathVariable Integer designId) {
+        Design design = designService.finishDesign(designId);
+        return ResponseEntity.ok(design);
+    }
 }

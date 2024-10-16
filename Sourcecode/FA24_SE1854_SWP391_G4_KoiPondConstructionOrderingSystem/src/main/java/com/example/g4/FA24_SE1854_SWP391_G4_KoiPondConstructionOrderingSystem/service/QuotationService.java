@@ -1,11 +1,12 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service;
 
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Design;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.DesignProfile;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Quotation;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.*;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.QuotationRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.QuotationResponse;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ConsultRepository;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.PondDesignTemplateRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.QuotationRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,18 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class QuotationService {
     @Autowired
     QuotationRepository quotationRepository;
-
+    @Autowired
+    CustomerRepository customerRepository;
+    @Autowired
+    PondDesignTemplateRepository pondDesignTemplateRepository;
+    @Autowired
+    ConsultRepository consultRepository;
     @Autowired
     ModelMapper modelMapper;
     @Autowired
@@ -31,33 +38,69 @@ public class QuotationService {
                 }
                 return oldQuotation;
             }
+            // moi lam
+    public QuotationResponse toResponse(Quotation quotation) {
+        QuotationResponse response = new QuotationResponse();
+        response.setQuotationId(quotation.getQuotationId());
+        response.setIsConfirm(quotation.getIsConfirm());
+        response.setDescription(quotation.getDescription());
+        response.setMainCost(quotation.getMainCost());
+        response.setSubCost(quotation.getSubCost());
+        response.setVAT(quotation.getVAT());
+        response.setTotal(quotation.getTotalCost());
+        response.setIsActive(quotation.getIsActive());
+        response.setCreateDate(quotation.getCreateDate());
+        response.setConsultId(quotation.getConsult().getId());
+        response.setCustomerId(quotation.getCustomer().getCustomerId());
+        response.setPondDesignTemplateId(quotation.getPondDesignTemplate().getId());
+        return response;
+    }
+            // moi lam
+            public QuotationResponse  create (QuotationRequest quotationRequest){
 
-            public Quotation create (QuotationRequest quotationRequest){
-                Quotation quotation = modelMapper.map(quotationRequest,Quotation
-                        .class);
+                Customer customer = customerRepository.findCustomerByCustomerId(quotationRequest.getCustomerId());
+                if(customer == null){
+                    throw  new NotFoundException("Customer not found with ");
+                }
+                PondDesignTemplate pondDesignTemplate = pondDesignTemplateRepository.findTemplateById(quotationRequest.getPondDesignTemplateId());
+                if(pondDesignTemplate == null){
+                    throw new NotFoundException("Pond design template not found");
+                }
+                Consult consult = consultRepository.findConsultById(quotationRequest.getConsultId());
+                if (consult == null){
+                    throw new NotFoundException("consult not found");
+                }
+                Quotation quotation = new Quotation();
                 Customer staff = authenticationService.getCurrentUser();
+                quotation.setCreateBy(staff.getName());
+                quotation.setCreateDate(LocalDateTime.now());
+                quotation.setVAT(quotationRequest.getVAT());
+                quotation.setMainCost(quotationRequest.getMainCost());
+                quotation.setSubCost(quotationRequest.getSubCost());
+                quotation.setTotalCost((quotation.getMainCost()+ quotation.getSubCost())+(quotation.getMainCost()+ quotation.getSubCost())*quotation.getVAT()/100);
+                quotation.setIsActive(true);
+                quotation.setDescription(quotationRequest.getDescription());
+                quotation.setConsult(consult);
+                quotation.setPondDesignTemplate(pondDesignTemplate);
+                quotation.setCustomer(customer);
+                quotation.setIsConfirm(false);
                 quotation.setUpdateDate(null);
                 quotation.setUpdateBy(null);
-                quotation.setIsConfirm(false);
-                quotation.setCreateBy(staff.getName());
-
-
                 Quotation newQuotation = quotationRepository.save(quotation);
-                return  newQuotation;
+                return toResponse(newQuotation);
 
             }
-
-            public Quotation update (Integer id,Quotation quotation){
+            //moi lam
+            public Quotation update (Integer id,QuotationRequest quotationRequest){
                 Customer staff = authenticationService.getCurrentUser();
                 Quotation oldQuotation = getQuotationById(id);
-                oldQuotation.setDescription(quotation.getDescription());
-                oldQuotation.setMainCost(quotation.getMainCost());
-                oldQuotation.setSubCost(quotation.getSubCost());
-                oldQuotation.setVAT(quotation.getVAT());
+                oldQuotation.setDescription(quotationRequest.getDescription());
+                oldQuotation.setMainCost(quotationRequest.getMainCost());
+                oldQuotation.setSubCost(quotationRequest.getSubCost());
+                oldQuotation.setVAT(quotationRequest.getVAT());
                 oldQuotation.setUpdateDate(LocalDateTime.now());
-
                 oldQuotation.setUpdateBy(staff.getName());
-
+                oldQuotation.setTotalCost((oldQuotation.getMainCost()+ oldQuotation.getSubCost())+(oldQuotation.getMainCost()+ oldQuotation.getSubCost())*oldQuotation.getVAT()/100);
                 return quotationRepository.save(oldQuotation);
 
             }
