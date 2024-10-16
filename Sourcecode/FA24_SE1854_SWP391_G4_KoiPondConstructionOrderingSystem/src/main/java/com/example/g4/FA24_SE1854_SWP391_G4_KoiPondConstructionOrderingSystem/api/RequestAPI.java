@@ -2,6 +2,7 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.a
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Request;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.RequestRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateRequestRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.RequestService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin(origins = "*")
 @SecurityRequirement(name="api")
 @RestController
 @RequestMapping("/api/request")
@@ -26,14 +26,20 @@ public class RequestAPI {
     }
 
     @GetMapping
-    public ResponseEntity getAllRequest(){
+    public ResponseEntity getListRequest(){
         List<Request> requests = requestService.getAllRequests();
         return ResponseEntity.ok(requests);
     }
 
+    @GetMapping("/get-Request-by-id/{requestId}")
+    public ResponseEntity getRequestByRequestId(@PathVariable Integer requestId){
+        Request request = requestService.getRequestById(requestId);
+        return ResponseEntity.ok(request);
+    }
+
     @PutMapping("{requestId}")
-    public ResponseEntity update(@PathVariable Integer requestId, @Valid @RequestBody Request request){
-        Request updatedRequest = requestService.update(requestId, request);
+    public ResponseEntity update(@PathVariable Integer requestId, @Valid @RequestBody UpdateRequestRequest updateRequestRequest){
+        Request updatedRequest = requestService.update(requestId, updateRequestRequest);
         return ResponseEntity.ok(updatedRequest);
     }
 

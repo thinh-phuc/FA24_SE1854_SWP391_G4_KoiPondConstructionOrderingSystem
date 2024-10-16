@@ -1,6 +1,7 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.api;
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Consult;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ConsultRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.ConsultService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -9,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin(origins = "*")
 @SecurityRequirement(name="api")
 @RestController
 @RequestMapping("/api/consult")
@@ -19,8 +19,8 @@ public class ConsultAPI {
     ConsultService consultService;
 
     @PostMapping
-    public ResponseEntity create(@Valid @RequestBody Consult consult){
-        Consult newConsult = consultService.createConsult(consult);
+    public ResponseEntity create(@Valid @RequestBody ConsultRequest consultRequest){
+        Consult newConsult = consultService.createConsult(consultRequest);
         return ResponseEntity.ok(newConsult);
     }
 
@@ -31,8 +31,8 @@ public class ConsultAPI {
     }
 
     @PutMapping("{consultId}")
-    public ResponseEntity update(@PathVariable Integer consultId, @Valid @RequestBody Consult consult){
-        Consult updatedConsult = consultService.updateConsult(consultId, consult);
+    public ResponseEntity update(@PathVariable Integer consultId, @Valid @RequestBody ConsultRequest consultRequest){
+        Consult updatedConsult = consultService.updateConsult(consultId, consultRequest);
         return ResponseEntity.ok(updatedConsult);
     }
 

@@ -15,7 +15,7 @@ public class RequestDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "request_detail_id")
-    private Integer id;
+    private Integer requestDetailId;
 
 //    @Column(name = "pond_design_template_id")
 //    private Integer pondDesignTemplateId;
@@ -31,12 +31,10 @@ public class RequestDetail {
 
     @ManyToOne
     @JoinColumn(name = "request_id")
-    @JsonIgnore
     Request request;
 
     @ManyToOne
     @JoinColumn(name = "pond_design_template_id")
-    @JsonIgnore
     PondDesignTemplate pondDesignTemplate;
 
     @OneToMany(mappedBy = "requestDetail")

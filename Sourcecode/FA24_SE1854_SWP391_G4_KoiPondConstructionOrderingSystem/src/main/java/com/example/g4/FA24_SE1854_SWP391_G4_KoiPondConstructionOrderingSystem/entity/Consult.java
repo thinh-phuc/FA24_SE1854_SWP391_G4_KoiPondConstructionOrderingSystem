@@ -19,11 +19,11 @@ public class Consult {
     @Column(name = "consult_id")
     private Integer id;
 
-    @Column(name = "customer_id")
-    private Integer customerId;
+//    @Column(name = "customer_id")
+//    private Integer customerId;
 
-    @Column(name = "consultant_id")
-    private Integer consultantId;
+//    @Column(name = "consultant_id")
+//    private Integer consultantId;
 
 //    @Column(name = "request_detail_id")
 //    private Integer requestDetailId;
@@ -38,7 +38,7 @@ public class Consult {
     private LocalDateTime createDate = LocalDateTime.now();
 
     @Column(name = "is_customer_confirm")
-    private Boolean isCustomerConfirm;
+    private Boolean isCustomerConfirm = false;
 
     @JsonIgnore
     Boolean isDeleted = false;
@@ -49,11 +49,10 @@ public class Consult {
 
     @ManyToOne
     @JoinColumn(name = "request_detail_id")
-    @JsonIgnore
     RequestDetail requestDetail;
 
-
-    @ManyToMany(mappedBy = "consults")
-            @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "customer_consult", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "consult_id"))
+    //@JsonIgnore
     List<Customer> customers;
 }
