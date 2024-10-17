@@ -52,7 +52,7 @@ public class QuotationService {
         response.setCreateDate(quotation.getCreateDate());
         response.setConsultId(quotation.getConsult().getId());
         response.setCustomerId(quotation.getCustomer().getCustomerId());
-        response.setPondDesignTemplateId(quotation.getPondDesignTemplate().getId());
+        response.setPondDesignTemplateId(quotation.getPondDesignTemplate().getPondDesignTemplateId());
         return response;
     }
             // moi lam
@@ -62,7 +62,7 @@ public class QuotationService {
                 if(customer == null){
                     throw  new NotFoundException("Customer not found with ");
                 }
-                PondDesignTemplate pondDesignTemplate = pondDesignTemplateRepository.findTemplateById(quotationRequest.getPondDesignTemplateId());
+                PondDesignTemplate pondDesignTemplate = pondDesignTemplateRepository.findPondDesignTemplateByPondDesignTemplateId(quotationRequest.getPondDesignTemplateId());
                 if(pondDesignTemplate == null){
                     throw new NotFoundException("Pond design template not found");
                 }

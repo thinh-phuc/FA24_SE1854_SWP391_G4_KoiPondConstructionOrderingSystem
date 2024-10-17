@@ -7,30 +7,35 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class RequestRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "request_id")
-    Integer id;
+    Integer requestId;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "customer_id", nullable = false)
     Integer customerId;
 
-    @Column(name = "status", length = 20)
-    String status = "Pending";
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @Column(name = "is_active", columnDefinition = "BIT DEFAULT 1")
-    Boolean isActive = true;
-
     @Column(name = "description", columnDefinition = "NVARCHAR(500)")
-    String description = "none";
+    String description;
 
     @Column(name = "address", columnDefinition = "NVARCHAR(255)")
     String address;
 
     @Column(name = "note", columnDefinition = "NVARCHAR(255)")
-    String note = "none";
+    String note;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "create_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createDate = LocalDateTime.now();
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "create_by", columnDefinition = "NVARCHAR(40)")
+    private String createBy;
+
 }

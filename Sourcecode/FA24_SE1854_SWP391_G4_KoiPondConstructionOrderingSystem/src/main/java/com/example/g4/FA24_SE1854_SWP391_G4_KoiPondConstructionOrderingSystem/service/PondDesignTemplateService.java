@@ -1,12 +1,16 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service;
 
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.PondDesignTemplate;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Request;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.PondDesignTemplateRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.PondDesignTemplateRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -15,27 +19,36 @@ public class PondDesignTemplateService {
     @Autowired
     PondDesignTemplateRepository pondDesignTemplateRepository;
 
+    @Autowired
+    ModelMapper modelMapper;
+
+    @Autowired
+    AuthenticationService authenticationService;
+
     //create
-    public PondDesignTemplate createTemplate(PondDesignTemplate pondDesignTemplate){
+    public PondDesignTemplate createTemplate(PondDesignTemplateRequest pondDesignTemplateRequest){
+        PondDesignTemplate pondDesignTemplate = modelMapper.map(pondDesignTemplateRequest, PondDesignTemplate.class);
+
+        Customer user = authenticationService.getCurrentUser();
+        pondDesignTemplate.setCreateBy(user.getName());
         PondDesignTemplate newPond = pondDesignTemplateRepository.save(pondDesignTemplate);
         return newPond;
     }
 
     //read
     public List<PondDesignTemplate> getAllTemplates(){
-        List<PondDesignTemplate> templates = pondDesignTemplateRepository.findTemplatesByIsDeletedFalse();
+        List<PondDesignTemplate> templates = pondDesignTemplateRepository.findPondDesignTemplatesByIsActiveTrue();
         return templates;
     }
 
     //update
     public PondDesignTemplate updateTemplate(Integer id, PondDesignTemplate pondDesignTemplate){
-        PondDesignTemplate oldPondDesignTemplate = pondDesignTemplateRepository.findTemplateById(id);
+        PondDesignTemplate oldPondDesignTemplate = pondDesignTemplateRepository.findPondDesignTemplateByPondDesignTemplateId(id);
 
         if(oldPondDesignTemplate == null){
-            throw new EntityNotFoundException("Template does not exist!");
+            throw new EntityNotFoundException("Pond Design Template does not exist!");
         }
 
-        oldPondDesignTemplate.setConstructionTypeId(pondDesignTemplate.getConstructionTypeId());
         oldPondDesignTemplate.setMinSize(pondDesignTemplate.getMinSize());
         oldPondDesignTemplate.setMaxSize(pondDesignTemplate.getMaxSize());
         oldPondDesignTemplate.setWaterVolume(pondDesignTemplate.getWaterVolume());
@@ -53,30 +66,33 @@ public class PondDesignTemplateService {
         oldPondDesignTemplate.setImageUrl(pondDesignTemplate.getImageUrl());
         oldPondDesignTemplate.setDescription(pondDesignTemplate.getDescription());
         oldPondDesignTemplate.setNote(pondDesignTemplate.getNote());
-        oldPondDesignTemplate.setIsActive(pondDesignTemplate.getIsActive());
-        oldPondDesignTemplate.setIsDeleted(pondDesignTemplate.getIsDeleted());
+        //oldPondDesignTemplate.setIsActive(pondDesignTemplate.getIsActive());
+        //oldPondDesignTemplate.setIsDeleted(pondDesignTemplate.getIsDeleted());
+        oldPondDesignTemplate.setUpdateDate(LocalDateTime.now());
+        oldPondDesignTemplate.setCreateBy(pondDesignTemplate.getCreateBy());
+        oldPondDesignTemplate.setUpdateBy(pondDesignTemplate.getUpdateBy());
 
         return pondDesignTemplateRepository.save(oldPondDesignTemplate);
     }
 
     //delete
     public PondDesignTemplate delete(Integer id){
-        PondDesignTemplate oldPondDesignTemplate = getTemplateById(id);
+        PondDesignTemplate oldPondDesignTemplate = getPondDesignTemplateById(id);
         if(oldPondDesignTemplate == null){
             throw new EntityNotFoundException("Template does not exist!");
         }
 
-        oldPondDesignTemplate.setIsDeleted(true);
+        oldPondDesignTemplate.setIsActive(false);
 
         return pondDesignTemplateRepository.save(oldPondDesignTemplate);
     }
 
 
-    public PondDesignTemplate getTemplateById(Integer id){ //lớp này để check xem có thông tin sẵn trong list ko để update hoặc delete. Mục đích tạo ra lớp này để sau này cần thì gọi ra cho dễ
-        PondDesignTemplate oldPondDesignTemplate = pondDesignTemplateRepository.findTemplateById(id);
+    public PondDesignTemplate getPondDesignTemplateById(Integer id){ //lớp này để check xem có thông tin sẵn trong list ko để update hoặc delete. Mục đích tạo ra lớp này để sau này cần thì gọi ra cho dễ
+        PondDesignTemplate oldPondDesignTemplate = pondDesignTemplateRepository.findPondDesignTemplateByPondDesignTemplateId(id);
 
         if(oldPondDesignTemplate == null){
-            throw new EntityNotFoundException("Template does not exist!");
+            throw new EntityNotFoundException("Pond Design Template does not exist!");
         }
         // if user.status == "BLOCK" => throw new EntityNotFoundException("Koi not found!");
         // nếu thông tin của user nào bị BLOCK thì quăng ra lỗi (throw new...) vì bị BLOCK rồi thì sẽ ko update hoặc delete được
