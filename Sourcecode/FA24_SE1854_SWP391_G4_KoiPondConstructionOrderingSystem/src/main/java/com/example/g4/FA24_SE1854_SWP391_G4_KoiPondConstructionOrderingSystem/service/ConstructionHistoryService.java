@@ -102,6 +102,9 @@ public class ConstructionHistoryService {
     public AcceptanceDocument createAcceptanceDocument(AcceptanceRequest acceptanceRequest) {
         try {
             DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileId(acceptanceRequest.getDesignProfileId());
+            if(designProfile==null){
+                throw new NotFoundException("No design profile found!");
+            }
             AcceptanceDocument existing = acceptanceDocumentRepository.findAcceptanceDocumentByDesignProfile(designProfile);
             if (existing != null) {
                 throw new DuplicateException("This profile already has an acceptance document!");
