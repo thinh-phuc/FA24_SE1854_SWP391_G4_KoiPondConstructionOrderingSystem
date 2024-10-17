@@ -31,6 +31,12 @@ public class PondDesignTemplateAPI {
         return ResponseEntity.ok(pondDesignTemplates);
     }
 
+    @GetMapping("/get-PondDesignTemplate-by-id/{pondDesignTemplateId}")
+    public ResponseEntity getPondDesignTemplatesById(@PathVariable Integer pondDesignTemplateId){
+        PondDesignTemplate pondDesignTemplate = pondDesignTemplateService.getPondDesignTemplateById(pondDesignTemplateId);
+        return ResponseEntity.ok(pondDesignTemplate);
+    }
+
     @PutMapping("{pondDesignTemplateId}")
     public ResponseEntity update(@PathVariable Integer pondDesignTemplateId, @Valid @RequestBody PondDesignTemplate pondDesignTemplate){
         PondDesignTemplate updatedTemplate = pondDesignTemplateService.updateTemplate(pondDesignTemplateId, pondDesignTemplate);
