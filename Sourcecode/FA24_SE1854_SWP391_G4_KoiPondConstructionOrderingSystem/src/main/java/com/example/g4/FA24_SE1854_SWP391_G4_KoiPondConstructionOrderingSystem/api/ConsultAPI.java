@@ -13,6 +13,7 @@ import java.util.List;
 @SecurityRequirement(name="api")
 @RestController
 @RequestMapping("/api/consult")
+@CrossOrigin(origins = "*")
 public class ConsultAPI {
 
     @Autowired
