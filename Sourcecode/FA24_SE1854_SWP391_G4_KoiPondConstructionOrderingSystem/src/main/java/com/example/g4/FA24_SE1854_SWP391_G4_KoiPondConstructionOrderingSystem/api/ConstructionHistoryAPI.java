@@ -43,9 +43,9 @@ public class ConstructionHistoryAPI {
         return ResponseEntity.ok(constructionHistory);
     }
 
-    @PutMapping("/api/construction_history/finish-construction/{constructionHistoryId}")
-    public ResponseEntity finishConstruction(@PathVariable Integer constructionHistoryId) {
-        ConstructionHistory constructionHistory = constructionHistoryService.finishConstruction(constructionHistoryId);
+    @PutMapping("/api/construction_history/finish-construction/{designProfileId}")
+    public ResponseEntity finishConstruction(@PathVariable Integer designProfileId) {
+        ConstructionHistory constructionHistory = constructionHistoryService.finishConstruction(designProfileId);
         return ResponseEntity.ok(constructionHistory);
     }
 
@@ -57,8 +57,8 @@ public class ConstructionHistoryAPI {
 
     @GetMapping("/api/construction_history/get-construction_history-by-id/{designProfileId}")
     public ResponseEntity getConstructionHistoryById(@PathVariable Integer designProfileId){
-        ConstructionHistory constructionHistory=constructionHistoryService.getConstructionHistoryByDesignProfileId(designProfileId);
-        return ResponseEntity.ok(constructionHistory);
+        List<ConstructionHistory> constructionHistories=constructionHistoryService.getConstructionHistoryByDesignProfileId(designProfileId);
+        return ResponseEntity.ok(constructionHistories);
     }
 
     @GetMapping("/api/construction_history/get-active-acceptance_document")
