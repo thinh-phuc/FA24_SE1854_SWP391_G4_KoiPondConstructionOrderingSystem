@@ -32,10 +32,13 @@ public class ConstructionHistoryService {
     public ConstructionHistory createConstructionHistory(ConstructionRequest constructionRequest) {
         try {
             DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileId(constructionRequest.getDesignProfileId());
-            ConstructionHistory existing = constructionHistoryRepository.findConstructionHistoryByDesignProfile(designProfile);
-            if (existing != null) {
-                throw new DuplicateException("This profile already has a construction history!");
+            if(designProfile.getContructionStatus().equals("COMPLETED")){
+                throw new NotFoundException("This design profile is already completed!");
             }
+//            ConstructionHistory existing = constructionHistoryRepository.findConstructionHistoryByDesignProfile(designProfile);
+//            if (existing != null) {
+//                throw new DuplicateException("This profile already has a construction history!");
+//            }
             ConstructionHistory constructionHistory = new ConstructionHistory();
             constructionHistory.setStartDate(LocalDateTime.now());
             constructionHistory.setStep(constructionRequest.getStep());
@@ -58,6 +61,9 @@ public class ConstructionHistoryService {
             if (old == null) {
                 throw new NotFoundException("Not found!");
             }
+            if(old.getDesignProfile().getContructionStatus().equals("COMPLETED")){
+                throw new NotFoundException("This design profile is already completed!");
+            }
             old.setStep(constructionRequest.getStep());
             old.setDescription(constructionRequest.getDescription());
             old.setNote(constructionRequest.getNote());
@@ -71,19 +77,21 @@ public class ConstructionHistoryService {
 
     public ConstructionHistory finishConstruction(Integer id) {
         try {
-            ConstructionHistory old = constructionHistoryRepository.findConstructionHistoryByConstructionHistoryId(id);
-            if (old == null) {
-                throw new NotFoundException("Not found!");
+            DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileId(id);
+            if(designProfile.getContructionStatus().equals("COMPLETED")){
+                throw new NotFoundException("This design profile has already completed!");
             }
-            old.setStep("FINAL");
-            old.setDescription("The construction has finished.");
-            old.setEndDate(LocalDateTime.now());
+            ConstructionHistory complete = new ConstructionHistory();
+            complete.setStep("FINAL");
+            complete.setDescription("The construction has finished.");
+            complete.setEndDate(LocalDateTime.now());
             Customer staff = authenticationService.getCurrentUser();
-            old.setUpdateBy(staff.getName());
-            DesignProfile designProfile = old.getDesignProfile();
+            complete.setCreateBy(staff.getName());
+            complete.setUpdateBy(staff.getName());
+            complete.setDesignProfile(designProfile);
             designProfile.setContructionStatus("COMPLETED");
             designProfileRepository.save(designProfile);
-            return constructionHistoryRepository.save(old);
+            return constructionHistoryRepository.save(complete);
         } catch (Exception e) {
             throw new NotFoundException(e.getMessage());
         }
@@ -144,13 +152,13 @@ public class ConstructionHistoryService {
         return acceptanceDocumentRepository.save(acceptanceDocument);
     }
 
-    public ConstructionHistory getConstructionHistoryByDesignProfileId(Integer id) {
+    public List<ConstructionHistory> getConstructionHistoryByDesignProfileId(Integer id) {
         DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileId(id);
-        ConstructionHistory constructionHistory = constructionHistoryRepository.findConstructionHistoryByDesignProfile(designProfile);
-        if (constructionHistory == null) {
+        List<ConstructionHistory> constructionHistories = constructionHistoryRepository.findConstructionHistorysByDesignProfile(designProfile);
+        if (constructionHistories == null) {
             throw new NotFoundException("Not found!");
         }
-        return constructionHistory;
+        return constructionHistories;
     }
 
     public AcceptanceDocument getAcceptanceDocumentByDesignProfileId(Integer id) {
