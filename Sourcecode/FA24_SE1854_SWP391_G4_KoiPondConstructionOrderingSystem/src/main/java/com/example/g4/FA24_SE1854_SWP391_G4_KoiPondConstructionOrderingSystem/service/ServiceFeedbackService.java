@@ -36,7 +36,8 @@ public class ServiceFeedbackService {
             ServiceDetail serviceDetail = serviceDetailRepository.findServiceDetailByServiceDetailId(serviceFeedbackRequest.getServiceDetailId());
             serviceFeedback.setServiceDetail(serviceDetail);
 
-            Customer customer = customerRepository.findCustomerByCustomerId(serviceFeedbackRequest.getCustomerId());
+            Customer customer = authenticationService.getCurrentUser();
+            serviceFeedback.setCreateBy(customer.getName());
             serviceFeedback.setCustomer(customer);
 
             serviceFeedback.setFeedback(serviceFeedbackRequest.getFeedback());

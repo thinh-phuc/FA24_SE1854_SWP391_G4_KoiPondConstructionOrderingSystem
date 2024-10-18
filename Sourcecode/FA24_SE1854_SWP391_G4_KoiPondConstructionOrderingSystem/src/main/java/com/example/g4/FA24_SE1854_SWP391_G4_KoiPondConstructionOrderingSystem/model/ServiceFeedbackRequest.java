@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class ServiceFeedbackRequest {
     private Integer serviceDetailId;
-    private Integer customerId;
     private String feedback;
     private Integer rating;
     private String note;
