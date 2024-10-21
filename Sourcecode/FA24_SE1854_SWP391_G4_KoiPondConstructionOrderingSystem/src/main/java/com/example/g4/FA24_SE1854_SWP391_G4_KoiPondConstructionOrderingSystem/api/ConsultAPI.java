@@ -2,6 +2,7 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.a
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Consult;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ConsultRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ConsultResponse;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.ConsultService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -21,7 +22,7 @@ public class ConsultAPI {
 
     @PostMapping
     public ResponseEntity create(@Valid @RequestBody ConsultRequest consultRequest){
-        Consult newConsult = consultService.createConsult(consultRequest);
+        ConsultResponse newConsult = consultService.createConsult(consultRequest);
         return ResponseEntity.ok(newConsult);
     }
 
@@ -35,6 +36,12 @@ public class ConsultAPI {
     public ResponseEntity update(@PathVariable Integer consultId, @Valid @RequestBody ConsultRequest consultRequest){
         Consult updatedConsult = consultService.updateConsult(consultId, consultRequest);
         return ResponseEntity.ok(updatedConsult);
+    }
+
+    @PutMapping("/confirmConsult/{consultId}")
+    public ResponseEntity confirmConsult(@PathVariable Integer consultId){
+        Consult confirmedConsult = consultService.confirmConsult(consultId);
+        return ResponseEntity.ok(confirmedConsult);
     }
 
     @DeleteMapping("{consultId}")
