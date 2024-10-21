@@ -90,9 +90,9 @@ public class PondDesignTemplate {
 //    @JsonIgnore
 //    Boolean isDeleted = false;
 
-    @OneToMany(mappedBy = "pondDesignTemplate")
-    @JsonIgnore
-    List<Quotation> quotations;
+//    @OneToMany(mappedBy = "pondDesignTemplate")
+//    @JsonIgnore
+//    List<Quotation> quotations;
 
     @OneToMany(mappedBy = "pondDesignTemplate")
     @JsonIgnore

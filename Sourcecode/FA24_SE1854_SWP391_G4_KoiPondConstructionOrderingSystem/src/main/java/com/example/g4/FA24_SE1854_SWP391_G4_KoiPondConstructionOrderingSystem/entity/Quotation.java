@@ -67,9 +67,9 @@ public class Quotation {
     @JoinColumn(name = "customer_id")
     Customer customer;
 
-    @ManyToOne
-    @JoinColumn(name = "pond_design_template_id")
-    PondDesignTemplate pondDesignTemplate;
+//    @ManyToOne
+//    @JoinColumn(name = "pond_design_template_id")
+//    PondDesignTemplate pondDesignTemplate;
 
 
     @ManyToOne

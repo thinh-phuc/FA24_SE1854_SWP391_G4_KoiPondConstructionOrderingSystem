@@ -9,13 +9,13 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class QuotationResponse {
+public class UpdateQuotationResponse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer quotationId;
     private Integer customerId;
-   // private Integer pondDesignTemplateId;
+    // private Integer pondDesignTemplateId;
     private Integer consultId;
     private Boolean isConfirm = false;
     private String description = "none";
@@ -24,6 +24,6 @@ public class QuotationResponse {
     private float VAT = 0.0f;
     private float total = 0.0f;
     private Boolean isActive = true;
-    private LocalDateTime createDate = LocalDateTime.now();
-    private String createBy ;
+    private LocalDateTime UpdateDate = LocalDateTime.now();
+    private String UpdateBy ;
 }
