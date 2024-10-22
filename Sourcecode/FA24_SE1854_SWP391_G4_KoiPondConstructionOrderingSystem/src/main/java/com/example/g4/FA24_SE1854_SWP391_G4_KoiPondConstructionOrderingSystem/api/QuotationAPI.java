@@ -1,10 +1,7 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.api;
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Quotation;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.QuotationRequest;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.QuotationResponse;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateQuotationRequest;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateQuotationResponse;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.*;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.QuotationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -29,10 +26,10 @@ public class QuotationAPI {
 
     @GetMapping
     public ResponseEntity getAll(){
-            List<Quotation> quotationList = quotationService.getQuotationAll();
+            List<GetAllQuotationResponse> quotationList = quotationService.getQuotationAll();
             return ResponseEntity.ok(quotationList);
     }
-    //get by Id
+    //get by id
     @GetMapping("/getById/{quotationId}")
     public ResponseEntity getAll(@PathVariable Integer quotationId){
         Quotation quotation = quotationService.getQuotationById(quotationId);

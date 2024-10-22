@@ -2,10 +2,7 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.s
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.*;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.QuotationRequest;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.QuotationResponse;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateQuotationRequest;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateQuotationResponse;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.*;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ConsultRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.PondDesignTemplateRepository;
@@ -15,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -130,10 +128,35 @@ public class QuotationService {
 
             }
 
-            public List<Quotation> getQuotationAll(){
-                    List<Quotation> quotationList = quotationRepository.findQuotationsByIsActiveTrue();
-                    return quotationList;
+
+            public List<GetAllQuotationResponse> getQuotationAll(){
+                List<Quotation> quotationList = quotationRepository.findQuotationsByIsActiveTrue();
+
+                // Chuyển đổi danh sách Quotation thành QuotationResponse
+                List<GetAllQuotationResponse> responseList = new ArrayList<>();
+                for (Quotation quotation : quotationList) {
+                  GetAllQuotationResponse response = new GetAllQuotationResponse();
+                 response.setQuotationId(quotation.getQuotationId());
+                  response.setConsultId(quotation.getConsult().getId());
+                  response.setCustomerId(quotation.getCustomer().getCustomerId());
+                  response.setDescription(quotation.getDescription());
+                  response.setIsActive(quotation.getIsActive());
+                  response.setVAT(quotation.getVAT());
+                  response.setTotal(quotation.getTotalCost());
+                  response.setMainCost(quotation.getMainCost());
+                  response.setSubCost(quotation.getSubCost());
+                  response.setIsConfirm(quotation.getIsConfirm());
+                  response.setCreateBy(quotation.getCreateBy());
+                  response.setCreateDate(quotation.getCreateDate());
+                  response.setUpdateBy(quotation.getUpdateBy());
+                  response.setUpdateDate(quotation.getUpdateDate());
+                  response.setIsActive(quotation.getIsActive());
+                        responseList.add(response);
+                }
+
+                return responseList;
             }
+
 
             public Quotation delete (Integer id){
                    Quotation oldQuotation = getQuotationById(id);

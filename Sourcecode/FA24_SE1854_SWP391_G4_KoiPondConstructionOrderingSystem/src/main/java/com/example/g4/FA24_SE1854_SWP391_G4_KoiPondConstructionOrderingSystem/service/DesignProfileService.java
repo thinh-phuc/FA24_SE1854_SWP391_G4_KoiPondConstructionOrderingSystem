@@ -103,9 +103,25 @@ public class DesignProfileService {
         return designProfileRepository.save(designProfile);
     }
 
-    public List<DesignProfile> getAll() {
+    public List<GetAllDesignProfile> getAll() {
         List<DesignProfile> designProfiles = designProfileRepository.findDesignProfilesByIsActiveTrue();
-        return designProfiles;
+        List<GetAllDesignProfile> list = new ArrayList<>();
+        GetAllDesignProfile designProfile = new GetAllDesignProfile();
+        for(DesignProfile dp : designProfiles){
+            designProfile.setDesignProfileId(dp.getDesignProfileId());
+            designProfile.setQuotationId(dp.getQuotation().getQuotationId());
+            designProfile.setAddress(dp.getAddress());
+            designProfile.setDescription(dp.getDescription());
+            designProfile.setConstructionStatus(dp.getContructionStatus());
+            designProfile.setCreateDate(dp.getCreateDate());
+            designProfile.setCreateBy(dp.getCreateBy());
+            designProfile.setUpdateDate(dp.getUpdateDate());
+            designProfile.setUpdateBy(dp.getUpdateBy());
+            designProfile.setIsActive(dp.getIsActive());
+            list.add(designProfile);
+        }
+
+        return list;
     }
 
     //get design profile by staff (used by both CONSTRUCTOR AND DESIGNER)
