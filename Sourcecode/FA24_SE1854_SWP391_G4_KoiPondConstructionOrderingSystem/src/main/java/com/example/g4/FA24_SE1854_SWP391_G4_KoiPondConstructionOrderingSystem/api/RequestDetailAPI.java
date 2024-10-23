@@ -16,6 +16,7 @@ import java.util.List;
 @SecurityRequirement(name="api")
 @RestController
 @RequestMapping("/api/requestDetail")
+@CrossOrigin(origins = "*")
 public class RequestDetailAPI {
 
     @Autowired
