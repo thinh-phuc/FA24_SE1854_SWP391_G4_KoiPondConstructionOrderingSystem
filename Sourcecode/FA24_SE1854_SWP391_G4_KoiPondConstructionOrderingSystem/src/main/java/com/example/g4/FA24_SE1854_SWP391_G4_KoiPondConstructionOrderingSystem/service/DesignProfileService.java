@@ -79,7 +79,7 @@ public class DesignProfileService {
         designProfile.setUpdateDate(null);
         designProfile.setUpdateBy(null);
         designProfile.setQuotation(quotation);
-
+        designProfile.setDescription(designProfileRequest.getDescription());
         DesignProfile newDesignProfile = designProfileRepository.save(designProfile);
         return toCreateResponse(newDesignProfile);
     }
@@ -106,8 +106,9 @@ public class DesignProfileService {
     public List<GetAllDesignProfile> getAll() {
         List<DesignProfile> designProfiles = designProfileRepository.findDesignProfilesByIsActiveTrue();
         List<GetAllDesignProfile> list = new ArrayList<>();
-        GetAllDesignProfile designProfile = new GetAllDesignProfile();
+
         for(DesignProfile dp : designProfiles){
+            GetAllDesignProfile designProfile = new GetAllDesignProfile();
             designProfile.setDesignProfileId(dp.getDesignProfileId());
             designProfile.setQuotationId(dp.getQuotation().getQuotationId());
             designProfile.setAddress(dp.getAddress());

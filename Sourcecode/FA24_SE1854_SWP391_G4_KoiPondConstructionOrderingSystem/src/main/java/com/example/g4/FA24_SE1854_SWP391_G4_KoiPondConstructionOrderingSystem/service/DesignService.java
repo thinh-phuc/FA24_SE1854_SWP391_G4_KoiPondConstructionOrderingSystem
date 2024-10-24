@@ -107,4 +107,12 @@ public class DesignService {
         design.setDescription("Design is completed");
         return designRepository.save(design);
     }
+    public List<Design> getDesignByProfileId(Integer designProfileId){
+        DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileIdAndIsActiveTrue(designProfileId);
+        List<Design> designList = designRepository.findDesignsByDesignProfileAndIsActiveTrue(designProfile);
+        if(designProfile == null){
+            throw new NotFoundException("Not found");
+        }
+        return designList;
+    }
 }

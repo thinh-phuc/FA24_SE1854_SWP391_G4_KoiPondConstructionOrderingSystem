@@ -54,6 +54,11 @@ public class DesignAPI {
         return ResponseEntity.ok(designList);
 
     }
+    @GetMapping("/getDesignByDesignProfile/{designProfileId}")
+    public ResponseEntity getByDesignProfile(@PathVariable Integer designProfileId){
+        List<Design> designList = designService.getDesignByProfileId(designProfileId);
+        return ResponseEntity.ok(designList);
+    }
 
     @PutMapping("/finish-design/{designId}")
     public ResponseEntity finishDesign(@PathVariable Integer designId) {
