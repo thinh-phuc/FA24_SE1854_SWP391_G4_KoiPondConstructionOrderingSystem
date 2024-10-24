@@ -68,12 +68,12 @@ public class ServiceQuotationAPI {
             return ResponseEntity.badRequest().build();
         }
     }
-//    @GetMapping("/customer/{customerId}")
-//    public ResponseEntity<List<ServiceQuotation>> getServiceQuotationsByCustomerId(@PathVariable Integer customerId) {
-//        List<ServiceQuotation> quotations = serviceQuotationService.findByCustomerId(customerId);
-//        if (quotations.isEmpty()) {
-//            return ResponseEntity.noContent().build();
-//        }
-//        return ResponseEntity.ok(quotations);
-//    }
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<ServiceQuotation>> getServiceQuotationsByCustomerId(@PathVariable Integer customerId) {
+        List<ServiceQuotation> quotations = serviceQuotationService.findByCustomerId(customerId);
+        if (quotations.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(quotations);
+    }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ServiceQuotationRepository extends JpaRepository<ServiceQuotation,Integer> {
 
-List<ServiceQuotation>findServiceQuotationsByCustomer(Customer customer);
+    List<ServiceQuotation> findServiceQuotationsByCustomer(Customer customer);
 
     ServiceQuotation findServiceQuotationByServiceQuotationId(Integer serviceQuotationID);
 }

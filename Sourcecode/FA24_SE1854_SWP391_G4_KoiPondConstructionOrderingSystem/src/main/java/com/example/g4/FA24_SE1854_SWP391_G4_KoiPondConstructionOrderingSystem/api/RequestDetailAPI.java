@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @SecurityRequirement(name="api")
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/requestDetail")
 public class RequestDetailAPI {
 

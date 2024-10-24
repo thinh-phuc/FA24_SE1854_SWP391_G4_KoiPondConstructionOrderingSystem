@@ -42,6 +42,8 @@ public class ServiceQuotationService implements IServiceQuotationService{
     quotation.setCreateDate(LocalDateTime.now());
     quotation.setCreateBy(customer.getName());
     quotation.setIsActive(true);
+    quotation.setServiceRequest(request);
+    quotation.setCustomer(request.getCustomer());
     ServiceQuotation obj = serviceQuotationRepository.save(quotation);
     return obj;
     }
@@ -85,7 +87,6 @@ public class ServiceQuotationService implements IServiceQuotationService{
         Customer customer = customerRepository.findCustomerByCustomerId(customerId);
         return serviceQuotationRepository.findServiceQuotationsByCustomer(customer);
     }
-
     @Override
     public List<ServiceQuotation> findByServiceCategoryId(Integer serviceCategoryId) {
         return List.of();
