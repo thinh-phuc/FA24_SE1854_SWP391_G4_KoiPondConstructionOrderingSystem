@@ -21,11 +21,10 @@ public class ServiceQuotation {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "service_quotation_id")
     Integer serviceQuotationId;
-    @JsonIgnore
+   // @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "customer_id")
     Customer customer;
-
 
     @ManyToOne
     @JoinColumn(name = "service_request_id")

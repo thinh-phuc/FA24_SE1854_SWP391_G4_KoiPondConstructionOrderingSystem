@@ -1,9 +1,12 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -32,6 +35,9 @@ public class ServiceCategory {
     @Column(name = "note", columnDefinition = "NVARCHAR(255)")
     private String note = "none";
 
+//    @OneToMany(mappedBy = "serviceCategory")
+//    @JsonIgnore
+//    private List<ServiceRequest>  requests;
 
 
 }
