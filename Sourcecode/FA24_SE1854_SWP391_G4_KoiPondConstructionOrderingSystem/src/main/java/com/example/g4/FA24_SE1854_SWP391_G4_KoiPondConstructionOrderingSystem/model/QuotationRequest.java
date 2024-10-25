@@ -18,7 +18,7 @@ public class QuotationRequest {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer quotationId;
     private Integer customerId;
-    private Integer pondDesignTemplateId;
+   // private Integer pondDesignTemplateId;
     private Integer consultId;
     private Boolean isConfirm = false;
     private String description = "none";

@@ -3,6 +3,9 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.a
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ConstructionHistory;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Design;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.DesignRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.DesignResponse;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateDesignRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateDesignResponse;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.DesignService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -21,13 +24,13 @@ public class DesignAPI {
 
     @PostMapping
     public ResponseEntity create(@Valid @RequestBody DesignRequest designRequest) {
-        Design newDesign = designService.create(designRequest);
+        DesignResponse newDesign = designService.create(designRequest);
         return ResponseEntity.ok(newDesign);
     }
 
     @PutMapping("{designId}")
-    public ResponseEntity update(@PathVariable Integer designId, @Valid @RequestBody Design design) {
-        Design oldDesign = designService.update(designId, design);
+    public ResponseEntity update(@PathVariable Integer designId, @Valid @RequestBody UpdateDesignRequest design) {
+        UpdateDesignResponse oldDesign = designService.update(designId, design);
         return ResponseEntity.ok(oldDesign);
 
     }
@@ -44,7 +47,19 @@ public class DesignAPI {
         return ResponseEntity.ok(designList);
 
     }
-    // moi lam
+    //get by id
+    @GetMapping("/getDesignById/{designId}")
+    public ResponseEntity getById(@PathVariable Integer designId) {
+       Design designList = designService.getDesignById(designId);
+        return ResponseEntity.ok(designList);
+
+    }
+    @GetMapping("/getDesignByDesignProfile/{designProfileId}")
+    public ResponseEntity getByDesignProfile(@PathVariable Integer designProfileId){
+        List<Design> designList = designService.getDesignByProfileId(designProfileId);
+        return ResponseEntity.ok(designList);
+    }
+
     @PutMapping("/finish-design/{designId}")
     public ResponseEntity finishDesign(@PathVariable Integer designId) {
         Design design = designService.finishDesign(designId);

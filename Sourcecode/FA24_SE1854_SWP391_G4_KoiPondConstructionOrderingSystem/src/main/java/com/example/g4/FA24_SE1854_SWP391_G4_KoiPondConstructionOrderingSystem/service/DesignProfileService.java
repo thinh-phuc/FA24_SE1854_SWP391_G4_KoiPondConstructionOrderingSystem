@@ -5,8 +5,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.en
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Quotation;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.DuplicateException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.DesignProfileRequest;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.QuotationResponse;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.*;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.DesignProfileRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.QuotationRepository;
@@ -41,9 +40,31 @@ public class DesignProfileService {
         }
         return oldDesignProfile;
     }
+    public DesignProfileResponse toCreateResponse(DesignProfile designProfile){
+        DesignProfileResponse designProfileResponse = new DesignProfileResponse();
+        designProfileResponse.setQuotationId(designProfile.getQuotation().getQuotationId());
+        designProfileResponse.setDescription(designProfile.getDescription());
+        designProfileResponse.setAddress(designProfile.getAddress());
+        designProfileResponse.setCreateDate(designProfile.getCreateDate());
+        designProfileResponse.setCreateBy(designProfile.getCreateBy());
+        designProfileResponse.setIsActive(false);
+        designProfileResponse.setConstructionStatus(designProfileResponse.getConstructionStatus());
+        return designProfileResponse;
+    }
+    public UpdateDesignProfileResponse toUpdateResponse(DesignProfile designProfile) {
+        UpdateDesignProfileResponse updateDesignProfileResponse = new UpdateDesignProfileResponse();
+        updateDesignProfileResponse.setQuotationId(designProfile.getQuotation().getQuotationId());
+        updateDesignProfileResponse.setDescription(designProfile.getDescription());
+        updateDesignProfileResponse.setAddress(designProfile.getAddress());
+        updateDesignProfileResponse.setUpdateDate(designProfile.getUpdateDate());
+        updateDesignProfileResponse.setUpdateBy(designProfile.getUpdateBy());
+        updateDesignProfileResponse.setIsActive(false);
+        updateDesignProfileResponse.setConstructionStatus(designProfile.getContructionStatus());
+        return updateDesignProfileResponse;
+    }
 
 //moi lam
-    public DesignProfile create(DesignProfileRequest designProfileRequest) {
+    public DesignProfileResponse create(DesignProfileRequest designProfileRequest) {
         Quotation quotation = quotationRepository.findQuotationByQuotationId(designProfileRequest.getQuotationId());
         QuotationResponse quotationResponse = quotationService.toResponse(quotation);
         if(quotationResponse == null){
@@ -58,19 +79,21 @@ public class DesignProfileService {
         designProfile.setUpdateDate(null);
         designProfile.setUpdateBy(null);
         designProfile.setQuotation(quotation);
-
+        designProfile.setDescription(designProfileRequest.getDescription());
         DesignProfile newDesignProfile = designProfileRepository.save(designProfile);
-        return newDesignProfile;
+        return toCreateResponse(newDesignProfile);
     }
 // moi lam
-    public DesignProfile update(Integer id, DesignProfileRequest designProfile) {
+    public UpdateDesignProfileResponse update(Integer id, UpdateDesignProfileRequest designProfile) {
         DesignProfile oldDesignProfile = getDesignProfileById(id);
         Customer staff = authenticationService.getCurrentUser();
         oldDesignProfile.setAddress(designProfile.getAddress());
         oldDesignProfile.setDescription(designProfile.getDescription());
         oldDesignProfile.setUpdateDate(LocalDateTime.now());
         oldDesignProfile.setUpdateBy(staff.getName());
-        return designProfileRepository.save(oldDesignProfile);
+
+        DesignProfile updateDesignProfile = designProfileRepository.save(oldDesignProfile);
+        return toUpdateResponse(updateDesignProfile);
     }
 
     public DesignProfile delete(Integer id) {
@@ -80,9 +103,26 @@ public class DesignProfileService {
         return designProfileRepository.save(designProfile);
     }
 
-    public List<DesignProfile> getAll() {
+    public List<GetAllDesignProfile> getAll() {
         List<DesignProfile> designProfiles = designProfileRepository.findDesignProfilesByIsActiveTrue();
-        return designProfiles;
+        List<GetAllDesignProfile> list = new ArrayList<>();
+
+        for(DesignProfile dp : designProfiles){
+            GetAllDesignProfile designProfile = new GetAllDesignProfile();
+            designProfile.setDesignProfileId(dp.getDesignProfileId());
+            designProfile.setQuotationId(dp.getQuotation().getQuotationId());
+            designProfile.setAddress(dp.getAddress());
+            designProfile.setDescription(dp.getDescription());
+            designProfile.setConstructionStatus(dp.getContructionStatus());
+            designProfile.setCreateDate(dp.getCreateDate());
+            designProfile.setCreateBy(dp.getCreateBy());
+            designProfile.setUpdateDate(dp.getUpdateDate());
+            designProfile.setUpdateBy(dp.getUpdateBy());
+            designProfile.setIsActive(dp.getIsActive());
+            list.add(designProfile);
+        }
+
+        return list;
     }
 
     //get design profile by staff (used by both CONSTRUCTOR AND DESIGNER)

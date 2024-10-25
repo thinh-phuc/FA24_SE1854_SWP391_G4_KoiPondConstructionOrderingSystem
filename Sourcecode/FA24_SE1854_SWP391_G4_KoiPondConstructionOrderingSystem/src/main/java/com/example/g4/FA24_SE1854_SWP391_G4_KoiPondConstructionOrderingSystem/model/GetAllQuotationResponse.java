@@ -9,13 +9,12 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class QuotationResponse {
+public class GetAllQuotationResponse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer quotationId;
     private Integer customerId;
-   // private Integer pondDesignTemplateId;
     private Integer consultId;
     private Boolean isConfirm = false;
     private String description = "none";
@@ -26,4 +25,8 @@ public class QuotationResponse {
     private Boolean isActive = true;
     private LocalDateTime createDate = LocalDateTime.now();
     private String createBy ;
+
+    private LocalDateTime updateDate = LocalDateTime.now();
+    private String updateBy ;
 }
+

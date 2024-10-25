@@ -39,7 +39,7 @@ public class Quotation {
     @Min(value = 1, message = "SubCost must be more than 0")
     private float subCost = 0.0f;
 
-    @Column(name = "VAT", nullable = false, columnDefinition = "FLOAT")
+    @Column(name = "vat", nullable = false, columnDefinition = "FLOAT")
     @Min(value = 1, message = "VAT must be more than 0")
     private float VAT = 0.0f;
 
@@ -67,9 +67,9 @@ public class Quotation {
     @JoinColumn(name = "customer_id")
     Customer customer;
 
-    @ManyToOne
-    @JoinColumn(name = "pond_design_template_id")
-    PondDesignTemplate pondDesignTemplate;
+//    @ManyToOne
+//    @JoinColumn(name = "pond_design_template_id")
+//    PondDesignTemplate pondDesignTemplate;
 
 
     @ManyToOne

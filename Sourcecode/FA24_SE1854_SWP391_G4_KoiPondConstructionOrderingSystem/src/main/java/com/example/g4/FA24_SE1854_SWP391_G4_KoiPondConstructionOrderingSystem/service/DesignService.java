@@ -4,7 +4,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.en
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Design;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.DesignProfile;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.DesignRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.*;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.DesignProfileRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.DesignRepository;
 import org.modelmapper.ModelMapper;
@@ -33,8 +33,34 @@ public class DesignService {
         }
         return design;
     }
+
+    public DesignResponse toResponse(Design design){
+        DesignResponse designResponse = new DesignResponse();
+        designResponse.setDesign(design.getDesign());
+        designResponse.setDesignId(design.getDesignId());
+        designResponse.setDesignStatus(design.getDesignStatus());
+        designResponse.setDescription(design.getDescription());
+        designResponse.setDesignProfileId(design.getDesignProfile().getDesignProfileId());
+        designResponse.setIsActive(true);
+        designResponse.setCreateBy(design.getCreateBy());
+        designResponse.setCreateDate(design.getCreateDate());
+        return designResponse;
+    }
+
+    public UpdateDesignResponse toUpdateResponse(Design design){
+        UpdateDesignResponse designResponse = new UpdateDesignResponse();
+        designResponse.setDesign(design.getDesign());
+        designResponse.setDesignId(design.getDesignId());
+        designResponse.setDesignStatus(design.getDesignStatus());
+        designResponse.setDescription(design.getDescription());
+        designResponse.setDesignProfileId(design.getDesignProfile().getDesignProfileId());
+        designResponse.setIsActive(true);
+        designResponse.setUpdateBy(design.getUpdateBy());
+        designResponse.setUpdateDate(design.getUpdateDate());
+        return designResponse;
+    }
     // moi sua lai
-    public Design create(DesignRequest designRequest){
+    public DesignResponse create(DesignRequest designRequest){
         DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileId(designRequest.getDesignProfileId());
         if(designProfile == null){
             throw new NotFoundException("Can not found design profile with id: "+ designRequest.getDesignId());
@@ -51,21 +77,22 @@ public class DesignService {
         design.setUpdateDate(null);
         design.setUpdateBy(null);
         Design newDesign = designRepository.save(design);
-        return newDesign;
+        return toResponse(newDesign);
     }
     public List<Design> getAll(){
         List<Design> designs = designRepository.findDesignsByIsActiveTrue();
         return designs;
     }
-    public Design update(Integer id, Design design){
+    public UpdateDesignResponse update(Integer id, UpdateDesignRequest updateDesignRequest){
         Design oldDesign = getDesignById(id);
 
-        oldDesign.setDesign(design.getDesign());
-        oldDesign.setDesignStatus(design.getDesignStatus());
+        oldDesign.setDesign(updateDesignRequest.getDesign());
+
         Customer staff = authenticationService.getCurrentUser();
         oldDesign.setUpdateBy(staff.getName());
         oldDesign.setUpdateDate(LocalDateTime.now());
-        return designRepository.save(oldDesign);
+        Design design = designRepository.save(oldDesign);
+        return toUpdateResponse(design);
     }
     public Design delete(Integer id){
         Design design = getDesignById(id);
@@ -79,5 +106,13 @@ public class DesignService {
         design.setDesignStatus("Complete");
         design.setDescription("Design is completed");
         return designRepository.save(design);
+    }
+    public List<Design> getDesignByProfileId(Integer designProfileId){
+        DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileIdAndIsActiveTrue(designProfileId);
+        List<Design> designList = designRepository.findDesignsByDesignProfileAndIsActiveTrue(designProfile);
+        if(designProfile == null){
+            throw new NotFoundException("Not found");
+        }
+        return designList;
     }
 }

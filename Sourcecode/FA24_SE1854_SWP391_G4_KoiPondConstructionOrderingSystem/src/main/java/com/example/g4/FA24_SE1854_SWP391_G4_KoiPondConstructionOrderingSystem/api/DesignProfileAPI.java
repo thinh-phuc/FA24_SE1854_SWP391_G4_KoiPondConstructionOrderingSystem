@@ -1,7 +1,7 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.api;
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.DesignProfile;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.DesignProfileRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.*;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.DesignProfileService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -20,18 +20,25 @@ public class DesignProfileAPI {
 
     @PostMapping
     public ResponseEntity create(@Valid @RequestBody DesignProfileRequest designProfileRequest) {
-            DesignProfile newDesignProfile = designProfileService.create(designProfileRequest);
+            DesignProfileResponse newDesignProfile = designProfileService.create(designProfileRequest);
             return ResponseEntity.ok(newDesignProfile);
     }
     @GetMapping
-    public ResponseEntity getAllStudent(){
-        List<DesignProfile> designProfiles = designProfileService.getAll();
+    public ResponseEntity getAll(){
+        List<GetAllDesignProfile> designProfiles = designProfileService.getAll();
         return ResponseEntity.ok(designProfiles);
     }
+    //get By Id
+    @GetMapping("/getById/{designProfileId}")
+    public ResponseEntity getById(@PathVariable Integer designProfileId){
+        DesignProfile designProfile = designProfileService.getDesignProfileById(designProfileId);
+        return ResponseEntity.ok(designProfile);
+    }
+
 
     @PutMapping("{designProfileId}")
-    public ResponseEntity update ( @PathVariable Integer designProfileId,@Valid @RequestBody DesignProfileRequest designProfile ) {
-        DesignProfile updateDesignProfile = designProfileService.update(designProfileId,designProfile);
+    public ResponseEntity update ( @PathVariable Integer designProfileId,@Valid @RequestBody UpdateDesignProfileRequest designProfile ) {
+        UpdateDesignProfileResponse updateDesignProfile = designProfileService.update(designProfileId,designProfile);
         return ResponseEntity.ok(updateDesignProfile);
     }
 
