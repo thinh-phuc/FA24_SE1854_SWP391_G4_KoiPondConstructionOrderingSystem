@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/pondDesignTemplate")
+@CrossOrigin(origins = "*")
 public class PondDesignTemplateAPI {
 
     @Autowired

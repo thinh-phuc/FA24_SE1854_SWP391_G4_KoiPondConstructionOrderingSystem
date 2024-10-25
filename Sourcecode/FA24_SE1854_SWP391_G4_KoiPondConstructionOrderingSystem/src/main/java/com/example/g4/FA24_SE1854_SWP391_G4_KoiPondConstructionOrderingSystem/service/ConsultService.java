@@ -6,6 +6,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.en
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.RequestDetail;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ConsultRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ConsultResponse;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ConsultRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.RequestDetailRepository;
@@ -36,8 +37,22 @@ public class ConsultService {
     @Autowired
     AuthenticationService authenticationService;
 
+
+    //response Consult
+    public ConsultResponse toResponseConsult (Consult consult){
+        ConsultResponse consultResponse = new ConsultResponse();
+        consultResponse.setId(consult.getId());
+        consultResponse.setDescription(consult.getDescription());
+        consultResponse.setConsultDate(consult.getConsultDate());
+        consultResponse.setCreateDate(consult.getCreateDate());
+        consultResponse.setIsCustomerConfirm(false);
+        consultResponse.setRequestDetailId(consult.getRequestDetail().getRequestDetailId());
+        return consultResponse;
+    }
+
+
     //create
-    public Consult createConsult(ConsultRequest consultRequest){
+    public ConsultResponse createConsult(ConsultRequest consultRequest){
         Consult consult = new Consult();
 
         consult.setCreateDate(LocalDateTime.now());
@@ -62,7 +77,7 @@ public class ConsultService {
         consult.setRequestDetail(requestDetail);
 
         Consult newConsult = consultRepository.save(consult);
-        return newConsult;
+        return toResponseConsult(newConsult);
     }
 
     //read
@@ -125,5 +140,11 @@ public class ConsultService {
         // nếu thông tin của user nào bị BLOCK thì quăng ra lỗi (throw new...) vì bị BLOCK rồi thì sẽ ko update hoặc delete được
 
         return oldConsult;
+    }
+
+    public Consult confirmConsult(Integer id){
+        Consult consult = getConsultById(id);
+        consult.setIsCustomerConfirm(true);
+        return consultRepository.save(consult);
     }
 }
