@@ -29,8 +29,6 @@ public class PondDesignTemplateService {
     public PondDesignTemplate createTemplate(PondDesignTemplateRequest pondDesignTemplateRequest){
         PondDesignTemplate pondDesignTemplate = modelMapper.map(pondDesignTemplateRequest, PondDesignTemplate.class);
 
-        Customer user = authenticationService.getCurrentUser();
-        pondDesignTemplate.setCreateBy(user.getName());
         PondDesignTemplate newPond = pondDesignTemplateRepository.save(pondDesignTemplate);
         return newPond;
     }

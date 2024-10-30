@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/request")
-@CrossOrigin(origins = "*")
 public class RequestAPI {
 
     @Autowired
