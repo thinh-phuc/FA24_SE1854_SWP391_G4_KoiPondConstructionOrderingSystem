@@ -126,6 +126,32 @@ public class DesignProfileService {
     }
 
     //get design profile by staff (used by both CONSTRUCTOR AND DESIGNER)
+    public List<GetAllDesignProfile> getDesignProfilesByDesignStaff() {
+        Customer staff = authenticationService.getCurrentUser();
+        List<DesignProfile> designProfiles = designProfileRepository.findDesignProfilesByStaff(staff.getCustomerId());
+//        if (designProfiles == null) {
+//            throw new NotFoundException("No design profiles found!");
+//        }
+        List<GetAllDesignProfile> list = new ArrayList<>();
+        for (DesignProfile dp : designProfiles) {
+            GetAllDesignProfile designProfile = new GetAllDesignProfile();
+            designProfile.setDesignProfileId(dp.getDesignProfileId());
+            designProfile.setQuotationId(dp.getQuotation().getQuotationId());
+            designProfile.setAddress(dp.getAddress());
+            designProfile.setDescription(dp.getDescription());
+            designProfile.setConstructionStatus(dp.getContructionStatus());
+            designProfile.setCreateDate(dp.getCreateDate());
+            designProfile.setCreateBy(dp.getCreateBy());
+            designProfile.setUpdateDate(dp.getUpdateDate());
+            designProfile.setUpdateBy(dp.getUpdateBy());
+            designProfile.setIsActive(dp.getIsActive());
+            list.add(designProfile);
+
+        }
+        return list;
+    }
+
+
     public List<DesignProfile> getDesignProfilesByStaff() {
         Customer staff = authenticationService.getCurrentUser();
         List<DesignProfile> designProfiles = designProfileRepository.findDesignProfilesByStaff(staff.getCustomerId());
@@ -134,6 +160,7 @@ public class DesignProfileService {
         }
         return designProfiles;
     }
+
 //moi lam
     public DesignProfile assignCustomersToDesignProfile(Integer designProfileId, List<Integer> staffIds) {
         DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileIdAndIsActiveTrue(designProfileId);
