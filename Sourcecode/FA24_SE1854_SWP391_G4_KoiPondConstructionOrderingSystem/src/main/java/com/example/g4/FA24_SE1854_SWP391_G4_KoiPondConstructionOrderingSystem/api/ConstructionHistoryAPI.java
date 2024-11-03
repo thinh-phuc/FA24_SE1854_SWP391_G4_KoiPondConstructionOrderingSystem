@@ -79,6 +79,12 @@ public class ConstructionHistoryAPI {
         return ResponseEntity.ok(designProfiles);
     }
 
+    @GetMapping("/api/construction_history/get-design_profiles-by-constructor-and-address")
+    public ResponseEntity getDesignProfilesByConstructorAndAddress(@RequestParam(required = false, defaultValue = "") String address){
+        List<DesignProfile> designProfiles=designProfileService.getDesignProfilesByStaffAndAddress(address);
+        return ResponseEntity.ok(designProfiles);
+    }
+
     @DeleteMapping("/api/construction_history/delete-construction_history/{constructionHistoryId}")
     public ResponseEntity deleteConstructionHistory(@PathVariable Integer constructionHistoryId){
         ConstructionHistory constructionHistory=constructionHistoryService.deleteConstructionHistory(constructionHistoryId);
