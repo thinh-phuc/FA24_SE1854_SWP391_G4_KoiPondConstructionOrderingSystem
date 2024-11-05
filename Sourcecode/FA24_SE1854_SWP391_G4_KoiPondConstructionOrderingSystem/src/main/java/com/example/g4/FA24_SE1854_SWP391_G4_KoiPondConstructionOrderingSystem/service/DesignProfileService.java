@@ -170,6 +170,15 @@ public class DesignProfileService {
         return designProfiles;
     }
 
+    public List<DesignProfile> getDesignProfilesByCustomer(){
+        Customer customer = authenticationService.getCurrentUser();
+        List<DesignProfile> designProfiles = designProfileRepository.findDesignProfilesByCustomer(customer.getCustomerId());
+        if (designProfiles == null) {
+            throw new NotFoundException("No design profiles found!");
+        }
+        return designProfiles;
+    }
+
 //moi lam
     public DesignProfile assignCustomersToDesignProfile(Integer designProfileId, List<Integer> staffIds) {
         DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileIdAndIsActiveTrue(designProfileId);
