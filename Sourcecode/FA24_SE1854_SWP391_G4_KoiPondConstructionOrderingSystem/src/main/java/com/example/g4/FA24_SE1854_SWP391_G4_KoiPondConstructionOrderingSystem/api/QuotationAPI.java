@@ -54,5 +54,10 @@ public class QuotationAPI {
         Quotation quotation = quotationService.confirmQuotation(quotationId);
         return  ResponseEntity.ok(quotation);
     }
+    @GetMapping("/getQuotationByCustomer")
+    public  ResponseEntity getQuotationByCustomer(){
+        List<GetAllQuotationResponse> quotationList = quotationService.getQuotationsByCustomer();
+        return ResponseEntity.ok(quotationList);
+    }
     }
 
