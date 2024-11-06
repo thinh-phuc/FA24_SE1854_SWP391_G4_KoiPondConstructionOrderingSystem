@@ -36,7 +36,7 @@ public class Consult {
     private String description;
 
     @Column(name = "consult_date")
-    private LocalDateTime consultDate = LocalDateTime.now();
+    private LocalDateTime consultDate;
 
     @Column(name = "create_date")
     private LocalDateTime createDate = LocalDateTime.now();

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cassandra.CassandraProperties;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,7 +53,7 @@ public class RequestDetailService {
         }
         requestDetail.setPondDesignTemplate(pondDesignTemplate);
 
-        requestDetail.setNote(requestDetailRequest.getNote());
+        requestDetail.setNote("Not started");
 
         RequestDetail newRequestDetail = requestDetailRepository.save(requestDetail);
         return newRequestDetail;
@@ -60,8 +61,14 @@ public class RequestDetailService {
 
     //read
     public List<RequestDetail> getAllDetails(){
+        List<RequestDetail> list = new ArrayList<>();
         List<RequestDetail>  requestDetails = requestDetailRepository.findRequestDetailsByIsDeletedFalse();
-        return requestDetails;
+        for(RequestDetail rd: requestDetails) {
+            if(!rd.getNote().equals("DONE")) {
+                list.add(rd);
+            }
+        }
+        return list;
     }
 
     public List<RequestDetail> getAllRequestDetailsByRequestId(Integer requestId){
