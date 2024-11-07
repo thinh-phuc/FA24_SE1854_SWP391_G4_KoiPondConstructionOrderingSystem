@@ -54,7 +54,7 @@ public class AuthenticationService implements UserDetailsService {
                 throw new NotFoundException("Invalid role!");
             } else {
                 e.printStackTrace();
-                throw new NotFoundException("Something is wrong!");
+                throw new NotFoundException(e.getMessage());
             }
         }
     }
@@ -78,7 +78,7 @@ public class AuthenticationService implements UserDetailsService {
                 throw new NotFoundException("Invalid role!");
             } else {
                 e.printStackTrace();
-                throw new NotFoundException("Something is wrong!");
+                throw new NotFoundException(e.getMessage());
             }
         }
     }

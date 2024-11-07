@@ -120,7 +120,7 @@ public class ConstructionHistoryService {
             AcceptanceDocument acceptanceDocument = new AcceptanceDocument();
             acceptanceDocument.setConfirm(true);
             acceptanceDocument.setDescription(acceptanceRequest.getDescription());
-            acceptanceDocument.setConfirmDate(LocalDateTime.now());
+            acceptanceDocument.setConfirmDate(acceptanceRequest.getConfirmDate());
             acceptanceDocument.setConfirmConstructorName(acceptanceRequest.getConfirmConstructorName());
             acceptanceDocument.setConfirmCustomerName(acceptanceRequest.getConfirmCustomerName());
             acceptanceDocument.setCreateDate(LocalDateTime.now());

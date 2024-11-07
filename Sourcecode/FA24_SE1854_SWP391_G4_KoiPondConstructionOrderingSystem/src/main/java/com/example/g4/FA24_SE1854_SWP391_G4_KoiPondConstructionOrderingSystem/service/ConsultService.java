@@ -37,6 +37,9 @@ public class ConsultService {
     @Autowired
     AuthenticationService authenticationService;
 
+    @Autowired
+    RequestDetailService requestDetailService;
+
 
     //response Consult
     public ConsultResponse toResponseConsult (Consult consult){
@@ -57,7 +60,7 @@ public class ConsultService {
 
         consult.setCreateDate(LocalDateTime.now());
         consult.setDescription(consultRequest.getDescription());
-        consult.setConsultDate(LocalDateTime.now());
+        consult.setConsultDate(consultRequest.getConsultDate());
         consult.setIsCustomerConfirm(false);
 
         List<Customer> customers = new ArrayList<>();
@@ -71,6 +74,8 @@ public class ConsultService {
         consult.setCustomers(customers);
 
         RequestDetail requestDetail = requestDetailRepository.findRequestDetailByRequestDetailId(consultRequest.getRequestDetailId());
+        requestDetail.setNote("DONE");
+        requestDetailRepository.save(requestDetail);
         if(requestDetail == null){
             throw new EntityNotFoundException("Request Detail not found!");
         }

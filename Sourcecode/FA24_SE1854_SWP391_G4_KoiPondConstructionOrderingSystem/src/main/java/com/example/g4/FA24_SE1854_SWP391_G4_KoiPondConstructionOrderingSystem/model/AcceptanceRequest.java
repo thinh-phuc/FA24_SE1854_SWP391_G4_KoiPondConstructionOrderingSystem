@@ -11,4 +11,5 @@ public class AcceptanceRequest {
     private String confirmCustomerName;
     private String confirmConstructorName;
     private Integer designProfileId;
+    private LocalDateTime confirmDate;
 }
