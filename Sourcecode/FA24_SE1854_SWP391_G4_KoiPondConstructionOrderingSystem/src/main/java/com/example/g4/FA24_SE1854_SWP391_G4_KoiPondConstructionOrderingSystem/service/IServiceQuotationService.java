@@ -22,4 +22,5 @@ public interface IServiceQuotationService {
     List<ServiceQuotation> findByCustomerId(Integer customerId);
 
     List<ServiceQuotation> findByServiceCategoryId(Integer serviceCategoryId);
+    ServiceQuotation findByRequestID(Integer requestId) throws  Exception;
 }

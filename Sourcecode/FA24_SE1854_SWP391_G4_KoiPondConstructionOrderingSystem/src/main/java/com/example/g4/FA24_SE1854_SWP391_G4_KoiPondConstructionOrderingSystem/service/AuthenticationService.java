@@ -19,6 +19,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class AuthenticationService implements UserDetailsService {
     @Autowired
@@ -102,5 +105,11 @@ public class AuthenticationService implements UserDetailsService {
     public Customer getCurrentUser() {
         Customer customer = (Customer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return customerRepository.findCustomerByCustomerId(customer.getCustomerId());
+    }
+    public List<CustomerResponse> listAllStaff() {
+        List<Customer> staffList = customerRepository.findAllByRole("CUSTOMER");
+        return staffList.stream()
+                .map(staff -> modelMapper.map(staff, CustomerResponse.class))
+                .collect(Collectors.toList());
     }
 }

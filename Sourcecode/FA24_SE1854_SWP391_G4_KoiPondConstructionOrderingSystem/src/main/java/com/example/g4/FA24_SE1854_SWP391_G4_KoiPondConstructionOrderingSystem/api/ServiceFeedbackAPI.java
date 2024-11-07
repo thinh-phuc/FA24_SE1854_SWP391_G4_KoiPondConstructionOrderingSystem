@@ -14,7 +14,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @SecurityRequirement(name = "api")
 @RestController
-@CrossOrigin(origins = "*")
+
 public class ServiceFeedbackAPI {
 
     @Autowired
