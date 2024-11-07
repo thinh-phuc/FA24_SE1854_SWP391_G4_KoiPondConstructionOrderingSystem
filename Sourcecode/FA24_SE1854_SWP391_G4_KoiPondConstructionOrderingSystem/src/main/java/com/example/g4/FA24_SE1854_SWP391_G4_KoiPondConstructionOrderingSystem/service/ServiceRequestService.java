@@ -39,6 +39,7 @@ public class ServiceRequestService implements  IServiceRequestService{
         newRequest.setUpdateDate(LocalDateTime.now());
         newRequest.setServiceCategory(existingCategory);
         newRequest.setCustomer(customer);
+        newRequest.setStatus("Pending");
         return serviceRequestRepository.save(newRequest);
     }
 
@@ -54,6 +55,10 @@ public class ServiceRequestService implements  IServiceRequestService{
            if(existingRequest == null)
            {
                throw new DataNotFoundException("Cannot find service-request with id = "+id );
+           }
+           if(!existingRequest.getStatus().equals("Pending"))
+           {
+               throw new DataNotFoundException("Cann't update request");
            }
         Customer customer = authenticationService.getCurrentUser();
                ServiceCategory existingCategory= serviceCategoryRepository
@@ -90,6 +95,18 @@ public class ServiceRequestService implements  IServiceRequestService{
     public List<ServiceRequest> findServiceRequestsByServiceCategoryId(Integer serviceCategoryId) {
         return List.of();
     }
+
+    public ServiceRequest updateServiceRequestStatus(Integer id, String newStatus) throws Exception {
+        ServiceRequest existingRequest = serviceRequestRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Cannot find service-request with id= " + id));
+
+        existingRequest.setStatus(newStatus);
+        existingRequest.setUpdateDate(LocalDateTime.now());
+
+
+        return serviceRequestRepository.save(existingRequest);
+    }
+
 
     @Override
     public List<ServiceRequest> getActiveServiceRequests() {

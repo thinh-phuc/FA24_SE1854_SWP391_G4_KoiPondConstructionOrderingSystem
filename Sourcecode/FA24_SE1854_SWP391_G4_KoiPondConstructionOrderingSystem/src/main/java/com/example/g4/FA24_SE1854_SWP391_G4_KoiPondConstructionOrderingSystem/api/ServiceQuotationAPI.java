@@ -1,6 +1,7 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.api;
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceQuotation;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.DataNotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceQuotationRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.ServiceQuotationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+
 @CrossOrigin(origins = "*")
 @SecurityRequirement(name="api")
 @RestController
@@ -75,5 +78,29 @@ public class ServiceQuotationAPI {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(quotations);
+    }
+    @GetMapping("/by-request/{requestId}")
+    public ResponseEntity<ServiceQuotation> getServiceQuotationByRequestId(@PathVariable Integer requestId) {
+        try {
+            ServiceQuotation serviceQuotation = serviceQuotationService.findByRequestID(requestId);
+            return ResponseEntity.ok(serviceQuotation);
+        } catch (DataNotFoundException e) {
+            return ResponseEntity.notFound().build(); // Return 404 if the ServiceRequest is not found
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build(); // Return 500 for other exceptions
+        }
+    }
+
+    @PatchMapping("/{quotationId}/toggle-confirm")
+    public ResponseEntity<ServiceQuotation> toggleIsConfirm(@PathVariable Integer quotationId) {
+        try {
+            // Call the service method to toggle the confirmation status
+            ServiceQuotation updatedQuotation = serviceQuotationService.updateServiceQuotationIsConfirm(quotationId);
+            return ResponseEntity.ok(updatedQuotation);
+        } catch (DataNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
     }
 }

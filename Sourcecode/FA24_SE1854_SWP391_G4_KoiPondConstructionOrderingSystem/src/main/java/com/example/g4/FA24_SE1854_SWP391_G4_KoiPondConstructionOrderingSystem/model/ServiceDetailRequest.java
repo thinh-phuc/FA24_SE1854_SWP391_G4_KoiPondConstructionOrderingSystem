@@ -6,7 +6,6 @@ import lombok.Data;
 public class ServiceDetailRequest {
     private Integer serviceQuotationId;
     private Integer staffId;
-    private String address;
     private String description;
 
 }

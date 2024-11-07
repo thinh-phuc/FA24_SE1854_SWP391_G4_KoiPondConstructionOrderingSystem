@@ -1,5 +1,6 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -94,6 +95,14 @@ public class Customer implements UserDetails {
     @OneToMany(mappedBy = "customer")
     @JsonIgnore
     List<Request> requests;
+
+    @OneToMany(mappedBy = "customer")
+    @JsonIgnore
+    List<ServiceRequest> serviceRequest;
+
+    @OneToMany(mappedBy = "customer")
+    @JsonIgnore
+    List<ServiceQuotation> serviceQuotations;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

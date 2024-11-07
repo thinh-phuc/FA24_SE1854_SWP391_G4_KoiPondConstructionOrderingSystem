@@ -14,6 +14,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @SecurityRequirement(name = "api")
 @RestController
+
 public class ServicePaymentAPI {
 
     @Autowired

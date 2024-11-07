@@ -1,6 +1,7 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -10,28 +11,29 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Builder
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="service_quotation")
 public class ServiceQuotation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "service_quotation_id")
     Integer serviceQuotationId;
-   // @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
     Customer customer;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "service_request_id")
     ServiceRequest serviceRequest;
 
     @Column(name = "description", columnDefinition = "NVARCHAR(500)")
     private String description = "none";
+
 
     @Column(name = "cost", nullable = false, columnDefinition = "FLOAT")
     @Min(value = 1, message = "cost must be more than 0")
@@ -62,4 +64,11 @@ public class ServiceQuotation {
 
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
+
+    @PrePersist
+    public void prePersist() {
+        if (this.serviceRequest != null) {
+            this.serviceRequest.setStatus("Processing");
+        }
+    }
 }

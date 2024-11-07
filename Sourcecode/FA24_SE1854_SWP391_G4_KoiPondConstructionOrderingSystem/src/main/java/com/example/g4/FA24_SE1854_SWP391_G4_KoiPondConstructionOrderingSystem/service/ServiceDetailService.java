@@ -30,6 +30,10 @@ public class ServiceDetailService implements IServiceDetailService{
         ServiceQuotation serviceQuotation = serviceQuotationRepository.findById(serviceDetail.getServiceQuotationId())
                 .orElseThrow(()-> new DataNotFoundException("Cannot find service-quotation with id = " + serviceDetail.getServiceQuotationId()));
 
+        if(serviceQuotation.isConfirm()==false)
+        {
+            throw new DataNotFoundException("Can not create service-detail!");
+        }
         Customer staff = customerRepository.findCustomerByCustomerId(serviceDetail.getStaffId());
         if(staff ==null)
         {
@@ -40,10 +44,10 @@ public class ServiceDetailService implements IServiceDetailService{
         newDetail.setDescription(serviceDetail.getDescription());
         newDetail.setStaff(staff);
         newDetail.setServiceQuotation(serviceQuotation);
-        newDetail.setAddress(serviceDetail.getAddress());
+        newDetail.setAddress(serviceQuotation.getServiceRequest().getAddress());
         newDetail.setCreateDate(LocalDateTime.now());
         newDetail.setCreateBy(manager.getRole() + ":" +manager.getName() );
-        newDetail.setIsActive(true);
+        //newDetail.setIsActive(true);
         ServiceDetail obj = serviceDetailRepository.save(newDetail);
         return obj;
     }
@@ -74,7 +78,7 @@ public class ServiceDetailService implements IServiceDetailService{
         detail.setDescription(serviceDetail.getDescription());
         detail.setStaff(staff);
         detail.setServiceQuotation(serviceQuotation);
-        detail.setAddress(serviceDetail.getAddress());
+        detail.setAddress(serviceQuotation.getServiceRequest().getAddress());
         detail.setUpdateDate(LocalDateTime.now());
         detail.setUpdateBy(manager.getRole() + ":" +manager.getName() );
 

@@ -8,7 +8,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -20,30 +20,30 @@ public class ServiceRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "service_request_id")
-    Integer serviceRequestId;
+   private Integer serviceRequestId;
 
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    Customer customer;
+    private Customer customer;
 
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "service_category_id")
-    ServiceCategory serviceCategory;
-//    @Column(name = "status", columnDefinition = "NVARCHAR(100)")
-//    private String status = "none";
+    private  ServiceCategory serviceCategory;
+    @Column(name = "status", columnDefinition = "NVARCHAR(100)")
+    private String status = "none";
     @Column(name = "description", columnDefinition = "NVARCHAR(500)")
-    String description = "none";
+    private String description = "none";
     @Column(name = "address", columnDefinition = "NVARCHAR(255)")
-    String address;
+    private String address;
 
     @Column(name = "note", columnDefinition = "NVARCHAR(255)")
     private String note = "none";
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "is_active", columnDefinition = "BIT DEFAULT 1")
-    Boolean isActive = true;
+    private Boolean isActive = true;
 
     @Column(name = "create_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createDate = LocalDateTime.now();
@@ -57,5 +57,8 @@ public class ServiceRequest {
     @Column(name = "update_by", columnDefinition = "NVARCHAR(40)")
     private String updateBy = "none";
 
+    @OneToOne
+    @JoinColumn(name="service_quotation_id")
+   private ServiceQuotation serviceQuotation;
 
 }

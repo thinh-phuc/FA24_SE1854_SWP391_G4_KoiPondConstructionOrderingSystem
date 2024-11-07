@@ -62,6 +62,7 @@ public class ServiceQuotationService implements IServiceQuotationService{
         serviceQuotation.setCost(serviceCategory.getCost());
         serviceQuotation.setUpdateBy(customer.getRole() + " " + customer.getName());
         serviceQuotation.setUpdateDate(LocalDateTime.now());
+        serviceQuotation.setConfirm(false);
         serviceQuotation.setTotalCost(serviceQuotation.getCost()+serviceQuotation.getCost() * serviceQuotation.getVAT()/100);
         return serviceQuotationRepository.save(serviceQuotation);
     }
@@ -90,5 +91,31 @@ public class ServiceQuotationService implements IServiceQuotationService{
     @Override
     public List<ServiceQuotation> findByServiceCategoryId(Integer serviceCategoryId) {
         return List.of();
+    }
+
+    @Override
+    public ServiceQuotation findByRequestID(Integer requestId) throws Exception {
+        ServiceRequest request = serviceRequestRepository.findServiceRequestByServiceRequestId(requestId);
+           if (request == null)
+           {
+
+               throw new DataNotFoundException("ServiceRequest not found!");
+           }
+
+        return serviceQuotationRepository.findServiceQuotationByServiceRequest(request);
+    }
+
+
+    public ServiceQuotation updateServiceQuotationIsConfirm(Integer id) throws Exception {
+        // Find the existing service quotation by ID
+        ServiceQuotation existingQuotation = serviceQuotationRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Cannot find service-quotation with id= " + id));
+
+        // Update only the isConfirm field
+        existingQuotation.setConfirm(!existingQuotation.isConfirm());
+        existingQuotation.setUpdateDate(LocalDateTime.now());
+
+        // Save and return the updated service quotation
+        return serviceQuotationRepository.save(existingQuotation);
     }
 }
