@@ -2,7 +2,9 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.s
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.CustomerResponse;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.GetStaffByRoleResponse;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateProfileRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import java.util.List;
 public class CustomerService {
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    AuthenticationService authenticationService;
 
     public List<GetStaffByRoleResponse> response(Customer customer){
         List<GetStaffByRoleResponse> staffs = new ArrayList<>();
@@ -36,5 +40,16 @@ public class CustomerService {
             list.add(getStaffByRoleResponse);
         }
         return  list;
+    }
+
+    public Customer updateProfile(UpdateProfileRequest updateProfileRequest){
+        Customer current = authenticationService.getCurrentUser();
+        if(current == null){
+            throw new NotFoundException("Please log in first!");
+        }
+        current.setName(updateProfileRequest.getName());
+        current.setEmail(updateProfileRequest.getEmail());
+        current.setPhoneNumber(updateProfileRequest.getPhoneNumber());
+        return customerRepository.save(current);
     }
 }
