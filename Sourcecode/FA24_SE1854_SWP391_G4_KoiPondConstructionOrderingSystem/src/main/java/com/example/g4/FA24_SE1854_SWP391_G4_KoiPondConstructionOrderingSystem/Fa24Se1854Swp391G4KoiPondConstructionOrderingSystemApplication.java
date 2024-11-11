@@ -15,6 +15,6 @@ public class 	Fa24Se1854Swp391G4KoiPondConstructionOrderingSystemApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Fa24Se1854Swp391G4KoiPondConstructionOrderingSystemApplication.class, args);
-	}
+	}	
 
 }

@@ -18,6 +18,7 @@ public class ServiceCategoryService implements IServiceCategoryService{
             .cost(serviceCategory.getCost())
             .description(serviceCategory.getDescription())
             .note(serviceCategory.getNote())
+            .imageUrl(serviceCategory.getImageUrl())
             .build();
         return serviceCategoryRepository.save(serviceCate);
     }
@@ -35,6 +36,7 @@ public class ServiceCategoryService implements IServiceCategoryService{
         existingCategory.setCost(serviceCategory.getCost());
         existingCategory.setDescription(serviceCategory.getDescription());
         existingCategory.setNote(serviceCategory.getNote());
+        existingCategory.setImageUrl(serviceCategory.getImageUrl());
         serviceCategoryRepository.save(existingCategory);
         return existingCategory;
     }
