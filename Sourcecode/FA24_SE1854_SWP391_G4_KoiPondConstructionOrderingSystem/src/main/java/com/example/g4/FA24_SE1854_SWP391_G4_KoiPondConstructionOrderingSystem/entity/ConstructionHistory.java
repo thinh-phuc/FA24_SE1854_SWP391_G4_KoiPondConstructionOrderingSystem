@@ -18,7 +18,7 @@ public class ConstructionHistory {
     private Integer constructionHistoryId;
 
     @Column(name = "start_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime startDate = LocalDateTime.now();
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
     private LocalDateTime endDate;
