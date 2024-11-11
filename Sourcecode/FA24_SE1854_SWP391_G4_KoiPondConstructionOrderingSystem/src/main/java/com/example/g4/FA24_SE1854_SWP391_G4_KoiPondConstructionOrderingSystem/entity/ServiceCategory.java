@@ -35,6 +35,8 @@ public class ServiceCategory {
     @Column(name = "note", columnDefinition = "NVARCHAR(255)")
     private String note = "none";
 
+    @Column(name="image_url",columnDefinition = "VARCHAR(500)")
+    private String imageUrl;
 //    @OneToMany(mappedBy = "serviceCategory")
 //    @JsonIgnore
 //    private List<ServiceRequest>  requests;

@@ -15,14 +15,14 @@ import java.util.List;
 @SecurityRequirement(name="api")
 @RestController
 @RequestMapping("/api/customer")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class CustomerAPI {
     @Autowired
     CustomerService customerService;
 
     @GetMapping("{role}")
     public ResponseEntity getStaffsByRole(@PathVariable String role){
-        List<GetStaffByRoleResponse> customers = customerService.getStaffsByRole(role);
+            List<GetStaffByRoleResponse> customers = customerService.getStaffsByRole(role);
         return ResponseEntity.ok(customers);
     }
 
@@ -30,5 +30,18 @@ public class CustomerAPI {
     public ResponseEntity updateProfile(@Valid @RequestBody UpdateProfileRequest updateProfileRequest){
         Customer customer= customerService.updateProfile(updateProfileRequest);
         return ResponseEntity.ok(customer);
+    }
+    @DeleteMapping("/{customerId}")
+    public ResponseEntity<String> deleteCustomer(@PathVariable Integer customerId) {
+        customerService.deleteCustomerById(customerId);
+        return ResponseEntity.ok("Customer with ID " + customerId + " has been deleted successfully.");
+    }
+    @PutMapping("/{customerId}")
+    public ResponseEntity<Customer> updateCustomerProfile(
+            @PathVariable Integer customerId,
+            @RequestBody UpdateProfileRequest updateProfileRequest) {
+
+        Customer updatedCustomer = customerService.updateProfile(customerId, updateProfileRequest);
+        return ResponseEntity.ok(updatedCustomer);
     }
 }

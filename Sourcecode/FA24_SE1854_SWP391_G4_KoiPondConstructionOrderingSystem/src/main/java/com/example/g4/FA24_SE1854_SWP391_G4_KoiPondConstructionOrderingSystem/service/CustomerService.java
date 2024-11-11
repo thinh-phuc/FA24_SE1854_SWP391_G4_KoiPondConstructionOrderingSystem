@@ -25,6 +25,8 @@ public class CustomerService {
         staff.setCustomerId(customer.getCustomerId());
         staff.setName(customer.getName());
         staff.setRole(customer.getRole());
+        staff.setEmail(customer.getEmail());
+        staff.setPhoneNumber(customer.getPhoneNumber());
         staffs.add(staff);
         return  staffs;
     }
@@ -37,6 +39,8 @@ public class CustomerService {
             getStaffByRoleResponse.setCustomerId(customer.getCustomerId());
             getStaffByRoleResponse.setName(customer.getName());
             getStaffByRoleResponse.setRole(customer.getRole());
+            getStaffByRoleResponse.setPhoneNumber(customer.getPhoneNumber());
+            getStaffByRoleResponse.setEmail(customer.getEmail());
             list.add(getStaffByRoleResponse);
         }
         return  list;
@@ -51,5 +55,18 @@ public class CustomerService {
         current.setEmail(updateProfileRequest.getEmail());
         current.setPhoneNumber(updateProfileRequest.getPhoneNumber());
         return customerRepository.save(current);
+    }
+    public void deleteCustomerById(Integer customerId){
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new NotFoundException("Customer with ID " + customerId + " not found."));
+        customerRepository.delete(customer);
+    }
+    public Customer updateProfile(Integer id, UpdateProfileRequest updateProfileRequest) {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Customer with ID " + id + " not found."));
+        customer.setName(updateProfileRequest.getName());
+        customer.setEmail(updateProfileRequest.getEmail());
+        customer.setPhoneNumber(updateProfileRequest.getPhoneNumber());
+        return customerRepository.save(customer);
     }
 }
