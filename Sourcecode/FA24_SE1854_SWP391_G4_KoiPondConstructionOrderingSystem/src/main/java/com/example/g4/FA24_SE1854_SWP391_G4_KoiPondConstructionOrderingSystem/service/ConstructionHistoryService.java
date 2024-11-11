@@ -40,9 +40,11 @@ public class ConstructionHistoryService {
 //                throw new DuplicateException("This profile already has a construction history!");
 //            }
             ConstructionHistory constructionHistory = new ConstructionHistory();
-            constructionHistory.setStartDate(LocalDateTime.now());
             constructionHistory.setStep(constructionRequest.getStep());
             constructionHistory.setDescription(constructionRequest.getDescription());
+            constructionHistory.setStartDate(constructionRequest.getStartDate());
+            constructionHistory.setEndDate(constructionRequest.getEndDate());
+            constructionHistory.setNote(constructionRequest.getNote());
             designProfile.setContructionStatus("PROGRESSING");
             designProfileRepository.save(designProfile);
             Customer staff = authenticationService.getCurrentUser();
@@ -84,6 +86,7 @@ public class ConstructionHistoryService {
             ConstructionHistory complete = new ConstructionHistory();
             complete.setStep("FINAL");
             complete.setDescription("The construction has finished.");
+            complete.setStartDate(LocalDateTime.now());
             complete.setEndDate(LocalDateTime.now());
             Customer staff = authenticationService.getCurrentUser();
             complete.setCreateBy(staff.getName());
