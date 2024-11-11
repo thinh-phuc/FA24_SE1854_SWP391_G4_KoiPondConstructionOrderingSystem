@@ -7,6 +7,6 @@ public class ServicePaymentRequest {
     private Integer serviceQuotationID;
     private String paymentMethod;
     private Integer maintenanceStaffID;
-    private Integer serviceProgressID;
+//    private Integer serviceProgressID;
     private String status;
 }

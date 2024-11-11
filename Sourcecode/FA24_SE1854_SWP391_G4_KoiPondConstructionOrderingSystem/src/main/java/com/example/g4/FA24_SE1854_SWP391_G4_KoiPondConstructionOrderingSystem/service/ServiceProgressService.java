@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,10 +29,12 @@ public class ServiceProgressService {
             ServiceProgress serviceProgress = new ServiceProgress();
             serviceProgress.setStartDate(LocalDateTime.now());
             serviceProgress.setStep(serviceProgressResquest.getStep());
-            serviceProgress.setIsPaid(false);
             serviceProgress.setDescription(serviceProgressResquest.getDescription());
 
             ServiceDetail serviceDetail = serviceDetailRepository.findServiceDetailByServiceDetailId(serviceProgressResquest.getServiceDetailID());
+            if (serviceDetail == null) {
+                throw new NotFoundException("Service Detail Not Found");
+            }
             serviceProgress.setServiceDetail(serviceDetail);
 
             Customer staff = authenticationService.getCurrentUser();
@@ -46,6 +49,7 @@ public class ServiceProgressService {
     }
 
 
+
     public ServiceProgress updateServiceProgress(Integer id, ServiceProgressResquest updateServiceProgressRequest) {
         try {
             ServiceProgress oldServiceProgress = serviceProgressRepository.findServiceProgressByServiceProgressID(id);
@@ -53,7 +57,7 @@ public class ServiceProgressService {
                 throw new NotFoundException("Not found!");
             oldServiceProgress.setStep(updateServiceProgressRequest.getStep());
             oldServiceProgress.setDescription(updateServiceProgressRequest.getDescription());
-            if ("DONE".equalsIgnoreCase(updateServiceProgressRequest.getStep()))
+            if ("Complete".equalsIgnoreCase(updateServiceProgressRequest.getStep()))
                 oldServiceProgress.setEndDate(LocalDateTime.now());
 
             Customer staff = authenticationService.getCurrentUser();
@@ -96,13 +100,18 @@ public class ServiceProgressService {
         }
     }
 
+    public List<ServiceProgress> getServiceProgressesForCustomer(Integer customerID) {
+        List<ServiceProgress> serviceProgresses = serviceProgressRepository.findActiveServiceProgressByCustomerOrderByServiceProgressIDDesc(customerID);
+        return serviceProgresses;
+    }
+
     public ServiceProgress getServiceProgress(Integer id) {
         ServiceProgress serviceProgress = serviceProgressRepository.findServiceProgressByServiceProgressID(id);
         return serviceProgress;
     }
 
     public List<ServiceProgress> getAllServiceProgress() {
-        List<ServiceProgress> serviceProgresses = serviceProgressRepository.findServiceProgressesByIsActiveTrue();
+        List<ServiceProgress> serviceProgresses = serviceProgressRepository.findServiceProgressesByIsActiveTrueOrderByServiceProgressIDDesc();
         return serviceProgresses;
     }
 }

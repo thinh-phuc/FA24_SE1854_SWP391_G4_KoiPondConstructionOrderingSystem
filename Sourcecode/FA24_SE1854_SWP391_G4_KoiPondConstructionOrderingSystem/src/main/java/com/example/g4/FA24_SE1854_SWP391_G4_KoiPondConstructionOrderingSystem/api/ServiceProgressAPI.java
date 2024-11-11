@@ -57,4 +57,10 @@ public class ServiceProgressAPI {
         List<ServiceProgress> serviceProgresses = serviceProgressService.getAllServiceProgress();
         return ResponseEntity.ok(serviceProgresses);
     }
+
+    @GetMapping("/api/service-progress/customer/{customerID}")
+    public ResponseEntity getServiceProgressForCustomer(@PathVariable Integer customerID) {
+        List<ServiceProgress> serviceProgresses = serviceProgressService.getServiceProgressesForCustomer(customerID);
+        return ResponseEntity.ok(serviceProgresses);
+    }
 }

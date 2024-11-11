@@ -10,5 +10,5 @@ public interface ServiceFeedbackRepository extends JpaRepository<ServiceFeedback
 
 //    ServiceFeedback findByCustomerIdAndServiceDetailId(Integer customerId, Integer serviceDetailId);
 
-    List<ServiceFeedback> findServiceFeedbacksByIsActiveTrue();
+    List<ServiceFeedback> findServiceFeedbacksByIsActiveTrueOrderByServiceFeedbackIdDesc();
 }

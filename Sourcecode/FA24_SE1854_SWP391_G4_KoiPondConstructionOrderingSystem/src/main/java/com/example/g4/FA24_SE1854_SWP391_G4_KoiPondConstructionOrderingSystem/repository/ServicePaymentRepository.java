@@ -8,5 +8,5 @@ import java.util.List;
 public interface ServicePaymentRepository extends JpaRepository<ServicePayment, Integer> {
     ServicePayment findServicePaymentByServicePaymentID(Integer servicePaymentID);
 
-    List<ServicePayment> findServicePaymentsByIsActiveTrue();
+    List<ServicePayment> findServicePaymentsByIsActiveTrueOrderByServicePaymentIDDesc();
 }
