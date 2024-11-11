@@ -34,6 +34,9 @@ public class ServiceFeedbackService {
             ServiceFeedback serviceFeedback = new ServiceFeedback();
 
             ServiceDetail serviceDetail = serviceDetailRepository.findServiceDetailByServiceDetailId(serviceFeedbackRequest.getServiceDetailId());
+            if (serviceDetail == null) {
+                throw new NotFoundException("Service detail not found");
+            }
             serviceFeedback.setServiceDetail(serviceDetail);
 
             Customer customer = customerRepository.findCustomerByCustomerId(serviceFeedbackRequest.getCustomerId());
@@ -55,6 +58,7 @@ public class ServiceFeedbackService {
             throw new NotFoundException("Something is wrong!");
         }
     }
+
 
     public ServiceFeedback updateServiceFeedback(Integer id, ServiceFeedbackRequest serviceFeedbackRequest) {
         try {
@@ -95,7 +99,7 @@ public class ServiceFeedbackService {
     }
 
     public List<ServiceFeedback> getAllServiceFeedback() {
-        List<ServiceFeedback> serviceFeedbackList = serviceFeedbackRepository.findServiceFeedbacksByIsActiveTrue();
+        List<ServiceFeedback> serviceFeedbackList = serviceFeedbackRepository.findServiceFeedbacksByIsActiveTrueOrderByServiceFeedbackIdDesc();
         return serviceFeedbackList;
     }
 }

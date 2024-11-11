@@ -39,9 +39,9 @@ public class ServicePayment {
 //    @Column(name = "service_progress_id")
 //    private Integer serviceProgressID;
 
-    @ManyToOne
-    @JoinColumn(name = "service_progress_id")
-    ServiceProgress serviceProgress;
+//    @ManyToOne
+//    @JoinColumn(name = "service_progress_id")
+//    ServiceProgress serviceProgress;
 
     @Column(name = "status")
     private String status = "PENDING";

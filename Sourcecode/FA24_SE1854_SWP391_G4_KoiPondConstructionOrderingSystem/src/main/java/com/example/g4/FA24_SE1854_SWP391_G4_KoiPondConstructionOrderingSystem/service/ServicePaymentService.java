@@ -22,8 +22,6 @@ public class ServicePaymentService {
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
-    private ServiceProgressRepository serviceProgressRepository;
-    @Autowired
     private ServicePaymentRepository servicePaymentRepository;
     @Autowired
     AuthenticationService authenticationService;
@@ -33,15 +31,14 @@ public class ServicePaymentService {
             ServicePayment servicePayment = new ServicePayment();
 
             ServiceQuotation serviceQuotation = serviceQuotationRepository.findServiceQuotationByServiceQuotationId(servicePaymentRequest.getServiceQuotationID());
+            if (serviceQuotation == null)
+                throw new NotFoundException("Service Quotation Not Found");
             servicePayment.setServiceQuotation(serviceQuotation);
 
             servicePayment.setPaymentMethod(servicePaymentRequest.getPaymentMethod());
 
             Customer maintenanceStaff = customerRepository.findCustomerByCustomerId(servicePaymentRequest.getMaintenanceStaffID());
             servicePayment.setMaintenanceStaff(maintenanceStaff);
-
-            ServiceProgress serviceProgress = serviceProgressRepository.findServiceProgressByServiceProgressID(servicePaymentRequest.getServiceProgressID());
-            servicePayment.setServiceProgress(serviceProgress);
 
             servicePayment.setStatus(servicePayment.getStatus());
 
@@ -64,8 +61,8 @@ public class ServicePaymentService {
             oldServicePayment.setPaymentMethod(servicePaymentRequest.getPaymentMethod());
             oldServicePayment.setStatus(servicePaymentRequest.getStatus());
 
-            if ("COMPLETED".equalsIgnoreCase(servicePaymentRequest.getStatus()))
-                oldServicePayment.getServiceProgress().setIsPaid(true);
+//            if ("COMPLETED".equalsIgnoreCase(servicePaymentRequest.getStatus()))
+//                oldServicePayment.getServiceProgress().setIsPaid(true);
 
             Customer staff = authenticationService.getCurrentUser();
             oldServicePayment.setUpdateBy(staff.getName());
@@ -96,7 +93,7 @@ public class ServicePaymentService {
     }
 
     public List<ServicePayment> getAllServicePayment() {
-        List<ServicePayment> servicePayments = servicePaymentRepository.findServicePaymentsByIsActiveTrue();
+        List<ServicePayment> servicePayments = servicePaymentRepository.findServicePaymentsByIsActiveTrueOrderByServicePaymentIDDesc();
         return servicePayments;
     }
 }

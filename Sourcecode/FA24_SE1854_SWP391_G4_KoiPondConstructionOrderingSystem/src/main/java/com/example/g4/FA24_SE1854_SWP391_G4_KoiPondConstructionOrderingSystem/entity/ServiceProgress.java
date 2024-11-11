@@ -25,7 +25,6 @@ public class ServiceProgress {
 //    private Integer serviceDetailID;
 
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "service_detail_id")
     ServiceDetail serviceDetail;
@@ -63,7 +62,6 @@ public class ServiceProgress {
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "serviceProgress")
-    List<ServicePayment> servicePayments;
+//    @OneToMany(mappedBy = "serviceProgress")
+//    List<ServicePayment> servicePayments;
 }
