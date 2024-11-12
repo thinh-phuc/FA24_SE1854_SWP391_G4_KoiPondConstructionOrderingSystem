@@ -1,5 +1,6 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository;
 
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.DesignProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,7 @@ public interface DesignProfileRepository extends JpaRepository<DesignProfile, In
 
     @Query("SELECT dp FROM DesignProfile dp JOIN dp.quotation q JOIN q.customer c WHERE c.customerId = :customerId")
     List<DesignProfile> findDesignProfilesByCustomer(@Param("customerId") Integer customerId);
+
+//    @Query("SELECT c FROM DesignProfile dp JOIN dp.customers c WHERE dp.designProfileId = :designProfileId")
+//    List<Customer> findStaffsByDesignProfileId(@Param("designProfileId") Integer designProfileId);
 }

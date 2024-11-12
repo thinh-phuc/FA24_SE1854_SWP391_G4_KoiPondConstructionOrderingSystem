@@ -6,6 +6,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.mo
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.GetStaffByRoleResponse;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateProfileRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.DesignProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,8 @@ public class CustomerService {
     CustomerRepository customerRepository;
     @Autowired
     AuthenticationService authenticationService;
+    @Autowired
+    DesignProfileRepository designProfileRepository;
 
     public List<GetStaffByRoleResponse> response(Customer customer){
         List<GetStaffByRoleResponse> staffs = new ArrayList<>();
@@ -68,5 +71,23 @@ public class CustomerService {
         customer.setEmail(updateProfileRequest.getEmail());
         customer.setPhoneNumber(updateProfileRequest.getPhoneNumber());
         return customerRepository.save(customer);
+    }
+    public List<Customer> getStaffsByDesignProfileId(Integer designProfileId){
+        try {
+            List<Customer> staffs = new ArrayList<>();
+            staffs = customerRepository.findStaffsByDesignProfileId(designProfileId);
+            return staffs;
+        } catch (Exception e) {
+            throw new NotFoundException("Not found!");
+        }
+    }
+    public List<Customer> getAllCustomers(){
+        try {
+            List<Customer> customers = new ArrayList<>();
+            customers = customerRepository.findAllByRole("CUSTOMER");
+            return customers;
+        } catch (Exception e) {
+            throw new NotFoundException("Not found!");
+        }
     }
 }
