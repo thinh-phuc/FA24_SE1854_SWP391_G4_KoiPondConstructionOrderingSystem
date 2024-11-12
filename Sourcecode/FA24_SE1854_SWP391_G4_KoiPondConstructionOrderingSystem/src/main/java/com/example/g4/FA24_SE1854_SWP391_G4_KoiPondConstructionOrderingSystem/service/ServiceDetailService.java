@@ -48,7 +48,7 @@ public class ServiceDetailService implements IServiceDetailService{
         newDetail.setAddress(serviceQuotation.getServiceRequest().getAddress());
         newDetail.setCreateDate(LocalDateTime.now());
         newDetail.setCreateBy(manager.getRole() + ":" +manager.getName() );
-        //newDetail.setIsActive(true);
+        newDetail.setIsActive(true);
         ServiceDetail obj = serviceDetailRepository.save(newDetail);
         return obj;
     }

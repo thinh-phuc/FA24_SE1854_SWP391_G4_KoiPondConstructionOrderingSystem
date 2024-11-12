@@ -21,7 +21,7 @@ public class ServiceDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "service_detail_id")
-    Integer serviceDetailId;
+    private Integer serviceDetailId;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
