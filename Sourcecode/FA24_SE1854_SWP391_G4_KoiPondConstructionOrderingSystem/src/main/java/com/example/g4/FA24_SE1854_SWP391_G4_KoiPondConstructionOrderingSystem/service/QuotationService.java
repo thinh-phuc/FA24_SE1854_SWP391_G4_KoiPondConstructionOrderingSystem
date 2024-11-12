@@ -3,10 +3,7 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.s
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.*;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.*;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ConsultRepository;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.PondDesignTemplateRepository;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.QuotationRepository;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +26,8 @@ public class QuotationService {
     ModelMapper modelMapper;
     @Autowired
     AuthenticationService authenticationService;
-
+    @Autowired
+    RequestRepository requestRepository;
     public Quotation getQuotationById(Integer id) {
         Quotation oldQuotation = quotationRepository.findQuotationByQuotationId(id);
         if (oldQuotation == null) {
@@ -170,13 +168,16 @@ public class QuotationService {
 
     public Quotation confirmQuotation(Integer id) {
         Quotation quotation = getQuotationById(id);
+        Request request = requestRepository.findRequestById(quotation.getConsult().getRequestDetail().getRequest().getId());
+        request.setStatus("PENDING");
+        requestRepository.save(request);
         quotation.setIsConfirm(true);
         return quotationRepository.save(quotation);
     }
 
     public List<GetAllQuotationResponse> getQuotationsByCustomer() {
         Customer customer = authenticationService.getCurrentUser();
-        List<Quotation> list = quotationRepository.findQuotationsByCustomer(customer);
+        List<Quotation> list = quotationRepository.findQuotationsByCustomerAndIsActiveTrueOrderByCreateDateDesc(customer);
         List<GetAllQuotationResponse> responseList = new ArrayList<>();
         for (Quotation quotation : list) {
             GetAllQuotationResponse response = new GetAllQuotationResponse();
@@ -199,7 +200,16 @@ public class QuotationService {
         }
             return responseList;
         }
-
+    public List<Quotation> listQuotationByCustomer(Integer customerId)
+    {
+        Customer customer =  customerRepository.findCustomerByCustomerId(customerId);
+        return quotationRepository.findQuotationsByCustomerAndIsActiveTrueOrderByCreateDateDesc(customer);
+    }
+    public List<Quotation>QuotationsByCustomer()
+    {
+        Customer customer = authenticationService.getCurrentUser();
+        return quotationRepository.findQuotationsByCustomerAndIsActiveTrueOrderByCreateDateDesc(customer);
+    }
     }
 
 

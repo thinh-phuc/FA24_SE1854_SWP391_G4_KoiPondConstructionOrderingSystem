@@ -2,13 +2,14 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.s
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceQuotation;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceQuotationRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceQuotationUpdateRequest;
 
 import java.util.List;
 
 public interface IServiceQuotationService {
     // add a new ServiceQuotation
     ServiceQuotation addServiceQuotation(ServiceQuotationRequest serviceQuotation) throws Exception;
-    ServiceQuotation updateServiceQuotation(Integer id ,ServiceQuotationRequest serviceQuotationRequest)  throws Exception;
+    ServiceQuotation updateServiceQuotation(Integer id , ServiceQuotationUpdateRequest serviceQuotationRequest)  throws Exception;
     // Find a ServiceQuotation by its ID
     ServiceQuotation findById(Integer id) throws Exception;
 

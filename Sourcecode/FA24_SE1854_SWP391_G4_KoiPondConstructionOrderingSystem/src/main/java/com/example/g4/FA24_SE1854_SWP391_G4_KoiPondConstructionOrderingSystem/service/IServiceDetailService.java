@@ -2,6 +2,7 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.s
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceDetail;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceDetailRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceDetailUpdateRequest;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface IServiceDetailService {
     List<ServiceDetail> getAllServiceDetails();
 
     // Update an existing ServiceDetail
-    ServiceDetail updateServiceDetail(Integer id ,ServiceDetailRequest serviceDetail) throws Exception;
+    ServiceDetail updateServiceDetail(Integer id , ServiceDetailUpdateRequest serviceDetail) throws Exception;
 
     // Delete a ServiceDetail by its ID
     void deleteServiceDetailById(Integer id);

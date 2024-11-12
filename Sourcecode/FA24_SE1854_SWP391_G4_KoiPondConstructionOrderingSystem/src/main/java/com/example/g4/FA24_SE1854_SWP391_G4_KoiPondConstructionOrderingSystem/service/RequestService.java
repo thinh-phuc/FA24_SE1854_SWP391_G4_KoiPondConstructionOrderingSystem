@@ -39,7 +39,7 @@ public class RequestService {
 
 
         Request request = new Request();
-        request.setStatus("PENDING");
+        request.setStatus("PROCESSING");
         request.setCreateDate(LocalDateTime.now());
         request.setDescription(requestRequest.getDescription());
         request.setAddress(requestRequest.getAddress());
@@ -101,5 +101,15 @@ public class RequestService {
         // nếu thông tin của user nào bị BLOCK thì quăng ra lỗi (throw new...) vì bị BLOCK rồi thì sẽ ko update hoặc delete được
 
         return oldRequest;
+    }
+    public List<Request> getRequestsByCustomerIdDesc(Integer customerId) {
+        Customer customer = customerRepository.findCustomerByCustomerId(customerId);
+        List<Request> requests = requestRepository.findRequestsByCustomerAndIsActiveTrueOrderByCreateDateDesc(customer);
+
+        if (requests.isEmpty()) {
+            throw new EntityNotFoundException("No requests found for customer with ID: " + customerId);
+        }
+
+        return requests;
     }
 }

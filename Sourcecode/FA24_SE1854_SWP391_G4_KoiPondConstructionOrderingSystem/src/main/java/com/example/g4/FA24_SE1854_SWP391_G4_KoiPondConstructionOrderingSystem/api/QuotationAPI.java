@@ -59,5 +59,16 @@ public class QuotationAPI {
         List<GetAllQuotationResponse> quotationList = quotationService.getQuotationsByCustomer();
         return ResponseEntity.ok(quotationList);
     }
+
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<Quotation>> listQuotationsByCustomer(@PathVariable Integer customerId) {
+        List<Quotation> quotations = quotationService.listQuotationByCustomer(customerId);
+        return ResponseEntity.ok(quotations);
+    }
+    @GetMapping("/customer")
+    public ResponseEntity<List<Quotation>> getQuotationsByCurrentCustomer() {
+        List<Quotation> quotations = quotationService.QuotationsByCustomer();
+        return ResponseEntity.ok(quotations);
+    }
     }
 

@@ -3,6 +3,7 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.a
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceQuotation;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.DataNotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceQuotationRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceQuotationUpdateRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.ServiceQuotationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -63,7 +64,7 @@ public class ServiceQuotationAPI {
     @PutMapping("/{id}")
     public ResponseEntity<ServiceQuotation> updateServiceQuotation(
             @PathVariable Integer id,
-            @Valid @RequestBody ServiceQuotationRequest serviceQuotationRequest) {
+            @Valid @RequestBody ServiceQuotationUpdateRequest serviceQuotationRequest) {
         try {
             ServiceQuotation updatedQuotation = serviceQuotationService.updateServiceQuotation(id, serviceQuotationRequest);
             return ResponseEntity.ok(updatedQuotation);
