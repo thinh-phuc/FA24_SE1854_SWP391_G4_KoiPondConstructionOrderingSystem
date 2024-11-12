@@ -53,7 +53,7 @@ public class ServiceDetail {
     @JsonIgnore
     List<ServiceProgress> serviceProgressList;
 
-    @OneToMany(mappedBy = "serviceDetail")
-    @JsonIgnore
-    List<ServiceFeedback> serviceFeedbackList;
+//    @OneToMany(mappedBy = "serviceDetail")
+//    @JsonIgnore
+//    List<ServiceFeedback> serviceFeedbackList;
 }

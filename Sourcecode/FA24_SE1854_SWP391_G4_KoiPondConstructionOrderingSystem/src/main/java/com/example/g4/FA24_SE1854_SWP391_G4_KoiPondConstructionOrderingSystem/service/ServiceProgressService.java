@@ -75,6 +75,8 @@ public class ServiceProgressService {
             ServiceProgress serviceProgress = serviceProgressRepository.findServiceProgressByServiceProgressID(id);
             if (serviceProgress == null)
                 throw new NotFoundException("Not found!");
+            if (!serviceProgress.getStep().equals("Complete"))
+                throw new NotFoundException("Step is not complete");
             serviceProgress.setIsComfirmed(true);
 
             Customer customer = authenticationService.getCurrentUser();

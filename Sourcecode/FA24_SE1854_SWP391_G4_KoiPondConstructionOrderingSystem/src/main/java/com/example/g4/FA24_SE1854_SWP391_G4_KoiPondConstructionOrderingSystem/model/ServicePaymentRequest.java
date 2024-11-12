@@ -9,4 +9,5 @@ public class ServicePaymentRequest {
     private Integer maintenanceStaffID;
 //    private Integer serviceProgressID;
     private String status;
+    //đổi service request status thành Finish
 }
