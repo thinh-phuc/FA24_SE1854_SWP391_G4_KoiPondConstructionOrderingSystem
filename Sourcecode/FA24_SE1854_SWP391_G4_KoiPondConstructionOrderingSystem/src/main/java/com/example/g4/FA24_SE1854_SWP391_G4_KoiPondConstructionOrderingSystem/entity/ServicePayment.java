@@ -44,7 +44,7 @@ public class ServicePayment {
 //    ServiceProgress serviceProgress;
 
     @Column(name = "status")
-    private String status = "PENDING";
+    private String status = "Pending";
 
     @Column(name = "is_active", columnDefinition = "BIT DEFAULT 1")
     private Boolean isActive = true;

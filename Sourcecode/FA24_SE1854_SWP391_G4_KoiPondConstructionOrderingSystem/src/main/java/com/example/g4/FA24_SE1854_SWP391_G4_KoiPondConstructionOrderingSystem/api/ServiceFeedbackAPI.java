@@ -44,6 +44,12 @@ public class ServiceFeedbackAPI {
         return ResponseEntity.ok(serviceFeedback);
     }
 
+    @GetMapping("/api/service-feedback/service-request/{serviceRequestId}")
+    public ResponseEntity getServiceFeedbackByServiceCategory(@PathVariable Integer serviceRequestId) {
+        ServiceFeedback serviceFeedback = serviceFeedbackService.getServiceFeedbackByServiceCategoryId(serviceRequestId);
+        return ResponseEntity.ok(serviceFeedback);
+    }
+
     @GetMapping("/api/service-feedback")
     public ResponseEntity getServiceFeedback() {
         List<ServiceFeedback> serviceFeedback = serviceFeedbackService.getAllServiceFeedback();

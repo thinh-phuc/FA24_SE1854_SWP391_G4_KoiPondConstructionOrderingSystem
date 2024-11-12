@@ -1,13 +1,9 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service;
 
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceDetail;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceFeedback;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.*;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceFeedbackRequest;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceDetailRepository;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceFeedbackRepository;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +13,7 @@ import java.util.List;
 public class ServiceFeedbackService {
 
     @Autowired
-    ServiceDetailRepository serviceDetailRepository;
+    ServiceRequestRepository serviceRequestRepository;
     @Autowired
     AuthenticationService authenticationService;
     @Autowired
@@ -27,38 +23,40 @@ public class ServiceFeedbackService {
 
     public ServiceFeedback createServiceFeedback(ServiceFeedbackRequest serviceFeedbackRequest) {
         try {
-//            ServiceFeedback existingFeedback = serviceFeedbackRepository.findByCustomerIdAndServiceDetailId(serviceFeedbackRequest.getCustomerId(), serviceFeedbackRequest.getServiceDetailId());
-//            if (existingFeedback != null)
-//                throw new IllegalArgumentException("Customer has already submitted feedback for this service.");
-
             ServiceFeedback serviceFeedback = new ServiceFeedback();
 
-            ServiceDetail serviceDetail = serviceDetailRepository.findServiceDetailByServiceDetailId(serviceFeedbackRequest.getServiceDetailId());
-            if (serviceDetail == null) {
-                throw new NotFoundException("Service detail not found");
+            ServiceRequest serviceRequest = serviceRequestRepository.findServiceRequestByServiceRequestId(
+                    serviceFeedbackRequest.getServiceRequestId());
+            if (serviceRequest == null) {
+                throw new NotFoundException("Service request not found");
             }
-            serviceFeedback.setServiceDetail(serviceDetail);
+            serviceFeedback.setServiceRequest(serviceRequest);
 
             Customer customer = customerRepository.findCustomerByCustomerId(serviceFeedbackRequest.getCustomerId());
+            if (customer == null) {
+                throw new NotFoundException("Customer not found");
+            }
             serviceFeedback.setCustomer(customer);
 
             serviceFeedback.setFeedback(serviceFeedbackRequest.getFeedback());
-            if (serviceFeedbackRequest.getRating() >= 1 && serviceFeedbackRequest.getRating() <= 5)
+
+            // Validate rating between 1 and 5
+            if (serviceFeedbackRequest.getRating() >= 1 && serviceFeedbackRequest.getRating() <= 5) {
                 serviceFeedback.setRating(serviceFeedbackRequest.getRating());
-            else
-                serviceFeedback.setRating(5);
-            serviceFeedback.setNote(serviceFeedback.getNote());
+            } else {
+                serviceFeedback.setRating(5); // Default to 5 if rating is out of bounds
+            }
 
             Customer staff = authenticationService.getCurrentUser();
             serviceFeedback.setCreateBy(staff.getName());
 
-            ServiceFeedback newServiceFeedback = serviceFeedbackRepository.save(serviceFeedback);
-            return newServiceFeedback;
+            return serviceFeedbackRepository.save(serviceFeedback);
+        } catch (NotFoundException e) {
+            throw e;
         } catch (Exception e) {
-            throw new NotFoundException("Something is wrong!");
+            throw new RuntimeException("An error occurred while creating service feedback: " + e.getMessage(), e);
         }
     }
-
 
     public ServiceFeedback updateServiceFeedback(Integer id, ServiceFeedbackRequest serviceFeedbackRequest) {
         try {
@@ -68,7 +66,6 @@ public class ServiceFeedbackService {
 
             oldServiceFeedback.setFeedback(serviceFeedbackRequest.getFeedback());
             oldServiceFeedback.setRating(serviceFeedbackRequest.getRating());
-            oldServiceFeedback.setNote(serviceFeedbackRequest.getNote());
 
             Customer customer = authenticationService.getCurrentUser();
             oldServiceFeedback.setUpdateBy(customer.getName());
@@ -91,6 +88,11 @@ public class ServiceFeedbackService {
         } catch (Exception e) {
             throw new NotFoundException("Something is wrong!");
         }
+    }
+
+    public ServiceFeedback getServiceFeedbackByServiceCategoryId(Integer id) {
+        ServiceFeedback serviceFeedback = serviceFeedbackRepository.findServiceFeedbackByServiceRequestId(id);
+        return serviceFeedback;
     }
 
     public ServiceFeedback getServiceFeedbackById(Integer id) {
