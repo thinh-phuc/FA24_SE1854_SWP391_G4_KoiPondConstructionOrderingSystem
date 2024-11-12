@@ -44,4 +44,14 @@ public class CustomerAPI {
         Customer updatedCustomer = customerService.updateProfile(customerId, updateProfileRequest);
         return ResponseEntity.ok(updatedCustomer);
     }
+    @GetMapping("/getStaffsByDesignProfileId/{designProfileId}")
+    public ResponseEntity getStaffsByDesignProfileId(@PathVariable Integer designProfileId) {
+        List<Customer> list = customerService.getStaffsByDesignProfileId(designProfileId);
+        return ResponseEntity.ok(list);
+    }
+    @GetMapping
+    public ResponseEntity getAllCustomers(){
+        List<Customer> customers = customerService.getAllCustomers();
+        return ResponseEntity.ok(customers);
+    }
 }
