@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface ServiceRequestRepository extends JpaRepository<ServiceRequest,Integer> {
 List<ServiceRequest> findServiceRequestsByIsActiveTrue();
-List<ServiceRequest> findServiceRequestsByCustomer(Customer customerID);
+List<ServiceRequest> findServiceRequestsByCustomerAndIsActiveTrueOrderByCreateDateDesc(Customer customerID);
 ServiceRequest findServiceRequestByServiceRequestId(Integer Id);
+    List<ServiceRequest> findServiceRequestsByIsActiveTrueOrderByCreateDateDesc();
 }

@@ -6,6 +6,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.en
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.DataNotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceQuotationRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceQuotationUpdateRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceCategoryRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceQuotationRepository;
@@ -49,20 +50,17 @@ public class ServiceQuotationService implements IServiceQuotationService{
     }
 
     @Override
-    public ServiceQuotation updateServiceQuotation(Integer Id,ServiceQuotationRequest serviceQuotationRequest) throws Exception {
+    public ServiceQuotation updateServiceQuotation(Integer Id, ServiceQuotationUpdateRequest serviceQuotationRequest) throws Exception {
         ServiceQuotation serviceQuotation = serviceQuotationRepository.findById(Id)
                 .orElseThrow(()-> new DataNotFoundException("Cannot find service-quotation with id"+ Id));
-        ServiceRequest request = serviceRequestRepository.findById(serviceQuotationRequest.getServiceRequestId())
-                .orElseThrow(()-> new DataNotFoundException("Cannot find service-request with id= "+ serviceQuotationRequest.getServiceRequestId()));
-        ServiceCategory serviceCategory = serviceCategoryRepository.findById(request.getServiceCategory().getServiceCategoryId())
-                .orElseThrow(()-> new DataNotFoundException("Cannot find service-category with id = "+ request.getServiceCategory().getServiceCategoryId()));
+
+
         Customer customer = authenticationService.getCurrentUser();
         serviceQuotation.setDescription(serviceQuotationRequest.getDescription());
         serviceQuotation.setVAT(serviceQuotationRequest.getVAT());
-        serviceQuotation.setCost(serviceCategory.getCost());
         serviceQuotation.setUpdateBy(customer.getRole() + " " + customer.getName());
         serviceQuotation.setUpdateDate(LocalDateTime.now());
-        serviceQuotation.setConfirm(false);
+       // serviceQuotation.setConfirm(false);
         serviceQuotation.setTotalCost(serviceQuotation.getCost()+serviceQuotation.getCost() * serviceQuotation.getVAT()/100);
         return serviceQuotationRepository.save(serviceQuotation);
     }
@@ -75,7 +73,7 @@ public class ServiceQuotationService implements IServiceQuotationService{
 
     @Override
     public List<ServiceQuotation> findAll() {
-        return serviceQuotationRepository.findAll();
+        return serviceQuotationRepository.findServiceQuotationsByIsActiveTrueOrderByCreateDateDesc();
     }
 
     @Override
@@ -86,7 +84,7 @@ public class ServiceQuotationService implements IServiceQuotationService{
     @Override
     public List<ServiceQuotation> findByCustomerId(Integer customerId) {
         Customer customer = customerRepository.findCustomerByCustomerId(customerId);
-        return serviceQuotationRepository.findServiceQuotationsByCustomer(customer);
+        return serviceQuotationRepository.findServiceQuotationsByCustomerAndIsActiveTrueOrderByCreateDateDesc(customer);
     }
     @Override
     public List<ServiceQuotation> findByServiceCategoryId(Integer serviceCategoryId) {

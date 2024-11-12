@@ -49,4 +49,9 @@ public class RequestAPI {
         Request deletedRequest = requestService.delete(requestId);
         return ResponseEntity.ok(deletedRequest);
     }
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<Request>> getRequestsByCustomerIdDesc(@PathVariable Integer customerId) {
+        List<Request> requests = requestService.getRequestsByCustomerIdDesc(customerId);
+        return ResponseEntity.ok(requests);
+    }
 }

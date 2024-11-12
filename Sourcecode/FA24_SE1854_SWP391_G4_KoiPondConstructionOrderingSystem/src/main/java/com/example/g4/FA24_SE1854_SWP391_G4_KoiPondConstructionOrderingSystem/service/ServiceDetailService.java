@@ -5,6 +5,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.en
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceQuotation;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.DataNotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceDetailRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceDetailUpdateRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,7 +65,7 @@ public class ServiceDetailService implements IServiceDetailService{
     }
 
     @Override
-    public ServiceDetail updateServiceDetail(Integer Id,ServiceDetailRequest serviceDetail)throws Exception {
+    public ServiceDetail updateServiceDetail(Integer Id, ServiceDetailUpdateRequest serviceDetail)throws Exception {
         ServiceDetail detail = serviceDetailRepository.findById(Id)
                 .orElseThrow(()-> new DataNotFoundException("Cannot fin service-detail with id= "+ Id) );
         Customer manager = authenticationService.getCurrentUser();
@@ -73,12 +74,8 @@ public class ServiceDetailService implements IServiceDetailService{
         {
             throw new DataNotFoundException("Cannot find staff with id = " +serviceDetail.getStaffId());
         }
-        ServiceQuotation serviceQuotation = serviceQuotationRepository.findById(serviceDetail.getServiceQuotationId())
-                .orElseThrow(()-> new DataNotFoundException("Cannot find service-quotation with id = " + serviceDetail.getServiceQuotationId()));
         detail.setDescription(serviceDetail.getDescription());
         detail.setStaff(staff);
-        detail.setServiceQuotation(serviceQuotation);
-        detail.setAddress(serviceQuotation.getServiceRequest().getAddress());
         detail.setUpdateDate(LocalDateTime.now());
         detail.setUpdateBy(manager.getRole() + ":" +manager.getName() );
 

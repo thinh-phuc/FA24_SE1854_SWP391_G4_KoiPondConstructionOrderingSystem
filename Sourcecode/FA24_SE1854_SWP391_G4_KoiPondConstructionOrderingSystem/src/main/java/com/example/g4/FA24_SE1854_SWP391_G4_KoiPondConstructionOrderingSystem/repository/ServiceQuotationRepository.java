@@ -10,8 +10,9 @@ import java.util.List;
 
 public interface ServiceQuotationRepository extends JpaRepository<ServiceQuotation,Integer> {
 
-    List<ServiceQuotation> findServiceQuotationsByCustomer(Customer customer);
+    List<ServiceQuotation> findServiceQuotationsByCustomerAndIsActiveTrueOrderByCreateDateDesc(Customer customer);
 
     ServiceQuotation findServiceQuotationByServiceQuotationId(Integer serviceQuotationID);
     ServiceQuotation findServiceQuotationByServiceRequest(ServiceRequest serviceRequest);
+    List<ServiceQuotation> findServiceQuotationsByIsActiveTrueOrderByCreateDateDesc();
 }

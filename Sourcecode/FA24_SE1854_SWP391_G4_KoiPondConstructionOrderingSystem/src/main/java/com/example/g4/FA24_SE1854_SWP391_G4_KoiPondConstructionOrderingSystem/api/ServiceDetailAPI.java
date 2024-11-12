@@ -2,6 +2,7 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.a
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceDetail;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceDetailRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceDetailUpdateRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.ServiceDetailService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -48,7 +49,7 @@ public class ServiceDetailAPI {
 
     // Update a ServiceDetail
     @PutMapping("/{id}")
-    public ResponseEntity<ServiceDetail> updateServiceDetail(@PathVariable Integer id, @RequestBody ServiceDetailRequest serviceDetail) {
+    public ResponseEntity<ServiceDetail> updateServiceDetail(@PathVariable Integer id, @RequestBody ServiceDetailUpdateRequest serviceDetail) {
         try {
             ServiceDetail updatedDetail = serviceDetailService.updateServiceDetail(id,serviceDetail);
             return ResponseEntity.ok(updatedDetail);

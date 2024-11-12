@@ -12,7 +12,7 @@ import java.util.List;
 public interface QuotationRepository extends JpaRepository<Quotation, Integer> {
     Quotation findQuotationByQuotationId(Integer quotationId);
     List<Quotation> findQuotationsByIsActiveTrue();
-    List<Quotation> findQuotationsByCustomer(Customer customer);
+    List<Quotation> findQuotationsByCustomerAndIsActiveTrueOrderByCreateDateDesc(Customer customer);
 
 //    @Query("SELECT dp FROM Quotation dp JOIN dp.customers c WHERE c.customerId = :customerId")
 //    List<Quotation> findQuotationsByStaff(@Param("customerId") Integer customerId);

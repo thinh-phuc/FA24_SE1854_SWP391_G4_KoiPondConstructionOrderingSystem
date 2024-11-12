@@ -68,7 +68,7 @@ public class ServiceQuotation {
     @PrePersist
     public void prePersist() {
         if (this.serviceRequest != null) {
-            this.serviceRequest.setStatus("Processing");
+            this.serviceRequest.setStatus("PENDING");
         }
     }
 }
