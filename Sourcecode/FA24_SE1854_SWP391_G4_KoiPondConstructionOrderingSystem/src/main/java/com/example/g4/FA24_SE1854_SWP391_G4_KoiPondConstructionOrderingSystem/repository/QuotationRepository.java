@@ -16,4 +16,11 @@ public interface QuotationRepository extends JpaRepository<Quotation, Integer> {
 
 //    @Query("SELECT dp FROM Quotation dp JOIN dp.customers c WHERE c.customerId = :customerId")
 //    List<Quotation> findQuotationsByStaff(@Param("customerId") Integer customerId);
+@Query(value = "SELECT q.* " +
+        "FROM quotation q " +
+        "JOIN consult c ON q.consult_id = c.consult_id " +
+        "JOIN customer_consult cc ON c.consult_id = cc.consult_id " +
+        "WHERE cc.customer_id = :customerId",
+        nativeQuery = true)
+List<Quotation> findQuotationsByStaff(@Param("customerId") Integer customerId);
 }

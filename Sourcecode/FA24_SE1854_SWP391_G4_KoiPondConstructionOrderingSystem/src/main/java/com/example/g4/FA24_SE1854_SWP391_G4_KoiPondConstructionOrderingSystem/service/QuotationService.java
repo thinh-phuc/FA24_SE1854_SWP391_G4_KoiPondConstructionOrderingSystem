@@ -210,6 +210,31 @@ public class QuotationService {
         Customer customer = authenticationService.getCurrentUser();
         return quotationRepository.findQuotationsByCustomerAndIsActiveTrueOrderByCreateDateDesc(customer);
     }
+    public List<GetAllQuotationResponse> getQuotationByStaff(){
+        Customer customer = authenticationService.getCurrentUser();
+        List<Quotation> list = quotationRepository.findQuotationsByStaff(customer.getCustomerId());
+        List<GetAllQuotationResponse> responseList = new ArrayList<>();
+        for (Quotation quotation : list) {
+            GetAllQuotationResponse response = new GetAllQuotationResponse();
+            response.setQuotationId(quotation.getQuotationId());
+            response.setConsultId(quotation.getConsult().getId());
+            response.setCustomerId(quotation.getCustomer().getCustomerId());
+            response.setDescription(quotation.getDescription());
+            response.setIsActive(quotation.getIsActive());
+            response.setVAT(quotation.getVAT());
+            response.setTotal(quotation.getTotalCost());
+            response.setMainCost(quotation.getMainCost());
+            response.setSubCost(quotation.getSubCost());
+            response.setIsConfirm(quotation.getIsConfirm());
+            response.setCreateBy(quotation.getCreateBy());
+            response.setCreateDate(quotation.getCreateDate());
+            response.setUpdateBy(quotation.getUpdateBy());
+            response.setUpdateDate(quotation.getUpdateDate());
+            response.setIsActive(quotation.getIsActive());
+            responseList.add(response);
+        }
+        return responseList;
+    }
     }
 
 
