@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class DesignAPI {
     DesignService designService;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('DESIGNER')")
     public ResponseEntity create(@Valid @RequestBody DesignRequest designRequest) {
         DesignResponse newDesign = designService.create(designRequest);
         return ResponseEntity.ok(newDesign);
@@ -55,12 +57,14 @@ public class DesignAPI {
 
     }
     @GetMapping("/getDesignByDesignProfile/{designProfileId}")
+    @PreAuthorize("hasAnyAuthority('MANAGER, DESIGNER')")
     public ResponseEntity getByDesignProfile(@PathVariable Integer designProfileId){
         List<Design> designList = designService.getDesignByProfileId(designProfileId);
         return ResponseEntity.ok(designList);
     }
 
     @PutMapping("/finish-design/{designId}")
+    @PreAuthorize("hasAuthority('DESIGNER')")
     public ResponseEntity finishDesign(@PathVariable Integer designId) {
         Design design = designService.finishDesign(designId);
         return ResponseEntity.ok(design);

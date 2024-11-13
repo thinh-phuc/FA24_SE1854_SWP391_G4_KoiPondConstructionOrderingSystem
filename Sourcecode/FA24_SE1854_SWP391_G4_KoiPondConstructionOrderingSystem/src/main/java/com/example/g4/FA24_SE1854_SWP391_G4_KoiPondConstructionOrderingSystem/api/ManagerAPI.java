@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class ManagerAPI {
         return ResponseEntity.ok(staff);
     }
     @PutMapping("/api/manager/{designProfileId}")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity assignStaff(@PathVariable Integer designProfileId, @RequestBody List<Integer> customers ){
         DesignProfile designProfile = designProfileService.assignCustomersToDesignProfile(designProfileId,customers);
         return ResponseEntity.ok(designProfile);

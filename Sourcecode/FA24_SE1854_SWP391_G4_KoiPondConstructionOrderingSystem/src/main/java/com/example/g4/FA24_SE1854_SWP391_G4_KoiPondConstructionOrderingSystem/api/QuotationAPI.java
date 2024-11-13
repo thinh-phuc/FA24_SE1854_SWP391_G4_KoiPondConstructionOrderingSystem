@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,31 +26,35 @@ public class QuotationAPI {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('CONSULTANT','MANAGER')")
     public ResponseEntity getAll(){
             List<GetAllQuotationResponse> quotationList = quotationService.getQuotationAll();
             return ResponseEntity.ok(quotationList);
     }
     //get by id
     @GetMapping("/getById/{quotationId}")
-    public ResponseEntity getAll(@PathVariable Integer quotationId){
+    public ResponseEntity getById(@PathVariable Integer quotationId){
         Quotation quotation = quotationService.getQuotationById(quotationId);
         return ResponseEntity.ok(quotation);
     }
 
 
     @PutMapping("{quotationId}")
+    @PreAuthorize("hasAuthority('CONSULTANT')")
     public ResponseEntity update ( @PathVariable Integer quotationId,@Valid @RequestBody UpdateQuotationRequest quotation ) {
             UpdateQuotationResponse updateQuotation = quotationService.update(quotationId,quotation);
              return ResponseEntity.ok(updateQuotation);
     }
 
     @DeleteMapping("{quotationId}")
+    @PreAuthorize("hasAuthority('CONSULTANT')")
     public ResponseEntity delete (@PathVariable Integer quotationId){
     Quotation deleteQuotation = quotationService.delete(quotationId);
     return  ResponseEntity.ok(deleteQuotation);
     }
 
     @PutMapping("/confirmQuotation/{quotationId}")
+    @PreAuthorize("hasAuthority('CONSULTANT')")
     public ResponseEntity confirmQuotation(@PathVariable Integer quotationId){
         Quotation quotation = quotationService.confirmQuotation(quotationId);
         return  ResponseEntity.ok(quotation);

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,11 +20,13 @@ public class DesignProfileAPI {
     DesignProfileService designProfileService;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity create(@Valid @RequestBody DesignProfileRequest designProfileRequest) {
             DesignProfileResponse newDesignProfile = designProfileService.create(designProfileRequest);
             return ResponseEntity.ok(newDesignProfile);
     }
     @GetMapping
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity getAll(){
         List<GetAllDesignProfile> designProfiles = designProfileService.getAll();
         return ResponseEntity.ok(designProfiles);
@@ -37,12 +40,14 @@ public class DesignProfileAPI {
 
 
     @PutMapping("{designProfileId}")
+    @PreAuthorize("hasAuthority('DESIGNER')")
     public ResponseEntity update ( @PathVariable Integer designProfileId,@Valid @RequestBody UpdateDesignProfileRequest designProfile ) {
         UpdateDesignProfileResponse updateDesignProfile = designProfileService.update(designProfileId,designProfile);
         return ResponseEntity.ok(updateDesignProfile);
     }
 
     @DeleteMapping("{designProfileId}")
+    @PreAuthorize("hasAnyAuthority('DESIGNER', 'MANAGER')")
     public ResponseEntity delete (@PathVariable Integer designProfileId){
         DesignProfile designProfile = designProfileService.delete(designProfileId);
         return  ResponseEntity.ok(designProfile);
