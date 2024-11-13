@@ -32,11 +32,9 @@ public class ServiceFeedbackService {
             }
             serviceFeedback.setServiceRequest(serviceRequest);
 
-            Customer customer = customerRepository.findCustomerByCustomerId(serviceFeedbackRequest.getCustomerId());
-            if (customer == null) {
-                throw new NotFoundException("Customer not found");
-            }
-            serviceFeedback.setCustomer(customer);
+            Customer staff = authenticationService.getCurrentUser();
+            serviceFeedback.setCreateBy(staff.getName());
+            serviceFeedback.setCustomer(staff);
 
             serviceFeedback.setFeedback(serviceFeedbackRequest.getFeedback());
 
@@ -47,8 +45,7 @@ public class ServiceFeedbackService {
                 serviceFeedback.setRating(5); // Default to 5 if rating is out of bounds
             }
 
-            Customer staff = authenticationService.getCurrentUser();
-            serviceFeedback.setCreateBy(staff.getName());
+
 
             return serviceFeedbackRepository.save(serviceFeedback);
         } catch (NotFoundException e) {
