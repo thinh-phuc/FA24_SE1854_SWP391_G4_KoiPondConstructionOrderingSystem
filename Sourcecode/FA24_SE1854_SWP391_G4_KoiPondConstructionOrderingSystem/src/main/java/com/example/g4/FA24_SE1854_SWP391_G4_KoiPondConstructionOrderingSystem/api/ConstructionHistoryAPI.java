@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,12 +27,14 @@ public class ConstructionHistoryAPI {
     DesignProfileService designProfileService;
 
     @PostMapping("/api/construction_history")
+    @PreAuthorize("hasAuthority('CONSTRUCTOR')")
     public ResponseEntity createConstructionHistory(@Valid @RequestBody ConstructionRequest constructionRequest) {
         ConstructionHistory constructionHistory = constructionHistoryService.createConstructionHistory(constructionRequest);
         return ResponseEntity.ok(constructionHistory);
     }
 
     @PostMapping("/api/construction_history/acceptance_document")
+    @PreAuthorize("hasAuthority('CONSTRUCTOR')")
     public ResponseEntity createAcceptanceDocument(@Valid @RequestBody AcceptanceRequest acceptanceRequest) {
         AcceptanceDocument acceptanceDocument = constructionHistoryService.createAcceptanceDocument(acceptanceRequest);
         return ResponseEntity.ok(acceptanceDocument);
@@ -44,6 +47,7 @@ public class ConstructionHistoryAPI {
     }
 
     @PutMapping("/api/construction_history/finish-construction/{designProfileId}")
+    @PreAuthorize("hasAuthority('CONSTRUCTOR')")
     public ResponseEntity finishConstruction(@PathVariable Integer designProfileId) {
         ConstructionHistory constructionHistory = constructionHistoryService.finishConstruction(designProfileId);
         return ResponseEntity.ok(constructionHistory);
