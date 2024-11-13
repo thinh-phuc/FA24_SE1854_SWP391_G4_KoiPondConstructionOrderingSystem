@@ -199,7 +199,7 @@ public class DesignProfileService {
                     Customer staff = customerRepository.findCustomerByCustomerId(staffId);
                     if(staff!=null){
                         String role = staff.getRole();
-                        if(role.equalsIgnoreCase("Design Staff") || role.equalsIgnoreCase("Construction Staff") ){
+                        if(role.equalsIgnoreCase("DESIGNER") || role.equalsIgnoreCase("CONSTRUCTOR") ){
                             newStaffs.add(staff);
                         }else {
                             throw new IllegalArgumentException("Staff with id "+staffId+" not valid");
