@@ -7,6 +7,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.re
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -45,7 +46,7 @@ public class ServiceFeedbackService {
                 serviceFeedback.setRating(5); // Default to 5 if rating is out of bounds
             }
 
-
+            serviceFeedback.setCreateDate(LocalDateTime.now());
 
             return serviceFeedbackRepository.save(serviceFeedback);
         } catch (NotFoundException e) {
@@ -66,6 +67,8 @@ public class ServiceFeedbackService {
 
             Customer customer = authenticationService.getCurrentUser();
             oldServiceFeedback.setUpdateBy(customer.getName());
+
+            oldServiceFeedback.setUpdateDate(LocalDateTime.now());
 
             ServiceFeedback updatedServiceFeedback = serviceFeedbackRepository.save(oldServiceFeedback);
             return updatedServiceFeedback;
