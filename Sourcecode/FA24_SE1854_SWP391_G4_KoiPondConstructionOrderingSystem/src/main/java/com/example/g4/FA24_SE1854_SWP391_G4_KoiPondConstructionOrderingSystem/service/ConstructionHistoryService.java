@@ -133,6 +133,7 @@ public class ConstructionHistoryService {
             acceptanceDocument.setConfirmConstructorName(acceptanceRequest.getConfirmConstructorName());
             acceptanceDocument.setConfirmCustomerName(acceptanceRequest.getConfirmCustomerName());
             acceptanceDocument.setCreateDate(LocalDateTime.now());
+            acceptanceDocument.setFileUrl(acceptanceRequest.getFileUrl());
             Customer staff = authenticationService.getCurrentUser();
             acceptanceDocument.setCreateBy(staff.getName());
             acceptanceDocument.setDesignProfile(designProfile);

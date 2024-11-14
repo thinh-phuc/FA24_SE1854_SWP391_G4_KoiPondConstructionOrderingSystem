@@ -31,6 +31,9 @@ public class AcceptanceDocument {
     @Column(name = "confirm_constructor_name", nullable = false, columnDefinition = "NVARCHAR(100)")
     private String confirmConstructorName = "none";
 
+    @Column(name="file_url",columnDefinition = "VARCHAR(500)")
+    private String fileUrl;
+
     @Column(name = "is_active", columnDefinition = "BIT DEFAULT 1")
     private Boolean isActive = true;
 
