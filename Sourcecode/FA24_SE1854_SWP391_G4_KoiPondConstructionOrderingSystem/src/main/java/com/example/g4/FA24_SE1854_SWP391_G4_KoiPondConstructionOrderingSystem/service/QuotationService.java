@@ -28,6 +28,8 @@ public class QuotationService {
     AuthenticationService authenticationService;
     @Autowired
     RequestRepository requestRepository;
+    @Autowired
+    RequestLogService requestLogService;
     public Quotation getQuotationById(Integer id) {
         Quotation oldQuotation = quotationRepository.findQuotationByQuotationId(id);
         if (oldQuotation == null) {
@@ -108,6 +110,8 @@ public class QuotationService {
         quotation.setUpdateDate(null);
         quotation.setUpdateBy(null);
         Quotation newQuotation = quotationRepository.save(quotation);
+
+        requestLogService.createRequestLog("Quotation made", "Please check your profile to view quotation detail!", consult.getRequestDetail().getRequest());
         return toResponse(newQuotation);
 
     }
@@ -126,6 +130,7 @@ public class QuotationService {
             oldQuotation.setUpdateBy(staff.getName());
             oldQuotation.setTotalCost((oldQuotation.getMainCost() + oldQuotation.getSubCost()) + (oldQuotation.getMainCost() + oldQuotation.getSubCost()) * oldQuotation.getVAT() / 100);
             Quotation updateQuotation = quotationRepository.save(oldQuotation);
+            requestLogService.createRequestLog("Quotation updated", "Please check your profile for detail!", oldQuotation.getConsult().getRequestDetail().getRequest());
             return toUpdateResponse(updateQuotation);
         } catch (Exception e) {
             throw new NotFoundException(e.getMessage());
@@ -174,8 +179,7 @@ public class QuotationService {
     public Quotation confirmQuotation(Integer id) {
         Quotation quotation = getQuotationById(id);
         Request request = requestRepository.findRequestById(quotation.getConsult().getRequestDetail().getRequest().getId());
-        request.setStatus("PENDING");
-        requestRepository.save(request);
+        requestLogService.createRequestLog("Quotation confirmed", "Quotation has been confirmed, please wait for the design!", request);
         quotation.setIsConfirm(true);
         return quotationRepository.save(quotation);
     }

@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 public class ServiceQuotation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "service_quotation_id")
     Integer serviceQuotationId;
 

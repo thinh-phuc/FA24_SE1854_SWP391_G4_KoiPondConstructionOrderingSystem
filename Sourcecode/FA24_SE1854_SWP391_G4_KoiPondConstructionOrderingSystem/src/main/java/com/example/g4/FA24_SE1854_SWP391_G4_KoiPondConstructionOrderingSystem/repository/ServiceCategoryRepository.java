@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ServiceCategoryRepository extends JpaRepository<ServiceCategory,Integer> {
-  //  ServiceCategory findServiceCategoryById(Integer id);
+    ServiceCategory findServiceCategoryByServiceCategoryId(Integer serviceCategoryId);
    // List<ServiceCategory> findServiceCategoriesByIsDeleteFalse();
 }

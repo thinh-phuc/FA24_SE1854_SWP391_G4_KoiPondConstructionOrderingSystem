@@ -2,13 +2,11 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.s
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServicePayment;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceProgress;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceQuotation;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServicePaymentRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServicePaymentRepository;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceProgressRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceQuotationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,15 +55,32 @@ public class ServicePaymentService {
             ServicePayment oldServicePayment = servicePaymentRepository.findServicePaymentByServicePaymentID(id);
             if (oldServicePayment == null)
                 throw new NotFoundException("Not found!");
-
-            oldServicePayment.setPaymentMethod(servicePaymentRequest.getPaymentMethod());
+            if (servicePaymentRequest.getStatus().equals("Paid")) {
+                    oldServicePayment.getServiceQuotation().getServiceRequest().setStatus("Finish");
+            }
             oldServicePayment.setStatus(servicePaymentRequest.getStatus());
+            oldServicePayment.setPaymentMethod(servicePaymentRequest.getPaymentMethod());
 
-//            if ("COMPLETED".equalsIgnoreCase(servicePaymentRequest.getStatus()))
-//                oldServicePayment.getServiceProgress().setIsPaid(true);
+            ServicePayment updatedServicePayment = servicePaymentRepository.save(oldServicePayment);
+            return updatedServicePayment;
+        } catch (Exception e) {
+            throw new NotFoundException("Something is wrong!");
+        }
+    }
 
-            Customer staff = authenticationService.getCurrentUser();
-            oldServicePayment.setUpdateBy(staff.getName());
+    public ServicePayment updateServicePaymentByCustomer(Integer id, ServicePaymentRequest servicePaymentRequest) {
+        try {
+            ServicePayment oldServicePayment = servicePaymentRepository.findServicePaymentByServicePaymentID(id);
+            if (oldServicePayment == null)
+                throw new NotFoundException("Not found!");
+            if (servicePaymentRequest.getStatus().equals("Paid")) {
+                if (oldServicePayment.getServiceQuotation() != null && oldServicePayment.getServiceQuotation().getServiceRequest() != null) {
+                    oldServicePayment.getServiceQuotation().getServiceRequest().setStatus("Finish");
+                } else {
+                    throw new NotFoundException("Associated ServiceRequest not found!");
+                }
+            }
+            oldServicePayment.setStatus(servicePaymentRequest.getStatus());
 
             ServicePayment updatedServicePayment = servicePaymentRepository.save(oldServicePayment);
             return updatedServicePayment;
@@ -85,6 +100,13 @@ public class ServicePaymentService {
         } catch (Exception e) {
             throw new NotFoundException("Something is wrong!");
         }
+    }
+
+    public ServicePayment getServicePaymentByServiceQuotationId(Integer id) {
+        ServicePayment servicePayment = servicePaymentRepository.findServicePaymentByServiceQuotationIdDESC(id);
+        if (servicePayment == null)
+            return null;
+        return servicePayment;
     }
 
     public ServicePayment getServicePaymentById(Integer id) {

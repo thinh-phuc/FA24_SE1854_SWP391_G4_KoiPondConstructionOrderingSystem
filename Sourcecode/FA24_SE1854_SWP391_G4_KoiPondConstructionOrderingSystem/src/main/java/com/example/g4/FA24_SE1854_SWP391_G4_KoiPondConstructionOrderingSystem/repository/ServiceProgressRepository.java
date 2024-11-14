@@ -13,7 +13,7 @@ public interface ServiceProgressRepository extends JpaRepository<ServiceProgress
 
     @Query("SELECT sp FROM ServiceProgress sp " +
             "JOIN sp.serviceDetail sd " +
-            "JOIN sd.staff s " +
+//            "JOIN sd.staff s " +
             "JOIN sd.serviceQuotation sq " +
             "WHERE sq.customer.customerId = :customerId " +
             "AND sp.isActive = true " +

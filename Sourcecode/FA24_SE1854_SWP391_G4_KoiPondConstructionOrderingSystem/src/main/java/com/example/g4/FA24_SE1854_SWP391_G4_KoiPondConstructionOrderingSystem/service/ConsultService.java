@@ -40,6 +40,11 @@ public class ConsultService {
     @Autowired
     RequestRepository requestRepository;
 
+    @Autowired
+    RequestRepository requestRepository;
+
+    @Autowired
+    RequestLogService requestLogService;
 
     //response Consult
     public ConsultResponse toResponseConsult (Consult consult){
@@ -74,7 +79,11 @@ public class ConsultService {
         consult.setCustomers(customers);
 
         RequestDetail requestDetail = requestDetailRepository.findRequestDetailByRequestDetailId(consultRequest.getRequestDetailId());
+        Request request = requestDetail.getRequest();
+        request.setStatus("CONSULTED");
         requestDetail.setNote("DONE");
+        requestLogService.createRequestLog("CONSULTED", "Your request has been consulted, quotation will be made soon!", request);
+        requestRepository.save(request);
         requestDetailRepository.save(requestDetail);
         if(requestDetail == null){
             throw new EntityNotFoundException("Request Detail not found!");

@@ -12,4 +12,5 @@ public class AcceptanceRequest {
     private String confirmConstructorName;
     private Integer designProfileId;
     private LocalDateTime confirmDate;
+    private String fileUrl;
 }

@@ -70,4 +70,8 @@ public class Request {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     Customer customer;
+
+    @OneToMany(mappedBy = "request")
+    @JsonIgnore
+    List<RequestLog> requestLogs;
 }

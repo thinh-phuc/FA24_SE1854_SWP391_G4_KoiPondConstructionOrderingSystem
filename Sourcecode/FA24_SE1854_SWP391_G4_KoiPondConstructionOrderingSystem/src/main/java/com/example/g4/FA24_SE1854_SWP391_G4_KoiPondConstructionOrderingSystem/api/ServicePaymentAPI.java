@@ -38,6 +38,22 @@ public class ServicePaymentAPI {
         return ResponseEntity.ok(servicePayment);
     }
 
+    @GetMapping("/api/service-payment/quotation/{serviceQuotationId}")
+    public ResponseEntity<ServicePayment> getServicePaymentByServiceQuotation(@PathVariable Integer serviceQuotationId) {
+        // Fetch the ServicePayment by serviceQuotationId
+        ServicePayment servicePayment = servicePaymentService.getServicePaymentByServiceQuotationId(serviceQuotationId);
+
+        // Check if the service payment exists
+        if (servicePayment == null) {
+            // Return 404 Not Found if no payment is found
+            return ResponseEntity.notFound().build();
+        }
+
+        // Return 200 OK with the service payment if found
+        return ResponseEntity.ok(servicePayment);
+    }
+
+
     @GetMapping("/api/service-payment/{servicePaymentId}")
     public ResponseEntity getServicePayment(@PathVariable Integer servicePaymentId) {
         ServicePayment servicePayment = servicePaymentService.getServicePaymentById(servicePaymentId);
