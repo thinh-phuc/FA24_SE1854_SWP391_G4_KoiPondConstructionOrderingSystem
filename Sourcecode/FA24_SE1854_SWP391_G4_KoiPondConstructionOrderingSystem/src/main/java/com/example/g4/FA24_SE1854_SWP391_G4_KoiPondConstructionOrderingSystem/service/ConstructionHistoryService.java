@@ -28,6 +28,8 @@ public class ConstructionHistoryService {
     AuthenticationService authenticationService;
     @Autowired
     AcceptanceDocumentRepository acceptanceDocumentRepository;
+    @Autowired
+    RequestLogService requestLogService;
 
     public ConstructionHistory createConstructionHistory(ConstructionRequest constructionRequest) {
         try {
@@ -51,6 +53,8 @@ public class ConstructionHistoryService {
             constructionHistory.setCreateBy(staff.getName());
             constructionHistory.setDesignProfile(designProfile);
             ConstructionHistory newConstructionHistory = constructionHistoryRepository.save(constructionHistory);
+
+            requestLogService.createRequestLog("CONSTRUCTING", "Please check your profile to view construction progress!", designProfile.getQuotation().getConsult().getRequestDetail().getRequest());
             return newConstructionHistory;
         } catch (Exception e) {
             throw new NotFoundException(e.getMessage());
@@ -94,6 +98,8 @@ public class ConstructionHistoryService {
             complete.setDesignProfile(designProfile);
             designProfile.setContructionStatus("COMPLETED");
             designProfileRepository.save(designProfile);
+
+            requestLogService.createRequestLog("Construction finished", "Testing for acceptance.", designProfile.getQuotation().getConsult().getRequestDetail().getRequest());
             return constructionHistoryRepository.save(complete);
         } catch (Exception e) {
             throw new NotFoundException(e.getMessage());
@@ -131,6 +137,8 @@ public class ConstructionHistoryService {
             acceptanceDocument.setCreateBy(staff.getName());
             acceptanceDocument.setDesignProfile(designProfile);
             AcceptanceDocument newAcceptanceDocument = acceptanceDocumentRepository.save(acceptanceDocument);
+
+            requestLogService.createRequestLog("DONE", "Please check your profile acceptance test detail!", designProfile.getQuotation().getConsult().getRequestDetail().getRequest());
             return newAcceptanceDocument;
         } catch (Exception e) {
             throw new NotFoundException(e.getMessage());

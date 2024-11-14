@@ -32,6 +32,8 @@ public class DesignProfileService {
     QuotationRepository quotationRepository;
     @Autowired
     QuotationService quotationService;
+    @Autowired
+    RequestLogService requestLogService;
 
     public DesignProfile getDesignProfileById(Integer id) {
         DesignProfile oldDesignProfile = designProfileRepository.findDesignProfileByDesignProfileId(id);
@@ -81,6 +83,8 @@ public class DesignProfileService {
         designProfile.setQuotation(quotation);
         designProfile.setDescription(designProfileRequest.getDescription());
         DesignProfile newDesignProfile = designProfileRepository.save(designProfile);
+
+        requestLogService.createRequestLog("Design profile made", "Please check your profile to view detail!", quotation.getConsult().getRequestDetail().getRequest());
         return toCreateResponse(newDesignProfile);
     }
 // moi lam
