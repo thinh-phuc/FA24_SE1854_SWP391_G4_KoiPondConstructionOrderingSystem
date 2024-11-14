@@ -25,6 +25,8 @@ public interface DesignProfileRepository extends JpaRepository<DesignProfile, In
     @Query("SELECT dp FROM DesignProfile dp JOIN dp.quotation q JOIN q.customer c WHERE c.customerId = :customerId")
     List<DesignProfile> findDesignProfilesByCustomer(@Param("customerId") Integer customerId);
 
+
+
 //    @Query("SELECT c FROM DesignProfile dp JOIN dp.customers c WHERE dp.designProfileId = :designProfileId")
 //    List<Customer> findStaffsByDesignProfileId(@Param("designProfileId") Integer designProfileId);
 }
