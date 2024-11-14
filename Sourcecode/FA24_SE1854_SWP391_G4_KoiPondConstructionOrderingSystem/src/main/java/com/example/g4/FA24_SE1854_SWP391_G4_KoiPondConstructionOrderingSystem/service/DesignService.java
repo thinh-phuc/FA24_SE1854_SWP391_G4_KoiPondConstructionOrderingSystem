@@ -24,7 +24,8 @@ public class DesignService {
     AuthenticationService authenticationService;
     @Autowired
     DesignProfileRepository designProfileRepository;
-
+    @Autowired
+    RequestLogService requestLogService;
 
     public Design getDesignById(Integer id){
         Design design = designRepository.findDesignByDesignId(id);
@@ -77,6 +78,7 @@ public class DesignService {
         design.setUpdateDate(null);
         design.setUpdateBy(null);
         Design newDesign = designRepository.save(design);
+        requestLogService.createRequestLog("Design made", "Please check your profile to view design detail!", designProfile.getQuotation().getConsult().getRequestDetail().getRequest());
         return toResponse(newDesign);
     }
     public List<Design> getAll(){
@@ -92,6 +94,7 @@ public class DesignService {
         oldDesign.setUpdateBy(staff.getName());
         oldDesign.setUpdateDate(LocalDateTime.now());
         Design design = designRepository.save(oldDesign);
+        requestLogService.createRequestLog("Design updated", "Please check your profile for detail!", oldDesign.getDesignProfile().getQuotation().getConsult().getRequestDetail().getRequest());
         return toUpdateResponse(design);
     }
     public Design delete(Integer id){

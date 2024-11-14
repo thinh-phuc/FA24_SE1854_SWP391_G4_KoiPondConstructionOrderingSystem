@@ -1,15 +1,13 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service;
 
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Consult;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.PondDesignTemplate;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.RequestDetail;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.*;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ConsultRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ConsultResponse;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ConsultRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.RequestDetailRepository;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.RequestRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +38,11 @@ public class ConsultService {
     @Autowired
     RequestDetailService requestDetailService;
 
+    @Autowired
+    RequestRepository requestRepository;
+
+    @Autowired
+    RequestLogService requestLogService;
 
     //response Consult
     public ConsultResponse toResponseConsult (Consult consult){
@@ -74,7 +77,11 @@ public class ConsultService {
         consult.setCustomers(customers);
 
         RequestDetail requestDetail = requestDetailRepository.findRequestDetailByRequestDetailId(consultRequest.getRequestDetailId());
+        Request request = requestDetail.getRequest();
+        request.setStatus("CONSULTED");
         requestDetail.setNote("DONE");
+        requestLogService.createRequestLog("CONSULTED", "Your request has been consulted, quotation will be made soon!", request);
+        requestRepository.save(request);
         requestDetailRepository.save(requestDetail);
         if(requestDetail == null){
             throw new EntityNotFoundException("Request Detail not found!");

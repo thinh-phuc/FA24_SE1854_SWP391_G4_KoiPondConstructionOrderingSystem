@@ -32,6 +32,9 @@ public class RequestService {
     @Autowired
     CustomerRepository customerRepository;
 
+    @Autowired
+    RequestLogService requestLogService;
+
     //create
     public Request create(RequestRequest requestRequest){
         Customer user = authenticationService.getCurrentUser();
@@ -51,6 +54,8 @@ public class RequestService {
         request.setCustomer(customer);
 
         Request newRequest = requestRepository.save(request);
+
+        requestLogService.createRequestLog("Request sent", "Please wait, we will contact you soon!", request);
         return newRequest;
     }
 
