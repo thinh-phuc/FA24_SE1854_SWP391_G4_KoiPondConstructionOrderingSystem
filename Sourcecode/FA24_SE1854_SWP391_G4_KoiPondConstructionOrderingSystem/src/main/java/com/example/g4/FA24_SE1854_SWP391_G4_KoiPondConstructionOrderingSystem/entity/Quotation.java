@@ -26,8 +26,6 @@ public class Quotation {
     @Column(name = "is_confirm", columnDefinition = "BIT DEFAULT 0")
     private Boolean isConfirm = false;
 
-
-
     @Column(name = "description", columnDefinition = "NVARCHAR(500)")
     private String description = "none";
 

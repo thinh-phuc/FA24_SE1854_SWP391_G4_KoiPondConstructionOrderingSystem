@@ -31,7 +31,7 @@ public class RequestDetailAPI {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('CONSULTANT')")
+    @PreAuthorize("hasAnyAuthority('CONSULTANT','MANAGER','DESIGNER')")
     public ResponseEntity getAllDetails(){
         List<RequestDetail> requestDetails = requestDetailService.getAllDetails();
         return ResponseEntity.ok(requestDetails);

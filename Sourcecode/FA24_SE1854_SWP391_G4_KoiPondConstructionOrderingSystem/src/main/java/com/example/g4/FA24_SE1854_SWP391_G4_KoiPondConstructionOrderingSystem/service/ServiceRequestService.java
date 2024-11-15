@@ -23,6 +23,8 @@ public class ServiceRequestService implements  IServiceRequestService{
     private CustomerRepository customerRepository;
     @Autowired
     AuthenticationService authenticationService;
+    @Autowired
+    private ServiceRequestLogService serviceRequestLogService;
     @Override
     public ServiceRequest addServiceRequest(AddServiceRequest serviceRequest) throws Exception {
         ServiceCategory existingCategory= serviceCategoryRepository
@@ -39,7 +41,8 @@ public class ServiceRequestService implements  IServiceRequestService{
         newRequest.setUpdateDate(LocalDateTime.now());
         newRequest.setServiceCategory(existingCategory);
         newRequest.setCustomer(customer);
-        newRequest.setStatus("PROCESSING");
+        newRequest.setStatus("PENDING");
+        serviceRequestLogService.createServiceRequestLog(newRequest,"Please wait, we will contact you soon!","Request sent!");
         return serviceRequestRepository.save(newRequest);
     }
 
@@ -56,7 +59,7 @@ public class ServiceRequestService implements  IServiceRequestService{
            {
                throw new DataNotFoundException("Cannot find service-request with id = "+id );
            }
-           if(!existingRequest.getStatus().equals("PROCESSING"))
+           if(!existingRequest.getStatus().equals("PENDING"))
            {
                throw new DataNotFoundException("Cann't update request");
            }

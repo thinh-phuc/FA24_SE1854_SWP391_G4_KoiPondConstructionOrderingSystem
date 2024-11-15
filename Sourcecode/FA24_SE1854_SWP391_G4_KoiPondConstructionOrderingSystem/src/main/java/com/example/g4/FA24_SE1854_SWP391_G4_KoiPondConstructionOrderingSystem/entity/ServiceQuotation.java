@@ -40,7 +40,7 @@ public class ServiceQuotation {
 
     @Column(name = "VAT", nullable = false, columnDefinition = "FLOAT")
     @Min(value = 1, message = "VAT must be more than 0")
-    private float VAT = 0.0f;
+    private float VAT = 10;
 
     @Column(name = "total_cost", nullable = false, columnDefinition = "FLOAT")
     @Min(value = 1, message = "TotalCost must be more than 0")

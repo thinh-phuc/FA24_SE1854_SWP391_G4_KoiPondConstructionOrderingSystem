@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(title = "KoiPondAPI", version = "1.0", description = "Information"))
 @SecurityScheme(name = "api", scheme = "bearer", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
-public class 	Fa24Se1854Swp391G4KoiPondConstructionOrderingSystemApplication {
+public class 		Fa24Se1854Swp391G4KoiPondConstructionOrderingSystemApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Fa24Se1854Swp391G4KoiPondConstructionOrderingSystemApplication.class, args);
