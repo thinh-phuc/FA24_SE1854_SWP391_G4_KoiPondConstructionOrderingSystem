@@ -93,14 +93,21 @@ public class QuotationService {
             throw new NotFoundException("consult not found");
         }
 
-        float subCostRate = quotationRequest.getSubCostRate();
+
         Quotation quotation = new Quotation();
         Customer staff = authenticationService.getCurrentUser();
         quotation.setCreateBy(staff.getName());
         quotation.setCreateDate(LocalDateTime.now());
         quotation.setVAT(quotationRequest.getVAT());
         quotation.setMainCost(quotationRequest.getMainCost());
-        quotation.setSubCost(quotationRequest.getMainCost() * (subCostRate/100));
+
+//        float subCostRate = quotationRequest.getSubCostRate();
+//        float subCost = quotationRequest.getMainCost() * (subCostRate / 100);
+//        //fix loi rang buoc trong database
+//        if (subCost < 0) {
+//            throw new IllegalArgumentException("Sub Cost must be greater than or equal to 0");
+//        }
+        quotation.setSubCost(quotationRequest.getSubCost());
         quotation.setTotalCost((quotation.getMainCost() + quotation.getSubCost()) + (quotation.getMainCost() + quotation.getSubCost()) * quotation.getVAT() / 100);
         quotation.setIsActive(true);
         quotation.setDescription(quotationRequest.getDescription());

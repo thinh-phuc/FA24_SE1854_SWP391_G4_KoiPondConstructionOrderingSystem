@@ -25,7 +25,7 @@ public class QuotationRequest {
     private String url = "none";
     private float mainCost = 0.0f;
     private float subCost = 0.0f;
-    private float subCostRate = 0;
+//    private float subCostRate = 0;
     private float VAT = 0.0f;
 
 }
