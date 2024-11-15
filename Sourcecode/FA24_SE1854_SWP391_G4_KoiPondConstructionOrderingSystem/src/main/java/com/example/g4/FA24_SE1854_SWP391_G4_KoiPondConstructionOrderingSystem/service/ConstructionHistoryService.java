@@ -8,6 +8,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.ex
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.AcceptanceRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ConstructionRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateAcceptanceDocumentRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateConstructionRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.AcceptanceDocumentRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ConstructionHistoryRepository;
@@ -76,6 +77,26 @@ public class ConstructionHistoryService {
             Customer staff = authenticationService.getCurrentUser();
             old.setUpdateBy(staff.getName());
             return constructionHistoryRepository.save(old);
+        } catch (Exception e) {
+            throw new NotFoundException(e.getMessage());
+        }
+    }
+
+    public AcceptanceDocument updateAcceptanceDocument(UpdateAcceptanceDocumentRequest documentRequest, Integer id) {
+        try {
+            AcceptanceDocument old = acceptanceDocumentRepository.findAcceptanceDocumentByAcceptanceDocumentId(id);
+            if (old == null) {
+                throw new NotFoundException("Not found!");
+            }
+            old.setFileUrl(documentRequest.getFileUrl());
+            old.setConfirmConstructorName(documentRequest.getConfirmConstructorName());
+            old.setConfirmCustomerName(documentRequest.getConfirmCustomerName());
+            old.setDescription(documentRequest.getDescription());
+            old.setConfirmDate(documentRequest.getConfirmDate());
+            old.setUpdateDate(LocalDateTime.now());
+            Customer staff = authenticationService.getCurrentUser();
+            old.setUpdateBy(staff.getName());
+            return acceptanceDocumentRepository.save(old);
         } catch (Exception e) {
             throw new NotFoundException(e.getMessage());
         }
