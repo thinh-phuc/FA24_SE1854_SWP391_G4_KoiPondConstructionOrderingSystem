@@ -44,6 +44,7 @@ public class QuotationService {
         response.setQuotationId(quotation.getQuotationId());
         response.setIsConfirm(quotation.getIsConfirm());
         response.setDescription(quotation.getDescription());
+        response.setUrl(quotation.getUrl());
         response.setMainCost(quotation.getMainCost());
         response.setSubCost(quotation.getSubCost());
         response.setVAT(quotation.getVAT());
@@ -62,6 +63,7 @@ public class QuotationService {
         response.setQuotationId(quotation.getQuotationId());
         response.setIsConfirm(quotation.getIsConfirm());
         response.setDescription(quotation.getDescription());
+        response.setUrl(quotation.getUrl());
         response.setMainCost(quotation.getMainCost());
         response.setSubCost(quotation.getSubCost());
         response.setVAT(quotation.getVAT());
@@ -90,16 +92,19 @@ public class QuotationService {
         if (consult == null) {
             throw new NotFoundException("consult not found");
         }
+
+        float subCostRate = quotationRequest.getSubCostRate();
         Quotation quotation = new Quotation();
         Customer staff = authenticationService.getCurrentUser();
         quotation.setCreateBy(staff.getName());
         quotation.setCreateDate(LocalDateTime.now());
         quotation.setVAT(quotationRequest.getVAT());
         quotation.setMainCost(quotationRequest.getMainCost());
-        quotation.setSubCost(quotationRequest.getSubCost());
+        quotation.setSubCost(quotationRequest.getMainCost() * (subCostRate/100));
         quotation.setTotalCost((quotation.getMainCost() + quotation.getSubCost()) + (quotation.getMainCost() + quotation.getSubCost()) * quotation.getVAT() / 100);
         quotation.setIsActive(true);
         quotation.setDescription(quotationRequest.getDescription());
+        quotation.setUrl(quotationRequest.getUrl());
         quotation.setConsult(consult);
         //quotation.setPondDesignTemplate(pondDesignTemplate);
         quotation.setCustomer(customer);
@@ -117,8 +122,10 @@ public class QuotationService {
     public UpdateQuotationResponse update(Integer id, UpdateQuotationRequest quotationRequest) {
         try {
             Customer staff = authenticationService.getCurrentUser();
+
             Quotation oldQuotation = getQuotationById(id);
             oldQuotation.setDescription(quotationRequest.getDescription());
+            oldQuotation.setUrl(quotationRequest.getUrl());
             oldQuotation.setMainCost(quotationRequest.getMainCost());
             oldQuotation.setSubCost(quotationRequest.getSubCost());
             oldQuotation.setVAT(quotationRequest.getVAT());
@@ -146,6 +153,7 @@ public class QuotationService {
             response.setConsultId(quotation.getConsult().getId());
             response.setCustomerId(quotation.getCustomer().getCustomerId());
             response.setDescription(quotation.getDescription());
+            response.setUrl(quotation.getUrl());
             response.setIsActive(quotation.getIsActive());
             response.setVAT(quotation.getVAT());
             response.setTotal(quotation.getTotalCost());
@@ -189,6 +197,7 @@ public class QuotationService {
             response.setConsultId(quotation.getConsult().getId());
             response.setCustomerId(quotation.getCustomer().getCustomerId());
             response.setDescription(quotation.getDescription());
+            response.setUrl(quotation.getUrl());
             response.setIsActive(quotation.getIsActive());
             response.setVAT(quotation.getVAT());
             response.setTotal(quotation.getTotalCost());
@@ -224,6 +233,7 @@ public class QuotationService {
             response.setConsultId(quotation.getConsult().getId());
             response.setCustomerId(quotation.getCustomer().getCustomerId());
             response.setDescription(quotation.getDescription());
+            response.setUrl(quotation.getUrl());
             response.setIsActive(quotation.getIsActive());
             response.setVAT(quotation.getVAT());
             response.setTotal(quotation.getTotalCost());

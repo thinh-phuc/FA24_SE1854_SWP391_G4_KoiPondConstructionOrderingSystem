@@ -90,4 +90,11 @@ public class CustomerService {
             throw new NotFoundException("Not found!");
         }
     }
+    public Customer getCustomerById(Integer id){
+        Customer customer = customerRepository.findCustomerByCustomerId(id);
+        if(customer == null){
+            throw  new NotFoundException("Customer not found");
+        }
+        return  customer;
+    }
 }
