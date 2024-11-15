@@ -49,6 +49,9 @@ public class Customer implements UserDetails {
     @Column(name = "description", columnDefinition = "NVARCHAR(500)")
     private String description = "none";
 
+    @Column(name = "address", columnDefinition = "NVARCHAR(200)")
+    private String address = "none";
+
     @Column(name = "note", columnDefinition = "NVARCHAR(255)")
     private String note = "none";
 
