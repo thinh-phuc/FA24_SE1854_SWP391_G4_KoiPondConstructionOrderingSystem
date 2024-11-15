@@ -42,7 +42,7 @@ public class RequestService {
 
 
         Request request = new Request();
-        request.setStatus("PROCESSING");
+        request.setStatus("PENDING");
         request.setCreateDate(LocalDateTime.now());
         request.setDescription(requestRequest.getDescription());
         request.setAddress(requestRequest.getAddress());

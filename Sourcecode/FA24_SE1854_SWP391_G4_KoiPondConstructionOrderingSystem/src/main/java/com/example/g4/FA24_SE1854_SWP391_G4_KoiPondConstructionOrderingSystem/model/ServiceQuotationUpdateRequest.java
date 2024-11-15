@@ -8,5 +8,5 @@ import lombok.Data;
 @Data
 public class ServiceQuotationUpdateRequest {
     private String description;
-    private float VAT;
+
 }

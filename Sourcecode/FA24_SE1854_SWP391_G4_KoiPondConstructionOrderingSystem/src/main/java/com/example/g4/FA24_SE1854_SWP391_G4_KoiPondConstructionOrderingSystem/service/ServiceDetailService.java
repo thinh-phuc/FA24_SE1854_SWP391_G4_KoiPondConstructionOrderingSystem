@@ -3,6 +3,7 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.s
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceDetail;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceQuotation;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.DataNotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceDetailRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceDetailUpdateRequest;
@@ -26,6 +27,8 @@ public class ServiceDetailService implements IServiceDetailService{
     private CustomerRepository customerRepository;
     @Autowired
     AuthenticationService authenticationService;
+    @Autowired
+    private ServiceRequestLogService serviceRequestLogService;
     @Override
     public ServiceDetail createServiceDetail(ServiceDetailRequest serviceDetail) throws Exception {
         ServiceQuotation serviceQuotation = serviceQuotationRepository.findById(serviceDetail.getServiceQuotationId())
@@ -35,6 +38,11 @@ public class ServiceDetailService implements IServiceDetailService{
         {
             throw new DataNotFoundException("Can not create service-detail!");
         }
+
+        ServiceRequest request = serviceRequestRepository.findById(serviceQuotation.getServiceRequest().getServiceRequestId())
+                .orElseThrow(()-> new DataNotFoundException("Cannot find service-request"));
+            request.setStatus("PROCESSING");
+            serviceRequestRepository.save(request);
         Customer staff = customerRepository.findCustomerByCustomerId(serviceDetail.getStaffId());
         if(staff ==null)
         {
@@ -49,6 +57,7 @@ public class ServiceDetailService implements IServiceDetailService{
         newDetail.setCreateDate(LocalDateTime.now());
         newDetail.setCreateBy(manager.getRole() + ":" +manager.getName() );
         newDetail.setIsActive(true);
+        serviceRequestLogService.createServiceRequestLog(serviceQuotation.getServiceRequest(),"We are assigning employees to do the work","Assigned staff!");
         ServiceDetail obj = serviceDetailRepository.save(newDetail);
         return obj;
     }
@@ -78,7 +87,7 @@ public class ServiceDetailService implements IServiceDetailService{
         detail.setStaff(staff);
         detail.setUpdateDate(LocalDateTime.now());
         detail.setUpdateBy(manager.getRole() + ":" +manager.getName() );
-
+        serviceRequestLogService.createServiceRequestLog(detail.getServiceQuotation().getServiceRequest(),"We have a change in assignment!","Assign staff updated!");
         return serviceDetailRepository.save(detail);
     }
 

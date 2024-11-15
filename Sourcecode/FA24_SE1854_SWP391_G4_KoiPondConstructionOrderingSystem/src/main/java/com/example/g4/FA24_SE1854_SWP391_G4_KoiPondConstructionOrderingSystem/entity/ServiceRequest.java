@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 
@@ -60,5 +61,9 @@ public class ServiceRequest {
     @OneToOne
     @JoinColumn(name="service_quotation_id")
    private ServiceQuotation serviceQuotation;
+
+ @OneToMany(mappedBy = "serviceRequest")
+ @JsonIgnore
+ List<ServiceRequestLog> serviceRequestLogs;
 
 }

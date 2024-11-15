@@ -3,10 +3,12 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.s
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceDetail;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceProgress;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceProgressResquest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceDetailRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceProgressRepository;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +18,16 @@ import java.util.List;
 
 @Service
 public class ServiceProgressService {
-
+    @Autowired
+    private ServiceRequestRepository serviceRequestRepository;
     @Autowired
     ServiceDetailRepository serviceDetailRepository;
     @Autowired
     ServiceProgressRepository serviceProgressRepository;
     @Autowired
     AuthenticationService authenticationService;
-
+    @Autowired
+    private ServiceRequestLogService serviceRequestLogService;
     public ServiceProgress createServiceProgress(ServiceProgressResquest serviceProgressResquest) {
         try {
             ServiceProgress serviceProgress = new ServiceProgress();
@@ -35,13 +39,17 @@ public class ServiceProgressService {
             if (serviceDetail == null) {
                 throw new NotFoundException("Service Detail Not Found");
             }
+            //save lại status
             serviceProgress.setServiceDetail(serviceDetail);
+            ServiceRequest request = serviceRequestRepository.findServiceRequestByServiceRequestId(serviceDetail.getServiceQuotation().getServiceRequest().getServiceRequestId());
+            request.setStatus("Progressing");
+            serviceRequestRepository.save(request);
 
             Customer staff = authenticationService.getCurrentUser();
             serviceProgress.setCreateBy(staff.getName());
 
             ServiceProgress newServiceProgress = serviceProgressRepository.save(serviceProgress);
-
+            serviceRequestLogService.createServiceRequestLog(request,"Please check view your progress!","Progress made");
             return newServiceProgress;
         } catch (Exception e) {
             throw new NotFoundException("Something is wrong!");

@@ -3,11 +3,10 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.s
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServicePayment;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceQuotation;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServicePaymentRequest;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServicePaymentRepository;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceQuotationRepository;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,10 @@ public class ServicePaymentService {
     private ServicePaymentRepository servicePaymentRepository;
     @Autowired
     AuthenticationService authenticationService;
-
+    @Autowired
+    private ServiceRequestLogService serviceRequestLogService;
+    @Autowired
+    private ServiceRequestRepository serviceRequestRepository;
     public ServicePayment createServicePayment(ServicePaymentRequest servicePaymentRequest) {
         try {
             ServicePayment servicePayment = new ServicePayment();
@@ -31,8 +33,12 @@ public class ServicePaymentService {
             ServiceQuotation serviceQuotation = serviceQuotationRepository.findServiceQuotationByServiceQuotationId(servicePaymentRequest.getServiceQuotationID());
             if (serviceQuotation == null)
                 throw new NotFoundException("Service Quotation Not Found");
-            servicePayment.setServiceQuotation(serviceQuotation);
+            ServiceRequest serviceRequest = serviceRequestRepository.findServiceRequestByServiceRequestId(serviceQuotation.getServiceRequest().getServiceRequestId());
+            serviceRequest.setStatus("Payment in progress");
+            serviceRequestRepository.save(serviceRequest);
 
+
+            servicePayment.setServiceQuotation(serviceQuotation);
             servicePayment.setPaymentMethod(servicePaymentRequest.getPaymentMethod());
 
             Customer maintenanceStaff = customerRepository.findCustomerByCustomerId(servicePaymentRequest.getMaintenanceStaffID());
@@ -42,7 +48,7 @@ public class ServicePaymentService {
 
             Customer staff = authenticationService.getCurrentUser();
             servicePayment.setCreateBy(staff.getName());
-
+            serviceRequestLogService.createServiceRequestLog(serviceRequest,"Please check your view Payment!","Payment created!");
             ServicePayment newServicePayment = servicePaymentRepository.save(servicePayment);
             return newServicePayment;
         } catch (Exception e) {
@@ -76,6 +82,7 @@ public class ServicePaymentService {
             if (servicePaymentRequest.getStatus().equals("Paid")) {
                 if (oldServicePayment.getServiceQuotation() != null && oldServicePayment.getServiceQuotation().getServiceRequest() != null) {
                     oldServicePayment.getServiceQuotation().getServiceRequest().setStatus("Finish");
+
                 } else {
                     throw new NotFoundException("Associated ServiceRequest not found!");
                 }
