@@ -3,12 +3,14 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.s
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.DesignProfile;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Quotation;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Request;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.DuplicateException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.*;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.CustomerRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.DesignProfileRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.QuotationRepository;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.RequestRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,8 @@ public class DesignProfileService {
     QuotationService quotationService;
     @Autowired
     RequestLogService requestLogService;
+    @Autowired
+    RequestRepository requestRepository;
 
     public DesignProfile getDesignProfileById(Integer id) {
         DesignProfile oldDesignProfile = designProfileRepository.findDesignProfileByDesignProfileId(id);
@@ -69,12 +73,13 @@ public class DesignProfileService {
     public DesignProfileResponse create(DesignProfileRequest designProfileRequest) {
         Quotation quotation = quotationRepository.findQuotationByQuotationId(designProfileRequest.getQuotationId());
         QuotationResponse quotationResponse = quotationService.toResponse(quotation);
+        Request request = requestRepository.findRequestByQuotationId(quotation.getQuotationId());
         if(quotationResponse == null){
             throw new NotFoundException("Quotation not found");
         }
         DesignProfile designProfile = new DesignProfile();
         Customer staff = authenticationService.getCurrentUser();
-        designProfile.setAddress(designProfileRequest.getAddress());
+        designProfile.setAddress(request.getAddress());
         designProfile.setCreateBy(staff.getName());
         designProfile.setCreateDate(LocalDateTime.now());
         designProfile.setIsActive(true);

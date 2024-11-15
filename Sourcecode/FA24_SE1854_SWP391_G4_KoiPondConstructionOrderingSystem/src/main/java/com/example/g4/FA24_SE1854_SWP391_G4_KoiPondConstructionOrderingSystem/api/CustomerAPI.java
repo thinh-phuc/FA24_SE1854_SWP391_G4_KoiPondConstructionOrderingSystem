@@ -54,4 +54,9 @@ public class CustomerAPI {
         List<Customer> customers = customerService.getAllCustomers();
         return ResponseEntity.ok(customers);
     }
+    @GetMapping("/getCustomerById/{customerId}")
+    public ResponseEntity getCustomerById(@PathVariable Integer customerId){
+        Customer customer = customerService.getCustomerById(customerId);
+        return ResponseEntity.ok(customer);
+    }
 }

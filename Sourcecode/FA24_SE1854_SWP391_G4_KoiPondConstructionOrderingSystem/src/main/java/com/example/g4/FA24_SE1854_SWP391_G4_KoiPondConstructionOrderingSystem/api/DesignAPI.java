@@ -59,7 +59,9 @@ public class DesignAPI {
 
     }
     @GetMapping("/getDesignByDesignProfile/{designProfileId}")
-    @PreAuthorize("hasAnyAuthority('DESIGNER','MANAGER','CONSTRUCTOR')")
+
+    @PreAuthorize("hasAnyAuthority('DESIGNER','MANAGER','CUSTOMER')")
+
     public ResponseEntity getByDesignProfile(@PathVariable Integer designProfileId){
         List<Design> designList = designService.getDesignByProfileId(designProfileId);
         return ResponseEntity.ok(designList);
