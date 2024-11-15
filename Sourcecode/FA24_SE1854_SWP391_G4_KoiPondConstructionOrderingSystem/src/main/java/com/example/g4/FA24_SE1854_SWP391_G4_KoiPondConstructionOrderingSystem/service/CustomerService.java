@@ -70,6 +70,7 @@ public class CustomerService {
         customer.setName(updateProfileRequest.getName());
         customer.setEmail(updateProfileRequest.getEmail());
         customer.setPhoneNumber(updateProfileRequest.getPhoneNumber());
+        customer.setAddress(updateProfileRequest.getAddress());
         return customerRepository.save(customer);
     }
     public List<Customer> getStaffsByDesignProfileId(Integer designProfileId){
