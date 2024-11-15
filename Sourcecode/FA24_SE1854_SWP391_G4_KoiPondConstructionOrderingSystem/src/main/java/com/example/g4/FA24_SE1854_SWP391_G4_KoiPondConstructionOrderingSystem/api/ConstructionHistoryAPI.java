@@ -5,6 +5,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.en
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.DesignProfile;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.AcceptanceRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ConstructionRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateAcceptanceDocumentRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateConstructionRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.ConstructionHistoryService;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.DesignProfileService;
@@ -44,6 +45,13 @@ public class ConstructionHistoryAPI {
     public ResponseEntity updateConstructionHistory(@Valid @RequestBody UpdateConstructionRequest constructionRequest, @PathVariable Integer constructionHistoryId) {
         ConstructionHistory constructionHistory = constructionHistoryService.updateConstructionHistory(constructionRequest, constructionHistoryId);
         return ResponseEntity.ok(constructionHistory);
+    }
+
+    @PutMapping("/api/construction_history/update-document/{acceptanceDocumentId}")
+    @PreAuthorize("hasAuthority('CONSTRUCTOR')")
+    public ResponseEntity updateAcceptanceDocument(@Valid @RequestBody UpdateAcceptanceDocumentRequest documentRequest, @PathVariable Integer acceptanceDocumentId) {
+        AcceptanceDocument acceptanceDocument = constructionHistoryService.updateAcceptanceDocument(documentRequest, acceptanceDocumentId);
+        return ResponseEntity.ok(acceptanceDocument);
     }
 
     @PutMapping("/api/construction_history/finish-construction/{designProfileId}")
