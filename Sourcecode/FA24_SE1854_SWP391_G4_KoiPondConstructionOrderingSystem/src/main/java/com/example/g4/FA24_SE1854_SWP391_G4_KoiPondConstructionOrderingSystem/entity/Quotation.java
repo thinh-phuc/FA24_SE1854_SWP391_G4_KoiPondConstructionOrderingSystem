@@ -31,6 +31,9 @@ public class Quotation {
     @Column(name = "description", columnDefinition = "NVARCHAR(500)")
     private String description = "none";
 
+    @Column(name = "url", columnDefinition = "NVARCHAR(500)")
+    private String url = "none";
+
     @Column(name = "main_cost", nullable = false, columnDefinition = "FLOAT")
     @Min(value = 1, message = "MainCost must be more than 0")
     private float mainCost = 0.0f;
