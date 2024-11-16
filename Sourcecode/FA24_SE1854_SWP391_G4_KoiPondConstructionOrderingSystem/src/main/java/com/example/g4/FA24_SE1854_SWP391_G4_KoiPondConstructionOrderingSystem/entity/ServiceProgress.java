@@ -47,6 +47,9 @@ public class ServiceProgress {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "image_url", columnDefinition = "VARCHAR(500)")
+    private String imageUrl;
+
     @Column(name = "is_active", columnDefinition = "BIT DEFAULT 1")
     private Boolean isActive = true;
 
@@ -62,6 +65,7 @@ public class ServiceProgress {
     @Column(name = "update_by", columnDefinition = "NVARCHAR(100)")
     private String updateBy = "none";
 
-//    @OneToMany(mappedBy = "serviceProgress")
-//    List<ServicePayment> servicePayments;
+    @OneToMany(mappedBy = "serviceProgress")
+    @JsonIgnore
+    List<ServiceProgressLog> serviceProgressLogs;
 }

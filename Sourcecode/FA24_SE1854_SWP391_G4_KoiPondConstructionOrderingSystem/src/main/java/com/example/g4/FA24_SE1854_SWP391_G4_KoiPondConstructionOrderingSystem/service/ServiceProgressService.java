@@ -5,7 +5,8 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.en
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceProgress;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceProgressResquest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceProgressRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceProgressUpdateRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceDetailRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceProgressRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceRequestRepository;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,9 +26,8 @@ public class ServiceProgressService {
     ServiceProgressRepository serviceProgressRepository;
     @Autowired
     AuthenticationService authenticationService;
-    @Autowired
-    private ServiceRequestLogService serviceRequestLogService;
-    public ServiceProgress createServiceProgress(ServiceProgressResquest serviceProgressResquest) {
+
+    public ServiceProgress createServiceProgress(ServiceProgressRequest serviceProgressResquest) {
         try {
             ServiceProgress serviceProgress = new ServiceProgress();
             serviceProgress.setStartDate(LocalDateTime.now());
@@ -58,7 +57,7 @@ public class ServiceProgressService {
 
 
 
-    public ServiceProgress updateServiceProgress(Integer id, ServiceProgressResquest updateServiceProgressRequest) {
+    public ServiceProgress updateServiceProgress(Integer id, ServiceProgressUpdateRequest updateServiceProgressRequest) {
         try {
             ServiceProgress oldServiceProgress = serviceProgressRepository.findServiceProgressByServiceProgressID(id);
             if (oldServiceProgress == null)
@@ -67,7 +66,7 @@ public class ServiceProgressService {
             oldServiceProgress.setDescription(updateServiceProgressRequest.getDescription());
             if ("Complete".equalsIgnoreCase(updateServiceProgressRequest.getStep()))
                 oldServiceProgress.setEndDate(LocalDateTime.now());
-
+            oldServiceProgress.setImageUrl(updateServiceProgressRequest.getImageUrl());
             Customer staff = authenticationService.getCurrentUser();
             oldServiceProgress.setUpdateBy(staff.getName());
 
@@ -112,6 +111,11 @@ public class ServiceProgressService {
 
     public List<ServiceProgress> getServiceProgressesForCustomer(Integer customerID) {
         List<ServiceProgress> serviceProgresses = serviceProgressRepository.findActiveServiceProgressByCustomerOrderByServiceProgressIDDesc(customerID);
+        return serviceProgresses;
+    }
+
+    public List<ServiceProgress> getServiceProgressesForMaintenanceStaff(Integer maintenanceStaffID) {
+        List<ServiceProgress> serviceProgresses = serviceProgressRepository.findActiveServiceProgressByCustomerOrderByMaintenanceStaffIdDesc(maintenanceStaffID);
         return serviceProgresses;
     }
 

@@ -20,7 +20,13 @@ public interface ServiceProgressRepository extends JpaRepository<ServiceProgress
             "ORDER BY sp.serviceProgressID DESC")
     List<ServiceProgress> findActiveServiceProgressByCustomerOrderByServiceProgressIDDesc(@Param("customerId") Integer customerId);
 
-
+    @Query("SELECT sp FROM ServiceProgress sp " +
+            "JOIN sp.serviceDetail sd " +
+            "JOIN sd.staff s " +
+            "WHERE s.customerId = :maintenanceStaffId " +
+            "AND sp.isActive = true " +
+            "ORDER BY sp.serviceProgressID DESC")
+    List<ServiceProgress> findActiveServiceProgressByCustomerOrderByMaintenanceStaffIdDesc(@Param("maintenanceStaffId") Integer maintenanceStaffId);
 
     List<ServiceProgress> findServiceProgressesByIsActiveTrueOrderByServiceProgressIDDesc();
 }
