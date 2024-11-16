@@ -15,6 +15,7 @@ public class DesignProfileRequest {
     private String address;
     private String constructionStatus;
     private String description;
+    private String note;
 }
 
 

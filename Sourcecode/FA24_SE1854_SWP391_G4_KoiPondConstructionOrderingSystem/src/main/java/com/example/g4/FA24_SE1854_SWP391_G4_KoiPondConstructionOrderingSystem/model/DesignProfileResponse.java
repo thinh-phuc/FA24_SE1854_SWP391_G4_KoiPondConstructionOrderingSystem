@@ -10,6 +10,7 @@ public class DesignProfileResponse {
     private String address;
     private String constructionStatus;
     private String description;
+    private String note;
     private Boolean isActive = true;
     private LocalDateTime createDate = LocalDateTime.now();
     private String createBy = "none";

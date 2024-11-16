@@ -32,6 +32,9 @@ public class DesignProfile {
     @Column(name = "description", columnDefinition = "NVARCHAR(500)")
     private String description = "none";
 
+    @Column(name = "note", columnDefinition = "NVARCHAR(500)")
+    private String note = "none";
+
 
     @Column(name = "is_active", columnDefinition = "BIT DEFAULT 1")
     private Boolean isActive = true;

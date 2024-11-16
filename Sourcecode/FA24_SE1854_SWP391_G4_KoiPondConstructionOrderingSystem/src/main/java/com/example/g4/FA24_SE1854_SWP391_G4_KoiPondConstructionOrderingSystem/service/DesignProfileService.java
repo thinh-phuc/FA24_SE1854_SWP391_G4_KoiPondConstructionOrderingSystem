@@ -50,6 +50,7 @@ public class DesignProfileService {
         DesignProfileResponse designProfileResponse = new DesignProfileResponse();
         designProfileResponse.setQuotationId(designProfile.getQuotation().getQuotationId());
         designProfileResponse.setDescription(designProfile.getDescription());
+        designProfileResponse.setNote(designProfile.getNote());
         designProfileResponse.setAddress(designProfile.getAddress());
         designProfileResponse.setCreateDate(designProfile.getCreateDate());
         designProfileResponse.setCreateBy(designProfile.getCreateBy());
@@ -61,6 +62,7 @@ public class DesignProfileService {
         UpdateDesignProfileResponse updateDesignProfileResponse = new UpdateDesignProfileResponse();
         updateDesignProfileResponse.setQuotationId(designProfile.getQuotation().getQuotationId());
         updateDesignProfileResponse.setDescription(designProfile.getDescription());
+        updateDesignProfileResponse.setNote(designProfile.getNote());
         updateDesignProfileResponse.setAddress(designProfile.getAddress());
         updateDesignProfileResponse.setUpdateDate(designProfile.getUpdateDate());
         updateDesignProfileResponse.setUpdateBy(designProfile.getUpdateBy());
@@ -87,6 +89,7 @@ public class DesignProfileService {
         designProfile.setUpdateBy(null);
         designProfile.setQuotation(quotation);
         designProfile.setDescription(designProfileRequest.getDescription());
+        designProfile.setNote(designProfileRequest.getNote());
         DesignProfile newDesignProfile = designProfileRepository.save(designProfile);
 
         requestLogService.createRequestLog("Design profile made", "Please check your profile to view detail!", quotation.getConsult().getRequestDetail().getRequest());
@@ -98,6 +101,7 @@ public class DesignProfileService {
         Customer staff = authenticationService.getCurrentUser();
         oldDesignProfile.setAddress(designProfile.getAddress());
         oldDesignProfile.setDescription(designProfile.getDescription());
+        oldDesignProfile.setNote(designProfile.getNote());
         oldDesignProfile.setUpdateDate(LocalDateTime.now());
         oldDesignProfile.setUpdateBy(staff.getName());
 
@@ -122,6 +126,7 @@ public class DesignProfileService {
             designProfile.setQuotationId(dp.getQuotation().getQuotationId());
             designProfile.setAddress(dp.getAddress());
             designProfile.setDescription(dp.getDescription());
+            designProfile.setNote(dp.getNote());
             designProfile.setConstructionStatus(dp.getContructionStatus());
             designProfile.setCreateDate(dp.getCreateDate());
             designProfile.setCreateBy(dp.getCreateBy());
@@ -148,6 +153,7 @@ public class DesignProfileService {
             designProfile.setQuotationId(dp.getQuotation().getQuotationId());
             designProfile.setAddress(dp.getAddress());
             designProfile.setDescription(dp.getDescription());
+            designProfile.setNote(dp.getNote());
             designProfile.setConstructionStatus(dp.getContructionStatus());
             designProfile.setCreateDate(dp.getCreateDate());
             designProfile.setCreateBy(dp.getCreateBy());
