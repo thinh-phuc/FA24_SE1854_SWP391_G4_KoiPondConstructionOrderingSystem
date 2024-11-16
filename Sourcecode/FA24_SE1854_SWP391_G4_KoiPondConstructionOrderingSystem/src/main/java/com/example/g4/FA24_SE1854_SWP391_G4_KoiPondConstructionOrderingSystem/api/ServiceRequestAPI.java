@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,15 +56,14 @@ public class ServiceRequestAPI {
 
     // Delete a ServiceRequest by its ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteServiceRequestById(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteServiceRequestById(@PathVariable Integer id, @RequestParam(required = false) String note) {
         try {
-            serviceRequestService.deleteServiceRequestById(id);
-            return ResponseEntity.noContent().build();
+            serviceRequestService.deleteServiceRequestById(id, note);
+            return ResponseEntity.ok("Delete complete!");
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service request not found");
         }
     }
-
     // Get all ServiceRequests
     @GetMapping
     public ResponseEntity<List<ServiceRequest>> getAllServiceRequests() {
