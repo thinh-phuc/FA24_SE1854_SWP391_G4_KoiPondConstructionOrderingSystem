@@ -42,8 +42,10 @@ public class ServiceRequestService implements  IServiceRequestService{
         newRequest.setServiceCategory(existingCategory);
         newRequest.setCustomer(customer);
         newRequest.setStatus("PENDING");
-        serviceRequestLogService.createServiceRequestLog(newRequest,"Please wait, we will contact you soon!","Request sent!");
-        return serviceRequestRepository.save(newRequest);
+        ServiceRequest request = serviceRequestRepository.save(newRequest);
+        serviceRequestLogService.createServiceRequestLog(request,"Please wait, we will contact you soon!","Request sent!");
+
+        return request;
     }
 
     @Override
