@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/consult")
 @CrossOrigin(origins = "*")
-@PreAuthorize("hasAnyAuthority('CONSULTANT', 'MANAGER')")
+@PreAuthorize("hasAnyAuthority('CONSULTANT', 'MANAGER','STAFF')")
 public class ConsultAPI {
 
     @Autowired
@@ -27,7 +27,7 @@ public class ConsultAPI {
         ConsultResponse newConsult = consultService.createConsult(consultRequest);
         return ResponseEntity.ok(newConsult);
     }
-
+    @PreAuthorize("hasAnyAuthority('CONSULTANT', 'MANAGER','STAFF','DESIGNER')")
     @GetMapping
     public ResponseEntity getAllConsults(){
         List<Consult> consults = consultService.getAllConsults();

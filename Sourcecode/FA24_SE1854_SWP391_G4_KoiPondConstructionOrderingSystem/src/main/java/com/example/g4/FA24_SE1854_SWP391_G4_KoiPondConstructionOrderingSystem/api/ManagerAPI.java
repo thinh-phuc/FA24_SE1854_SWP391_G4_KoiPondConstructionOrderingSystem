@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SecurityRequirement(name="api")
 @RestController
 @CrossOrigin(origins = "*")
-@PreAuthorize("hasAuthority('MANAGER')")
+//@PreAuthorize("hasAuthority('MANAGER')")
 public class ManagerAPI {
     @Autowired
     AuthenticationService authenticationService;

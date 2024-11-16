@@ -53,7 +53,7 @@ public class DesignProfileAPI {
         return  ResponseEntity.ok(designProfile);
     }
     @GetMapping("/get-design_profiles-by-design_staff")
-    @PreAuthorize("hasAuthority('DESIGNER')")
+    @PreAuthorize("hasAnyAuthority('DESIGNER','CONSTRUCTOR')")
     public ResponseEntity getDesignProfilesByDesigner(){
         List<GetAllDesignProfile> designProfiles=designProfileService.getDesignProfilesByDesignStaff();
         return ResponseEntity.ok(designProfiles);

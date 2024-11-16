@@ -22,29 +22,37 @@ public class ServiceQuotationService implements IServiceQuotationService{
     private ServiceQuotationRepository serviceQuotationRepository;
     @Autowired
     private ServiceRequestRepository serviceRequestRepository;
+
     @Autowired
     private ServiceCategoryRepository serviceCategoryRepository;
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
     AuthenticationService authenticationService;
+    @Autowired
+    private ServiceRequestLogService serviceRequestLogService;
     @Override
     public ServiceQuotation addServiceQuotation(ServiceQuotationRequest serviceQuotation) throws Exception{
         ServiceRequest request = serviceRequestRepository.findById(serviceQuotation.getServiceRequestId())
                 .orElseThrow(()-> new DataNotFoundException("Cannot find service-request with id= "+ serviceQuotation.getServiceRequestId()));
         Customer customer = authenticationService.getCurrentUser();
+        System.out.println(customer);
         ServiceQuotation quotation = new ServiceQuotation();
     quotation.setDescription(serviceQuotation.getDescription());
-    quotation.setVAT(serviceQuotation.getVAT());
+   // quotation.setVAT(serviceQuotation.getVAT());
         ServiceCategory serviceCategory = serviceCategoryRepository.findById(request.getServiceCategory().getServiceCategoryId())
                 .orElseThrow(()-> new DataNotFoundException("Cannot find service-category with id = "+ request.getServiceCategory().getServiceCategoryId()));
-   quotation.setCost(serviceCategory.getCost());
-   quotation.setTotalCost(quotation.getCost()+quotation.getCost() * quotation.getVAT()/100);
+   quotation.setCost(serviceQuotation.getCost());
+   quotation.setTotalCost(serviceQuotation.getCost()+serviceQuotation.getCost() * quotation.getVAT()/100);
     quotation.setCreateDate(LocalDateTime.now());
     quotation.setCreateBy(customer.getName());
     quotation.setIsActive(true);
+    request.setStatus("QUOTING");
     quotation.setServiceRequest(request);
+
     quotation.setCustomer(request.getCustomer());
+    serviceRequestRepository.save(request);
+    serviceRequestLogService.createServiceRequestLog(request,"Please check your profile to view quotation detail!","Quotation made");
     ServiceQuotation obj = serviceQuotationRepository.save(quotation);
     return obj;
     }
@@ -57,10 +65,10 @@ public class ServiceQuotationService implements IServiceQuotationService{
 
         Customer customer = authenticationService.getCurrentUser();
         serviceQuotation.setDescription(serviceQuotationRequest.getDescription());
-        serviceQuotation.setVAT(serviceQuotationRequest.getVAT());
         serviceQuotation.setUpdateBy(customer.getRole() + " " + customer.getName());
         serviceQuotation.setUpdateDate(LocalDateTime.now());
        // serviceQuotation.setConfirm(false);
+        serviceRequestLogService.createServiceRequestLog(serviceQuotation.getServiceRequest(),serviceQuotationRequest.getDescription(),"Quotation updated!");
         serviceQuotation.setTotalCost(serviceQuotation.getCost()+serviceQuotation.getCost() * serviceQuotation.getVAT()/100);
         return serviceQuotationRepository.save(serviceQuotation);
     }
@@ -108,7 +116,7 @@ public class ServiceQuotationService implements IServiceQuotationService{
         // Find the existing service quotation by ID
         ServiceQuotation existingQuotation = serviceQuotationRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Cannot find service-quotation with id= " + id));
-
+        serviceRequestLogService.createServiceRequestLog(existingQuotation.getServiceRequest(),"Quotation has been confirmed,please wait for staff go to your pond!","Quotation Confirmed!");
         // Update only the isConfirm field
         existingQuotation.setConfirm(!existingQuotation.isConfirm());
         existingQuotation.setUpdateDate(LocalDateTime.now());
