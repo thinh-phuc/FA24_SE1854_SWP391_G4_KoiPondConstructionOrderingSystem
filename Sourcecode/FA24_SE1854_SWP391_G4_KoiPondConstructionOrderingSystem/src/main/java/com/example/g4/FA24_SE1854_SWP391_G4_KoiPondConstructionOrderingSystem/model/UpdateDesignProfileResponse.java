@@ -10,6 +10,7 @@ public class UpdateDesignProfileResponse {
     private String address;
     private String constructionStatus;
     private String description;
+    private String note;
     private Boolean isActive = true;
     private LocalDateTime updateDate = LocalDateTime.now();
     private String updateBy;

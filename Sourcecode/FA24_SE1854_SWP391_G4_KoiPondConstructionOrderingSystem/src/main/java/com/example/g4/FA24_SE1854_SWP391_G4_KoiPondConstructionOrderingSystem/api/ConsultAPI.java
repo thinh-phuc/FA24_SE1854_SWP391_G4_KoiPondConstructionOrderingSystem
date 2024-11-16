@@ -51,4 +51,9 @@ public class ConsultAPI {
         Consult deletedConsult = consultService.deleteConsult(consultId);
         return ResponseEntity.ok(deletedConsult);
     }
+    @GetMapping("/getConsultById/{consultId}")
+    public ResponseEntity getConsultById(@PathVariable Integer consultId){
+        Consult consult = consultService.getConsultById(consultId);
+        return ResponseEntity.ok(consult);
+    }
 }

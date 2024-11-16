@@ -6,4 +6,5 @@ import lombok.Data;
 public class UpdateDesignProfileRequest {
     private String address;
     private String description;
+    private String note;
 }
