@@ -9,6 +9,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.re
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class ServiceProgressLogService {
             serviceProgressLog.setImageUrl(serviceProgress.getImageUrl());
             serviceProgressLog.setStep(serviceProgress.getStep());
             serviceProgressLog.setDescription(serviceProgress.getDescription());
-            serviceProgressLog.setCreateDate(serviceProgress.getCreateDate());
+            serviceProgressLog.setCreateDate(LocalDateTime.now());
             serviceProgressLog.setCreateBy(serviceProgress.getCreateBy());
 
             ServiceProgressLog savedServiceProgressLog = serviceProgressLogRepository.save(serviceProgressLog);

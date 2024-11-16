@@ -12,7 +12,7 @@ public interface ServiceProgressLogRepository extends JpaRepository<ServiceProgr
             "JOIN spl.serviceProgress sp " +
             "WHERE sp.serviceProgressID = :serviceProgressID " +
             "AND sp.isActive = true " +
-            "ORDER BY spl.createDate DESC")
+            "ORDER BY spl.createDate ASC")
     List<ServiceProgressLog> findServiceProgressLogsByServiceProgressId(@Param("serviceProgressID") Integer maintenanceStaffId);
 
 }
