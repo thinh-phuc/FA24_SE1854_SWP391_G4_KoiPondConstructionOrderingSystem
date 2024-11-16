@@ -81,19 +81,32 @@ public class ServiceRequestService implements  IServiceRequestService{
     }
 
     @Override
-    public void deleteServiceRequestById(Integer id) {
-            serviceRequestRepository.deleteById(id);
+    public void deleteServiceRequestById(Integer id,String note) throws Exception{
+        ServiceRequest existingRequest = serviceRequestRepository.findServiceRequestByServiceRequestId(id);
+        if(existingRequest == null)
+        {
+            throw new DataNotFoundException("Cannot find service-request with id = "+id );
+        }
+        if(!existingRequest.getStatus().equals("PENDING") && !existingRequest.getStatus().equals("QUOTING") && !existingRequest.getStatus().equals("PROCESSING") )
+        {
+            throw new DataNotFoundException("Can not delete request");
+        }
+        existingRequest.setStatus("CANCELED");
+        serviceRequestRepository.save(existingRequest);
+        serviceRequestLogService.createServiceRequestLog(existingRequest,note,"Request Canceled!");
+
+        serviceRequestRepository.deactivateServiceRequestById(id);
     }
 
     @Override
     public List<ServiceRequest> getAllServiceRequests() {
-        return serviceRequestRepository.findServiceRequestsByIsActiveTrueOrderByCreateDateDesc();
+        return serviceRequestRepository.findServiceRequestsByOrderByCreateDateDesc();
     }
 
     @Override
     public List<ServiceRequest> findServiceRequestsByCustomerId(Integer customerId) {
       Customer customer = customerRepository.findCustomerByCustomerId(customerId);
-        return  serviceRequestRepository.findServiceRequestsByCustomerAndIsActiveTrueOrderByCreateDateDesc(customer);
+        return  serviceRequestRepository.findServiceRequestsByCustomerOrderByCreateDateDesc(customer);
     }
 
     @Override

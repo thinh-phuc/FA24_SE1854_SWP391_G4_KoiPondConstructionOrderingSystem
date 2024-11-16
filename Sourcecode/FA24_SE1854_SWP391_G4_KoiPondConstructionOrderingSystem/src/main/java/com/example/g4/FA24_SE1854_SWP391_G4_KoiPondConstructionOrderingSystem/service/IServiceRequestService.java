@@ -16,7 +16,7 @@ public interface IServiceRequestService {
     ServiceRequest updateServiceRequest(Integer id,ServiceRequest serviceRequest) throws Exception;
 
     // Method to delete a ServiceRequest by ID
-    void deleteServiceRequestById(Integer id);
+    void deleteServiceRequestById(Integer id,String note) throws Exception;
 
     // Method to list all ServiceRequests
     List<ServiceRequest> getAllServiceRequests();

@@ -43,7 +43,7 @@ public class ServiceProgressService {
             //save lại status
             serviceProgress.setServiceDetail(serviceDetail);
             ServiceRequest request = serviceRequestRepository.findServiceRequestByServiceRequestId(serviceDetail.getServiceQuotation().getServiceRequest().getServiceRequestId());
-            request.setStatus("Progressing");
+            request.setStatus("PROGRESSING");
             serviceRequestRepository.save(request);
 
             Customer staff = authenticationService.getCurrentUser();
