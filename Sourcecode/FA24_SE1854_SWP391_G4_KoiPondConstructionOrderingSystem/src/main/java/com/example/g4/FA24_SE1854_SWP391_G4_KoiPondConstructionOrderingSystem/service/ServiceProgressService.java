@@ -26,6 +26,8 @@ public class ServiceProgressService {
     ServiceProgressRepository serviceProgressRepository;
     @Autowired
     AuthenticationService authenticationService;
+    @Autowired
+    ServiceRequestLogService serviceRequestLogService;
 
     public ServiceProgress createServiceProgress(ServiceProgressRequest serviceProgressResquest) {
         try {
