@@ -79,7 +79,7 @@ public class ConsultService {
         RequestDetail requestDetail = requestDetailRepository.findRequestDetailByRequestDetailId(consultRequest.getRequestDetailId());
         Request request = requestDetail.getRequest();
         request.setStatus("CONSULTED");
-        requestDetail.setNote("DONE");
+        requestDetail.setNote("Consult is in progressing!");
         requestLogService.createRequestLog("CONSULTED", "Your request has been consulted, quotation will be made soon!", request);
         requestRepository.save(request);
         requestDetailRepository.save(requestDetail);
@@ -156,6 +156,13 @@ public class ConsultService {
 
     public Consult confirmConsult(Integer id){
         Consult consult = getConsultById(id);
+        RequestDetail requestDetail = requestDetailRepository.findRequestDetailByRequestDetailId(consult.getRequestDetail().getRequestDetailId());
+        if(requestDetail == null)
+        {
+            throw new EntityNotFoundException("Request Detail not found!");
+        }
+        requestDetail.setNote("Consult completed!");
+        requestDetailRepository.save(requestDetail);
         consult.setIsCustomerConfirm(true);
         return consultRepository.save(consult);
     }

@@ -53,7 +53,7 @@ public class RequestDetailService {
         }
         requestDetail.setPondDesignTemplate(pondDesignTemplate);
 
-        requestDetail.setNote("Not started");
+        requestDetail.setNote("Consult is not started!");
 
         RequestDetail newRequestDetail = requestDetailRepository.save(requestDetail);
         return newRequestDetail;
@@ -61,14 +61,8 @@ public class RequestDetailService {
 
     //read
     public List<RequestDetail> getAllDetails(){
-        List<RequestDetail> list = new ArrayList<>();
         List<RequestDetail>  requestDetails = requestDetailRepository.findRequestDetailsByIsDeletedFalse();
-        for(RequestDetail rd: requestDetails) {
-            if(!rd.getNote().equals("DONE")) {
-                list.add(rd);
-            }
-        }
-        return list;
+        return requestDetails;
     }
 
     public List<RequestDetail> getAllRequestDetailsByRequestId(Integer requestId){
