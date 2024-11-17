@@ -58,8 +58,8 @@ public class ServiceRequest {
     @Column(name = "update_by", columnDefinition = "NVARCHAR(40)")
     private String updateBy = "none";
 
-    @OneToOne
-    @JoinColumn(name="service_quotation_id")
+    @OneToOne(mappedBy = "serviceRequest")
+    @JsonIgnore
    private ServiceQuotation serviceQuotation;
 
  @OneToMany(mappedBy = "serviceRequest")

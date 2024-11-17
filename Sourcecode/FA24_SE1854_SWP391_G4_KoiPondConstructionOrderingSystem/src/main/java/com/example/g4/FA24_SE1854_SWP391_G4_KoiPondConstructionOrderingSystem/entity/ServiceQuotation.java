@@ -1,6 +1,7 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -19,6 +20,8 @@ import java.time.LocalDateTime;
 public class ServiceQuotation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+
     @Column(name = "service_quotation_id")
     Integer serviceQuotationId;
 
@@ -26,9 +29,9 @@ public class ServiceQuotation {
     @JoinColumn(name = "customer_id")
     Customer customer;
 
-    @OneToOne
+    @OneToOne()
     @JoinColumn(name = "service_request_id")
-    ServiceRequest serviceRequest;
+   private  ServiceRequest serviceRequest;
 
     @Column(name = "description", columnDefinition = "NVARCHAR(500)")
     private String description = "none";
