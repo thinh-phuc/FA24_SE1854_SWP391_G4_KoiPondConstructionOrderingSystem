@@ -35,22 +35,24 @@ public class ServiceQuotationService implements IServiceQuotationService{
     public ServiceQuotation addServiceQuotation(ServiceQuotationRequest serviceQuotation) throws Exception{
         ServiceRequest request = serviceRequestRepository.findById(serviceQuotation.getServiceRequestId())
                 .orElseThrow(()-> new DataNotFoundException("Cannot find service-request with id= "+ serviceQuotation.getServiceRequestId()));
+
         Customer customer = authenticationService.getCurrentUser();
-        System.out.println(customer);
+        //System.out.println(customer);
         ServiceQuotation quotation = new ServiceQuotation();
     quotation.setDescription(serviceQuotation.getDescription());
    // quotation.setVAT(serviceQuotation.getVAT());
         ServiceCategory serviceCategory = serviceCategoryRepository.findById(request.getServiceCategory().getServiceCategoryId())
                 .orElseThrow(()-> new DataNotFoundException("Cannot find service-category with id = "+ request.getServiceCategory().getServiceCategoryId()));
    quotation.setCost(serviceQuotation.getCost());
-   quotation.setTotalCost(serviceQuotation.getCost()+serviceQuotation.getCost() * quotation.getVAT()/100);
+   quotation.setTotalCost(serviceQuotation.getCost() * 110/100);
     quotation.setCreateDate(LocalDateTime.now());
     quotation.setCreateBy(customer.getName());
+    quotation.setVAT(10);
     quotation.setIsActive(true);
-    request.setStatus("QUOTING");
     quotation.setServiceRequest(request);
-
     quotation.setCustomer(request.getCustomer());
+      // request.setServiceQuotation(quotation);
+        request.setStatus("QUOTING");
     serviceRequestRepository.save(request);
     serviceRequestLogService.createServiceRequestLog(request,"Please check your profile to view quotation detail!","Quotation made");
     ServiceQuotation obj = serviceQuotationRepository.save(quotation);
@@ -116,7 +118,12 @@ public class ServiceQuotationService implements IServiceQuotationService{
         // Find the existing service quotation by ID
         ServiceQuotation existingQuotation = serviceQuotationRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Cannot find service-quotation with id= " + id));
-        serviceRequestLogService.createServiceRequestLog(existingQuotation.getServiceRequest(),"Quotation has been confirmed,please wait for staff go to your pond!","Quotation Confirmed!");
+
+       ServiceRequest request = serviceRequestRepository.findById(existingQuotation.getServiceRequest().getServiceRequestId())
+               .orElseThrow(()-> new DataNotFoundException("Cannot find service-request "));
+
+
+        serviceRequestLogService.createServiceRequestLog(request,"Quotation has been confirmed,please wait for staff go to your pond!","Quotation Confirmed!");
         // Update only the isConfirm field
         existingQuotation.setConfirm(!existingQuotation.isConfirm());
         existingQuotation.setUpdateDate(LocalDateTime.now());

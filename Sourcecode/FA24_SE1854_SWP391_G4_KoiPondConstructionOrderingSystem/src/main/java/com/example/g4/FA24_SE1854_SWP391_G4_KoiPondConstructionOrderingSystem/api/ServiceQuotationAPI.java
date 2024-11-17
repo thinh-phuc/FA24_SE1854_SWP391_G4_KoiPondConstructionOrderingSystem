@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*" ,methods = {RequestMethod.GET,RequestMethod.PATCH, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @SecurityRequirement(name="api")
 @RestController
 @RequestMapping("/api/service-quotations")
