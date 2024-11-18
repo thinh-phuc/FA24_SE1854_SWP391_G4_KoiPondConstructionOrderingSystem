@@ -66,7 +66,7 @@ public class ServiceProgressService {
                 throw new NotFoundException("Not found!");
             oldServiceProgress.setStep(updateServiceProgressRequest.getStep());
             oldServiceProgress.setDescription(updateServiceProgressRequest.getDescription());
-            if ("Complete".equalsIgnoreCase(updateServiceProgressRequest.getStep()))
+            if ("Completed".equalsIgnoreCase(updateServiceProgressRequest.getStep()))
                 oldServiceProgress.setEndDate(LocalDateTime.now());
             oldServiceProgress.setImageUrl(updateServiceProgressRequest.getImageUrl());
             Customer staff = authenticationService.getCurrentUser();
@@ -84,7 +84,7 @@ public class ServiceProgressService {
             ServiceProgress serviceProgress = serviceProgressRepository.findServiceProgressByServiceProgressID(id);
             if (serviceProgress == null)
                 throw new NotFoundException("Not found!");
-            if (!serviceProgress.getStep().equals("Complete"))
+            if (!serviceProgress.getStep().equals("Completed"))
                 throw new NotFoundException("Step is not complete");
             serviceProgress.setIsComfirmed(true);
 
