@@ -71,7 +71,7 @@ public class ServiceProgressService {
             oldServiceProgress.setImageUrl(updateServiceProgressRequest.getImageUrl());
             Customer staff = authenticationService.getCurrentUser();
             oldServiceProgress.setUpdateBy(staff.getName());
-
+            serviceRequestLogService.createServiceRequestLog(oldServiceProgress.getServiceDetail().getServiceQuotation().getServiceRequest(),"The progress is updated,view check progress!","Progress updated");
             ServiceProgress updatedServiceProgress = serviceProgressRepository.save(oldServiceProgress);
             return updatedServiceProgress;
         } catch (Exception e) {

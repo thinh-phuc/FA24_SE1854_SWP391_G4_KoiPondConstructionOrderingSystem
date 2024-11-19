@@ -11,6 +11,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.re
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceCategoryRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceQuotationRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ServiceRequestRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class ServiceQuotationService implements IServiceQuotationService{
     AuthenticationService authenticationService;
     @Autowired
     private ServiceRequestLogService serviceRequestLogService;
+    @Transactional
     @Override
     public ServiceQuotation addServiceQuotation(ServiceQuotationRequest serviceQuotation) throws Exception{
         ServiceRequest request = serviceRequestRepository.findById(serviceQuotation.getServiceRequestId())
@@ -52,10 +54,11 @@ public class ServiceQuotationService implements IServiceQuotationService{
     quotation.setServiceRequest(request);
     quotation.setCustomer(request.getCustomer());
       // request.setServiceQuotation(quotation);
+        ServiceQuotation obj = serviceQuotationRepository.save(quotation);
         request.setStatus("QUOTING");
     serviceRequestRepository.save(request);
     serviceRequestLogService.createServiceRequestLog(request,"Please check your profile to view quotation detail!","Quotation made");
-    ServiceQuotation obj = serviceQuotationRepository.save(quotation);
+
     return obj;
     }
 
