@@ -22,7 +22,6 @@ public class PondDesignTemplateAPI {
     PondDesignTemplateService pondDesignTemplateService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity create(@Valid @RequestBody PondDesignTemplateRequest pondDesignTemplateRequest){
         PondDesignTemplate newPond = pondDesignTemplateService.createTemplate(pondDesignTemplateRequest);
         return ResponseEntity.ok(newPond);
