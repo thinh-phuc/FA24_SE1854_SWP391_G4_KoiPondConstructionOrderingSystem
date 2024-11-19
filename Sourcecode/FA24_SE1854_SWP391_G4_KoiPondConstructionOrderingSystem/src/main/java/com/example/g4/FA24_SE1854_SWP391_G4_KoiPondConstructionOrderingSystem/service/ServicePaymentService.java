@@ -7,6 +7,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.en
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServicePaymentRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +67,7 @@ public class ServicePaymentService {
             }
             oldServicePayment.setStatus(servicePaymentRequest.getStatus());
             oldServicePayment.setPaymentMethod(servicePaymentRequest.getPaymentMethod());
-
+            serviceRequestLogService.createServiceRequestLog(oldServicePayment.getServiceQuotation().getServiceRequest(),"The payment is updated","Payment updated");
             ServicePayment updatedServicePayment = servicePaymentRepository.save(oldServicePayment);
             return updatedServicePayment;
         } catch (Exception e) {
@@ -124,5 +125,40 @@ public class ServicePaymentService {
     public List<ServicePayment> getAllServicePayment() {
         List<ServicePayment> servicePayments = servicePaymentRepository.findServicePaymentsByIsActiveTrueOrderByServicePaymentIDDesc();
         return servicePayments;
+    }
+
+
+    @Transactional
+    public ServicePayment updateStatusServicePaymentByCustomer(Integer id, String status) {
+        try {
+            ServicePayment oldServicePayment = servicePaymentRepository.findServicePaymentByServicePaymentID(id);
+            if (oldServicePayment == null) {
+                throw new NotFoundException("Payment not found!");
+            }
+
+            // Cập nhật trạng thái payment
+            oldServicePayment.setStatus(status);
+            //oldServicePayment.setPaymentMethod(servicePaymentRequest.getPaymentMethod());
+
+            // Nếu thanh toán thành công, cập nhật trạng thái request
+            if (status.equals("Paid")) {
+                ServiceRequest request = oldServicePayment.getServiceQuotation().getServiceRequest();
+                if (request != null) {
+                    request.setStatus("Finish");
+                    serviceRequestRepository.save(request);
+
+                    // Tạo log
+                    serviceRequestLogService.createServiceRequestLog(
+                            request,
+                            "Payment completed" ,
+                            "Payment successful"
+                    );
+                }
+            }
+
+            return servicePaymentRepository.save(oldServicePayment);
+        } catch (Exception e) {
+            throw new NotFoundException("Failed to update payment: " + e.getMessage());
+        }
     }
 }

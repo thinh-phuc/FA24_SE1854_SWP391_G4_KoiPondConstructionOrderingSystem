@@ -45,7 +45,8 @@ public class Filter extends OncePerRequestFilter {
             "/api/login",
             "/api/register",
             "/api/pondDesignTemplate",
-            "/api/service-categories"
+            "/api/service-categories",
+            "/api/vnpay/create_payment"
     );
     
     public boolean checkIsPublicAPI(String uri){
