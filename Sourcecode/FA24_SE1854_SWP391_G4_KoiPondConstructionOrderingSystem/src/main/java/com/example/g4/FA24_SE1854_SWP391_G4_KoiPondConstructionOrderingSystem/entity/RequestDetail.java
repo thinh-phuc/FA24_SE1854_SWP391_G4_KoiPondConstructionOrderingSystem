@@ -30,6 +30,9 @@ public class RequestDetail {
     @Column(name = "note")
     private String note;
 
+    @Column(name = "cancel_reason")
+    private String cancelReason;
+
     @JsonIgnore
     Boolean isDeleted = false;
 

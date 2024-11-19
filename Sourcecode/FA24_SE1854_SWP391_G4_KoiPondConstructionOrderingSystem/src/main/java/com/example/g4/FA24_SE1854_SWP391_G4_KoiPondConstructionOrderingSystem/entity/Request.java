@@ -60,6 +60,9 @@ public class Request {
     @Column(name = "update_by", columnDefinition = "NVARCHAR(40)")
     private String updateBy = "none";
 
+    @Column(name = "cancel_reason")
+    private String cancelReason;
+
 //    @JsonIgnore
 //    Boolean isDeleted = false;
 

@@ -3,6 +3,7 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.a
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Request;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.RequestDetail;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.DeleteRequestDetail;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.RequestDetailRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateRequestDetailRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.RequestDetailService;
@@ -52,8 +53,8 @@ public class RequestDetailAPI {
     }
 
     @DeleteMapping("{requestDetailId}")
-    public ResponseEntity deleteDetail(@PathVariable Integer requestDetailId){
-        RequestDetail deletedDetail = requestDetailService.deleteRequestDetail(requestDetailId);
+    public ResponseEntity deleteDetail(@PathVariable Integer requestDetailId, @RequestBody DeleteRequestDetail deleteRequestDetail){
+        RequestDetail deletedDetail = requestDetailService.deleteRequestDetail(requestDetailId, deleteRequestDetail);
         return ResponseEntity.ok(deletedDetail);
     }
 
