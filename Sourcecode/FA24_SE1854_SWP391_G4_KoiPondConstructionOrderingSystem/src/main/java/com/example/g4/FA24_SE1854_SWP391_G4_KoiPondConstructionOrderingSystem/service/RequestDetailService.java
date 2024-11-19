@@ -4,6 +4,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.en
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Request;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.RequestDetail;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.DeleteRequestDetail;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.RequestDetailRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.UpdateRequestDetailRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.PondDesignTemplateRepository;
@@ -94,15 +95,23 @@ public class RequestDetailService {
         return requestDetailRepository.save(oldDetail);
     }
 
-    public RequestDetail deleteRequestDetail(Integer id){
+    public RequestDetail deleteRequestDetail(Integer id, DeleteRequestDetail deleteRequestDetail){
         RequestDetail oldDetail = getRequestDetailById(id);
 
+        oldDetail.setCancelReason(deleteRequestDetail.getCancelReason());
         if(oldDetail == null){
             throw new EntityNotFoundException("Request Detail does not exist!");
         }
 
         oldDetail.setIsDeleted(true);
 
+        Request request = requestRepository.findRequestById(id);
+        if(request == null){
+            throw new EntityNotFoundException("Request not found!");
+        }
+        request.setStatus("CANCELLED");
+        request.setCancelReason(oldDetail.getCancelReason());
+        requestRepository.save(request);
         return requestDetailRepository.save(oldDetail);
     }
 
