@@ -18,4 +18,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Query("SELECT c FROM Customer c JOIN c.designProfiles dp WHERE dp.id = :designProfileId")
     List<Customer> findStaffsByDesignProfileId(@Param("designProfileId") Integer designProfileId);
 
+    @Query("SELECT c FROM Customer c WHERE c.role = 'CONSTRUCTOR' AND c.name LIKE %:name% ORDER BY SIZE(c.designProfiles) ASC")
+    List<Customer> findConstructorsOrderedByDesignProfileCount(@Param("name") String name);
 }

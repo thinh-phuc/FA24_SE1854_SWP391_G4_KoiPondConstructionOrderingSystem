@@ -98,4 +98,13 @@ public class CustomerService {
         }
         return  customer;
     }
+
+    public List<Customer> findConstructorsOrderByDesignProfiles(String name){
+        try {
+            List<Customer> staffs = customerRepository.findConstructorsOrderedByDesignProfileCount(name);
+            return staffs;
+        } catch (Exception e) {
+            throw new NotFoundException("No staffs found!");
+        }
+    }
 }

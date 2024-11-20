@@ -185,6 +185,15 @@ public class DesignProfileService {
         return designProfiles;
     }
 
+    public List<DesignProfile> getDesignProfilesByStaffId(Integer id){
+        try {
+            List<DesignProfile> list = designProfileRepository.findByCustomersCustomerIdAndContructionStatusNot(id, "COMPLETED");
+            return list;
+        } catch (Exception e){
+            throw new NotFoundException("No design profiles found!");
+        }
+    }
+
     public List<DesignProfile> getDesignProfilesByCustomer(){
         Customer customer = authenticationService.getCurrentUser();
         List<DesignProfile> designProfiles = designProfileRepository.findDesignProfilesByCustomer(customer.getCustomerId());
