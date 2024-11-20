@@ -38,6 +38,11 @@ public class DesignProfileAPI {
         return ResponseEntity.ok(designProfile);
     }
 
+    @GetMapping("/getByStaffId/{staffId}")
+    public ResponseEntity getByStaffId(@PathVariable Integer staffId){
+        List<DesignProfile> list = designProfileService.getDesignProfilesByStaffId(staffId);
+        return ResponseEntity.ok(list);
+    }
 
     @PutMapping("{designProfileId}")
     @PreAuthorize("hasAnyAuthority('DESIGNER','MANAGER')")

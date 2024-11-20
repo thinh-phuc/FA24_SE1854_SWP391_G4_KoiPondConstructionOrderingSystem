@@ -19,11 +19,13 @@ public interface DesignProfileRepository extends JpaRepository<DesignProfile, In
     @Query("SELECT dp FROM DesignProfile dp JOIN dp.customers c WHERE c.customerId = :customerId")
     List<DesignProfile> findDesignProfilesByStaff(@Param("customerId") Integer customerId);
 
-    @Query("SELECT dp FROM DesignProfile dp JOIN dp.customers c WHERE c.customerId = :customerId AND dp.address LIKE %:address%")
+    @Query("SELECT dp FROM DesignProfile dp JOIN dp.customers c WHERE c.customerId = :customerId AND dp.address LIKE %:address% ORDER BY dp.id DESC")
     List<DesignProfile> findDesignProfilesByStaffAndAddress(@Param("customerId") Integer customerId, @Param("address") String address);
 
     @Query("SELECT dp FROM DesignProfile dp JOIN dp.quotation q JOIN q.customer c WHERE c.customerId = :customerId")
     List<DesignProfile> findDesignProfilesByCustomer(@Param("customerId") Integer customerId);
+
+    List<DesignProfile> findByCustomersCustomerIdAndContructionStatusNot(Integer customerId, String contructionStatus);
 
 //    @Query("SELECT c FROM DesignProfile dp JOIN dp.customers c WHERE dp.designProfileId = :designProfileId")
 //    List<Customer> findStaffsByDesignProfileId(@Param("designProfileId") Integer designProfileId);
