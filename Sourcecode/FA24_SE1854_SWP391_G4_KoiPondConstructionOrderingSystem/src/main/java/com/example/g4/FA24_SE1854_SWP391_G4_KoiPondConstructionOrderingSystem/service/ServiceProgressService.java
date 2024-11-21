@@ -67,8 +67,10 @@ public class ServiceProgressService {
                 throw new NotFoundException("Not found!");
             oldServiceProgress.setStep(updateServiceProgressRequest.getStep());
             oldServiceProgress.setDescription(updateServiceProgressRequest.getDescription());
-            if ("COMPLETED".equalsIgnoreCase(updateServiceProgressRequest.getStep()))
+            if ("COMPLETED".equals(updateServiceProgressRequest.getStep()))
                 oldServiceProgress.setEndDate(LocalDateTime.now());
+            if ("REJCTED".equals(updateServiceProgressRequest.getStep()) && "REJCTED".equals(oldServiceProgress.getStep()))
+                throw new Exception("You can't reject because you rejected this progress");
             oldServiceProgress.setImageUrl(updateServiceProgressRequest.getImageUrl());
             Customer staff = authenticationService.getCurrentUser();
             oldServiceProgress.setUpdateBy(staff.getName());
