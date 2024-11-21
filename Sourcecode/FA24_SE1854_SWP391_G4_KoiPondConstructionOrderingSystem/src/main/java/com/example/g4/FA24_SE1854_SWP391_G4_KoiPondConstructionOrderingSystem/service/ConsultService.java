@@ -82,11 +82,12 @@ public class ConsultService {
         requestDetail.setNote("Consult is in progressing!");
         requestLogService.createRequestLog("CONSULTED", "Your request has been consulted, quotation will be made soon!", request);
         requestRepository.save(request);
-        requestDetailRepository.save(requestDetail);
         if(requestDetail == null){
             throw new EntityNotFoundException("Request Detail not found!");
         }
         consult.setRequestDetail(requestDetail);
+
+        requestDetailRepository.save(requestDetail);
 
         Consult newConsult = consultRepository.save(consult);
         return toResponseConsult(newConsult);
