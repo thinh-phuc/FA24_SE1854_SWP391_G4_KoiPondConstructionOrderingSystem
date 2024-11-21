@@ -107,4 +107,13 @@ public class CustomerService {
             throw new NotFoundException("No staffs found!");
         }
     }
+
+    public List<Customer> findDesignersOrderByDesignProfiles(String name){
+        try {
+            List<Customer> staffs = customerRepository.findDesignersOrderedByDesignProfileCount(name);
+            return staffs;
+        } catch (Exception e) {
+            throw new NotFoundException("No staffs found!");
+        }
+    }
 }
