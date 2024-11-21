@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,4 +51,10 @@ public class PondDesignTemplateAPI {
         PondDesignTemplate deletedTemplate = pondDesignTemplateService.delete(pondDesignTemplateId);
         return ResponseEntity.ok(deletedTemplate);
     }
+
+    @GetMapping("/getPondByDesignProfileId/{designProfileId}")
+        public ResponseEntity getPondDesignTemplateByDesignProfile(@PathVariable Integer designProfileId){
+        List<PondDesignTemplate> pondDesignTemplate = pondDesignTemplateService.getPondDesignTemplateByDesignProfile(designProfileId);
+        return ResponseEntity.ok(pondDesignTemplate);
+        }
 }

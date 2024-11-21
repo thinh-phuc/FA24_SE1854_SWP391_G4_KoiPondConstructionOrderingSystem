@@ -3,6 +3,7 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.s
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.PondDesignTemplate;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Request;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.PondDesignTemplateRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.PondDesignTemplateRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -96,5 +97,14 @@ public class PondDesignTemplateService {
         // nếu thông tin của user nào bị BLOCK thì quăng ra lỗi (throw new...) vì bị BLOCK rồi thì sẽ ko update hoặc delete được
 
         return oldPondDesignTemplate;
+    }
+
+    public List<PondDesignTemplate> getPondDesignTemplateByDesignProfile(Integer id){
+       List <PondDesignTemplate> pondDesignTemplate = pondDesignTemplateRepository.findPondDesignTemplateByDesignProfileId(id);
+
+        if(pondDesignTemplate == null){
+            throw new NotFoundException("Not found");
+        }
+        return pondDesignTemplate;
     }
 }
