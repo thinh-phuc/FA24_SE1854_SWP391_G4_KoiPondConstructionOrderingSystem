@@ -11,7 +11,7 @@ import java.util.List;
 public interface ConstructionHistoryRepository extends JpaRepository<ConstructionHistory, Integer> {
     ConstructionHistory findConstructionHistoryByConstructionHistoryId(Integer id);
     List<ConstructionHistory> findConstructionHistorysByIsActiveTrue();
-    List<ConstructionHistory> findConstructionHistorysByDesignProfile(DesignProfile designProfile);
+    List<ConstructionHistory> findConstructionHistorysByDesignProfileAndIsActiveTrue(DesignProfile designProfile);
 
     @Query("SELECT ch from ConstructionHistory ch JOIN ch.designProfile dp JOIN dp.customers c WHERE c.customerId = :customerId AND ch.isActive=True")
     List<ConstructionHistory> findActiveConstructionHistoriesByStaff(@Param("customerId") Integer customerId);

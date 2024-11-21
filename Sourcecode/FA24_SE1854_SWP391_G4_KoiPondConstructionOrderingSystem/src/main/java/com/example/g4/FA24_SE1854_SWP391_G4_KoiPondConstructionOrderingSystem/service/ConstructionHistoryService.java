@@ -196,7 +196,7 @@ public class ConstructionHistoryService {
 
     public List<ConstructionHistory> getConstructionHistoryByDesignProfileId(Integer id) {
         DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileId(id);
-        List<ConstructionHistory> constructionHistories = constructionHistoryRepository.findConstructionHistorysByDesignProfile(designProfile);
+        List<ConstructionHistory> constructionHistories = constructionHistoryRepository.findConstructionHistorysByDesignProfileAndIsActiveTrue(designProfile);
         if (constructionHistories == null) {
             throw new NotFoundException("Not found!");
         }

@@ -104,6 +104,7 @@ public class ConstructionHistoryAPI {
     }
 
     @DeleteMapping("/api/construction_history/delete-construction_history/{constructionHistoryId}")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity deleteConstructionHistory(@PathVariable Integer constructionHistoryId){
         ConstructionHistory constructionHistory=constructionHistoryService.deleteConstructionHistory(constructionHistoryId);
         return ResponseEntity.ok(constructionHistory);
