@@ -20,5 +20,5 @@ public interface IServiceDetailService {
     ServiceDetail updateServiceDetail(Integer id , ServiceDetailUpdateRequest serviceDetail) throws Exception;
 
     // Delete a ServiceDetail by its ID
-    void deleteServiceDetailById(Integer id);
+    void deleteServiceDetailById(Integer id) throws  Exception;
 }

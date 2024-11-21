@@ -17,7 +17,7 @@ public interface IServiceQuotationService {
     List<ServiceQuotation> findAll();
 
     // Delete a ServiceQuotation by its ID
-    void deleteServiceQuotationById(Integer id);
+    void deleteServiceQuotationById(Integer id) throws  Exception;
 
     // Additional business logic methods, e.g., finding quotations by customer or service category
     List<ServiceQuotation> findByCustomerId(Integer customerId);

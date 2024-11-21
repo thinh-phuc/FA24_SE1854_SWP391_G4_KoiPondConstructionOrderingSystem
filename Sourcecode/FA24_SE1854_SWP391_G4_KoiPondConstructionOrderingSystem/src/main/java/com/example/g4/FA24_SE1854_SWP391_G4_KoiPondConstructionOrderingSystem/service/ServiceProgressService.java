@@ -4,6 +4,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.en
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceDetail;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceProgress;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ServiceRequest;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.DataNotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceProgressRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServiceProgressUpdateRequest;
@@ -103,6 +104,16 @@ public class ServiceProgressService {
             ServiceProgress oldServiceProgress = serviceProgressRepository.findServiceProgressByServiceProgressID(id);
             if (oldServiceProgress == null)
                 throw new NotFoundException("Not found!");
+
+            ServiceRequest request = serviceRequestRepository.findServiceRequestByServiceRequestId(oldServiceProgress.getServiceDetail().getServiceQuotation().getServiceRequest().getServiceRequestId());
+            if (request == null)
+            {
+
+                throw new DataNotFoundException("ServiceRequest not found!");
+            }
+            request.setStatus("PROCESSING");
+            serviceRequestRepository.save(request);
+            serviceRequestLogService.createServiceRequestLog(request,"Please wait for our next response","Progress deleted");
             oldServiceProgress.setIsActive(false);
             ServiceProgress deletedServiceProgress = serviceProgressRepository.save(oldServiceProgress);
             return deletedServiceProgress;

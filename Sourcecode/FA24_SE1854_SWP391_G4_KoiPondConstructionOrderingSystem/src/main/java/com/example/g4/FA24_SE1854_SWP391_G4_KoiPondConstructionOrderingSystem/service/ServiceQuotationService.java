@@ -90,8 +90,19 @@ public class ServiceQuotationService implements IServiceQuotationService{
     }
 
     @Override
-    public void deleteServiceQuotationById(Integer id) {
-    serviceQuotationRepository.deleteById(id);
+    public void deleteServiceQuotationById(Integer id) throws Exception {
+        ServiceQuotation existingQuotation = serviceQuotationRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Cannot find service-quotation with id= " + id));
+        ServiceRequest request = serviceRequestRepository.findServiceRequestByServiceRequestId(existingQuotation.getServiceRequest().getServiceRequestId());
+        if (request == null)
+        {
+
+            throw new DataNotFoundException("ServiceRequest not found!");
+        }
+        request.setStatus("PENDING");
+        serviceRequestRepository.save(request);
+        serviceRequestLogService.createServiceRequestLog(request,"Please wait for our next response","Quotation deleted");
+        serviceQuotationRepository.deleteById(id);
     }
 
     @Override
