@@ -209,53 +209,56 @@ public class DesignProfileService {
 //moi lam
     public DesignProfile assignCustomersToDesignProfile(Integer designProfileId, List<Integer> staffIds) {
         DesignProfile designProfile = designProfileRepository.findDesignProfileByDesignProfileIdAndIsActiveTrue(designProfileId);
-        if(designProfile == null){
-            throw new NotFoundException("DesignProfile not found");
-        }
-        List<Customer> existStaffs = designProfile.getCustomers();
-        List<Customer> newStaffs = new ArrayList<>();
-        for(Integer staffId : staffIds){
-                boolean IsExist = false;
-                for(Customer staff : existStaffs){
-                    if(staff.getCustomerId().equals(staffId)){
-                        IsExist = true;
-
-                    }
-                }
-                if(!IsExist){
-                    Customer staff = customerRepository.findCustomerByCustomerId(staffId);
-                    if(staff!=null){
-                        String role = staff.getRole();
-                        if(role.equalsIgnoreCase("DESIGNER") || role.equalsIgnoreCase("CONSTRUCTOR") ){
-                            newStaffs.add(staff);
-                        }else {
-                            throw new IllegalArgumentException("Staff with id "+staffId+" not valid");
-                        }
-                    }else{
-                        throw new NotFoundException("Staff not found");
-                    }
-                }else{
-                    throw new DuplicateException("Staff with id "+ staffId + " is exist");
-                }
-                existStaffs.addAll(newStaffs);
-                designProfile.setCustomers(existStaffs);
-
-
-        }
-        return designProfileRepository.save(designProfile);
-
-//        List<Customer> customers = new ArrayList<>();
-//        for (Integer customerId : customerIds) {
-//            Customer customer = customerRepository.findCustomerByCustomerId(customerId);
-//            if (customer != null) {
-//                customers.add(customer);
-//            } else {
-//                throw new NotFoundException("Customer not found");
-//            }
+       Customer customer = authenticationService.getCurrentUser();
+//        if(designProfile == null){
+//            throw new NotFoundException("DesignProfile not found");
 //        }
-//        designProfile.setCustomers(customers);
+//        List<Customer> existStaffs = designProfile.getCustomers();
+//        List<Customer> newStaffs = new ArrayList<>();
+//        for(Integer staffId : staffIds){
+//                boolean IsExist = false;
+//                for(Customer staff : existStaffs){
+//                    if(staff.getCustomerId().equals(staffId)){
+//                        IsExist = true;
 //
+//                    }
+//                }
+//                if(!IsExist){
+//                    Customer staff = customerRepository.findCustomerByCustomerId(staffId);
+//                    if(staff!=null){
+//                        String role = staff.getRole();
+//                        if(role.equalsIgnoreCase("DESIGNER") || role.equalsIgnoreCase("CONSTRUCTOR") ){
+//                            newStaffs.add(staff);
+//                        }else {
+//                            throw new IllegalArgumentException("Staff with id "+staffId+" not valid");
+//                        }
+//                    }else{
+//                        throw new NotFoundException("Staff not found");
+//                    }
+//                }else{
+//                    throw new DuplicateException("Staff with id "+ staffId + " is exist");
+//                }
+//                existStaffs.addAll(newStaffs);
+//                existStaffs.add(customer);
+//                designProfile.setCustomers(existStaffs);
+//
+//
+//        }
 //        return designProfileRepository.save(designProfile);
+
+        List<Customer> customers = new ArrayList<>();
+        for (Integer customerId : staffIds) {
+            Customer customer1 = customerRepository.findCustomerByCustomerId(customerId);
+            if (customer != null) {
+                customers.add(customer1);
+                customers.add(customer);
+            } else {
+                throw new NotFoundException("Customer not found");
+            }
+        }
+        designProfile.setCustomers(customers);
+
+        return designProfileRepository.save(designProfile);
     }
 
 }
