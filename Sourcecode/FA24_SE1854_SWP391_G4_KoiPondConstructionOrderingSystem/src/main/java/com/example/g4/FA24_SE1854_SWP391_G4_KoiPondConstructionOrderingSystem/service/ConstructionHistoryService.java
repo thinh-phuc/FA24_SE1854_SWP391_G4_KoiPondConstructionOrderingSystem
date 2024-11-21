@@ -1,9 +1,6 @@
 package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service;
 
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.AcceptanceDocument;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.ConstructionHistory;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
-import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.DesignProfile;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.*;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.DuplicateException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.AcceptanceRequest;
@@ -13,6 +10,7 @@ import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.mo
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.AcceptanceDocumentRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.ConstructionHistoryRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.DesignProfileRepository;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +29,8 @@ public class ConstructionHistoryService {
     AcceptanceDocumentRepository acceptanceDocumentRepository;
     @Autowired
     RequestLogService requestLogService;
+    @Autowired
+    RequestRepository requestRepository;
 
     public ConstructionHistory createConstructionHistory(ConstructionRequest constructionRequest) {
         try {
@@ -55,7 +55,10 @@ public class ConstructionHistoryService {
             constructionHistory.setDesignProfile(designProfile);
             ConstructionHistory newConstructionHistory = constructionHistoryRepository.save(constructionHistory);
 
-            requestLogService.createRequestLog("CONSTRUCTING", "Please check your profile to view construction progress!", designProfile.getQuotation().getConsult().getRequestDetail().getRequest());
+            requestLogService.createRequestLog("Constructing", "Please check your profile to view construction progress!", designProfile.getQuotation().getConsult().getRequestDetail().getRequest());
+            Request request = designProfile.getQuotation().getConsult().getRequestDetail().getRequest();
+            request.setStatus("Constructing");
+            requestRepository.save(request);
             return newConstructionHistory;
         } catch (Exception e) {
             throw new NotFoundException(e.getMessage());
@@ -121,6 +124,9 @@ public class ConstructionHistoryService {
             designProfileRepository.save(designProfile);
 
             requestLogService.createRequestLog("Construction finished", "Testing for acceptance.", designProfile.getQuotation().getConsult().getRequestDetail().getRequest());
+            Request request = designProfile.getQuotation().getConsult().getRequestDetail().getRequest();
+            request.setStatus("Construction finished");
+            requestRepository.save(request);
             return constructionHistoryRepository.save(complete);
         } catch (Exception e) {
             throw new NotFoundException(e.getMessage());
@@ -161,6 +167,9 @@ public class ConstructionHistoryService {
             AcceptanceDocument newAcceptanceDocument = acceptanceDocumentRepository.save(acceptanceDocument);
 
             requestLogService.createRequestLog("Acceptance document created", "Please check your profile for acceptance test detail!", designProfile.getQuotation().getConsult().getRequestDetail().getRequest());
+            Request request = designProfile.getQuotation().getConsult().getRequestDetail().getRequest();
+            request.setStatus("Tested");
+            requestRepository.save(request);
             return newAcceptanceDocument;
         } catch (Exception e) {
             throw new NotFoundException(e.getMessage());
