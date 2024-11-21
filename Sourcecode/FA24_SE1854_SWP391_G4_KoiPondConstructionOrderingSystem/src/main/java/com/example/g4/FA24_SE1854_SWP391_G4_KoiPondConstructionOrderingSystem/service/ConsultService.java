@@ -80,7 +80,7 @@ public class ConsultService {
         Request request = requestDetail.getRequest();
         request.setStatus("CONSULTED");
         requestDetail.setNote("Consult is in progressing!");
-        requestLogService.createRequestLog("CONSULTED", "Your request has been consulted, quotation will be made soon!", request);
+        requestLogService.createRequestLog("Consulted", "Your request has been consulted, quotation will be made soon!", request);
         requestRepository.save(request);
         requestDetailRepository.save(requestDetail);
         if(requestDetail == null){

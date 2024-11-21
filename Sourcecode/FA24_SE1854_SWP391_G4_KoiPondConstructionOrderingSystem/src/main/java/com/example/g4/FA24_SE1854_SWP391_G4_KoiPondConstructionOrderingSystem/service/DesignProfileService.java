@@ -92,7 +92,7 @@ public class DesignProfileService {
         designProfile.setNote(designProfileRequest.getNote());
         DesignProfile newDesignProfile = designProfileRepository.save(designProfile);
 
-        requestLogService.createRequestLog("Design profile made", "Please check your profile to view detail!", quotation.getConsult().getRequestDetail().getRequest());
+        requestLogService.createRequestLog("Design profile made", "Please check your profile to view design profile detail!", quotation.getConsult().getRequestDetail().getRequest());
         return toCreateResponse(newDesignProfile);
     }
 // moi lam

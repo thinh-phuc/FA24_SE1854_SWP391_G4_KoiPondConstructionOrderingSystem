@@ -160,7 +160,7 @@ public class ConstructionHistoryService {
             acceptanceDocument.setDesignProfile(designProfile);
             AcceptanceDocument newAcceptanceDocument = acceptanceDocumentRepository.save(acceptanceDocument);
 
-            requestLogService.createRequestLog("DONE", "Please check your profile acceptance test detail!", designProfile.getQuotation().getConsult().getRequestDetail().getRequest());
+            requestLogService.createRequestLog("Acceptance document created", "Please check your profile for acceptance test detail!", designProfile.getQuotation().getConsult().getRequestDetail().getRequest());
             return newAcceptanceDocument;
         } catch (Exception e) {
             throw new NotFoundException(e.getMessage());
