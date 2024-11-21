@@ -127,9 +127,10 @@ public ResponseEntity<?> createVnPay(@RequestParam(value = "amount") long amount
     public ResponseEntity<?> transaction(
             @RequestParam (value ="vnp_Amount") String amount,
             @RequestParam (value ="vnp_BankCode") String bankCode,
-            @RequestParam (value ="vnp_OrderInfo") String order,
+            @RequestParam(value = "vnp_BankTranNo") String bankTranNo,
             @RequestParam (value ="vnp_ResponseCode") String responseCode,
             @RequestParam(value = "paymentId") Integer paymentId
+
     )
     {
 
@@ -138,9 +139,9 @@ public ResponseEntity<?> createVnPay(@RequestParam(value = "amount") long amount
         if(responseCode.equals("00"))
         {
             ServicePaymentRequest servicePaymentRequest = new ServicePaymentRequest();
-            servicePaymentRequest.setPaymentMethod("Online");
-            servicePaymentRequest.setStatus("Paid");
-            servicePaymentRequest.setTransactionID(order);
+            servicePaymentRequest.setPaymentMethod("ONLINE");
+            servicePaymentRequest.setStatus("PAID");
+            servicePaymentRequest.setTransactionID(bankTranNo);
            servicePaymentService.updateServicePayment(paymentId,servicePaymentRequest);
 
             transactionResponse.setStatus("OK");

@@ -62,10 +62,10 @@ public class ServicePaymentService {
             ServicePayment oldServicePayment = servicePaymentRepository.findServicePaymentByServicePaymentID(id);
             if (oldServicePayment == null)
                 throw new NotFoundException("Not found!");
-            if (servicePaymentRequest.getStatus().equals("Paid")) {
-                    oldServicePayment.getServiceQuotation().getServiceRequest().setStatus("Finish");
+            if (servicePaymentRequest.getStatus().equals("PAID")) {
+                    oldServicePayment.getServiceQuotation().getServiceRequest().setStatus("FINISH");
             }
-            if (servicePaymentRequest.getStatus().equals("Online"))
+            if (servicePaymentRequest.getPaymentMethod().equals("ONLINE"))
                 oldServicePayment.setTransactionID(servicePaymentRequest.getTransactionID());
             oldServicePayment.setStatus(servicePaymentRequest.getStatus());
             oldServicePayment.setPaymentMethod(servicePaymentRequest.getPaymentMethod());
@@ -82,9 +82,9 @@ public class ServicePaymentService {
             ServicePayment oldServicePayment = servicePaymentRepository.findServicePaymentByServicePaymentID(id);
             if (oldServicePayment == null)
                 throw new NotFoundException("Not found!");
-            if (servicePaymentRequest.getStatus().equals("Paid")) {
+            if (servicePaymentRequest.getStatus().equals("PAID")) {
                 if (oldServicePayment.getServiceQuotation() != null && oldServicePayment.getServiceQuotation().getServiceRequest() != null) {
-                    oldServicePayment.getServiceQuotation().getServiceRequest().setStatus("Finish");
+                    oldServicePayment.getServiceQuotation().getServiceRequest().setStatus("FINISH");
 
                 } else {
                     throw new NotFoundException("Associated ServiceRequest not found!");
