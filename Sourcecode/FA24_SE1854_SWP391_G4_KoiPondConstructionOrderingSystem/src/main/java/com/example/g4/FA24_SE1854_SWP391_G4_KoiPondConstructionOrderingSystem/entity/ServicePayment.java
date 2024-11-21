@@ -21,6 +21,9 @@ public class ServicePayment {
 //    @Column(name = "service_quotation_id")
 //    private Integer serviceQuotationID;
 
+    @Column(name = "transaction_id")
+    private String transactionID;
+
     @ManyToOne
     @JoinColumn(name = "service_quotation_id")
     ServiceQuotation serviceQuotation;

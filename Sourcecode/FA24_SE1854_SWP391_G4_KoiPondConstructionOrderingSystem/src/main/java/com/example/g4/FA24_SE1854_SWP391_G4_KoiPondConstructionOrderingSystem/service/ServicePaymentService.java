@@ -65,6 +65,8 @@ public class ServicePaymentService {
             if (servicePaymentRequest.getStatus().equals("Paid")) {
                     oldServicePayment.getServiceQuotation().getServiceRequest().setStatus("Finish");
             }
+            if (servicePaymentRequest.getStatus().equals("Online"))
+                oldServicePayment.setTransactionID(servicePaymentRequest.getTransactionID());
             oldServicePayment.setStatus(servicePaymentRequest.getStatus());
             oldServicePayment.setPaymentMethod(servicePaymentRequest.getPaymentMethod());
             serviceRequestLogService.createServiceRequestLog(oldServicePayment.getServiceQuotation().getServiceRequest(),"The payment is updated","Payment updated");

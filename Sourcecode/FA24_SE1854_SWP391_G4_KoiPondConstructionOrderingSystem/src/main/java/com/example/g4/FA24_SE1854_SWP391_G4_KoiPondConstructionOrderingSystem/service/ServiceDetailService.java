@@ -70,7 +70,7 @@ public class ServiceDetailService implements IServiceDetailService{
 
     @Override
     public List<ServiceDetail> getAllServiceDetails() {
-        return serviceDetailRepository.findAll();
+        return serviceDetailRepository.findServiceDetailByIsActiveTrueOrderByCreateDateDesc();
     }
 
     @Override

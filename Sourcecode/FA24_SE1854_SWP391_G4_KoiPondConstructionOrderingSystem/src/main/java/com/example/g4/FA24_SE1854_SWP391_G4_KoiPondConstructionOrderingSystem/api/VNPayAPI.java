@@ -2,6 +2,7 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.a
 
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.config.VNPayConfig;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.PaymentVNPayResponse;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.ServicePaymentRequest;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.TransactionResponse;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.service.ServicePaymentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -30,7 +31,7 @@ public class VNPayAPI {
 
 
     @GetMapping("/create_payment")
-public ResponseEntity<?> createVnPay(@RequestParam(value = "amount") long amount, HttpServletRequest req) throws UnsupportedEncodingException {
+public ResponseEntity<?> createVnPay(@RequestParam(value = "amount") long amount, @RequestParam(value = "paymentId") Integer paymentId, HttpServletRequest req) throws UnsupportedEncodingException {
         //String vnp_RequestId = Config.getRandomNumber(8);
         //String orderType = "other";
        // long amount = Integer.parseInt(req.getParameter("amount"))*100;
@@ -55,7 +56,7 @@ public ResponseEntity<?> createVnPay(@RequestParam(value = "amount") long amount
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
         vnp_Params.put("vnp_Locale", "vn");
-        vnp_Params.put("vnp_ReturnUrl",VNPayConfig.vnp_ReturnUrl);
+        vnp_Params.put("vnp_ReturnUrl",VNPayConfig.vnp_ReturnUrl + "?paymentId=" + paymentId);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
         vnp_Params.put("vnp_OrderType", VNPayConfig.orderType);
 
@@ -136,8 +137,11 @@ public ResponseEntity<?> createVnPay(@RequestParam(value = "amount") long amount
         TransactionResponse transactionResponse = new TransactionResponse();
         if(responseCode.equals("00"))
         {
-           servicePaymentService.updateStatusServicePaymentByCustomer(paymentId,"Finish");
-
+            ServicePaymentRequest servicePaymentRequest = new ServicePaymentRequest();
+            servicePaymentRequest.setPaymentMethod("Online");
+            servicePaymentRequest.setStatus("Paid");
+            servicePaymentRequest.setTransactionID(order);
+           servicePaymentService.updateServicePayment(paymentId,servicePaymentRequest);
 
             transactionResponse.setStatus("OK");
             transactionResponse.setMessage("Successfully");
