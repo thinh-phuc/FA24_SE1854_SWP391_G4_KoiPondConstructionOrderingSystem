@@ -121,6 +121,9 @@ public class QuotationService {
         Quotation newQuotation = quotationRepository.save(quotation);
 
         requestLogService.createRequestLog("Quotation made", "Please check your profile to view quotation detail!", consult.getRequestDetail().getRequest());
+        Request request = consult.getRequestDetail().getRequest();
+        request.setStatus("Quotated");
+        requestRepository.save(request);
         return toResponse(newQuotation);
 
     }

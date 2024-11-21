@@ -3,10 +3,12 @@ package com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.s
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Customer;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Design;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.DesignProfile;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.entity.Request;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.exception.NotFoundException;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.model.*;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.DesignProfileRepository;
 import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.DesignRepository;
+import com.example.g4.FA24_SE1854_SWP391_G4_KoiPondConstructionOrderingSystem.repository.RequestRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,8 @@ public class DesignService {
     DesignProfileRepository designProfileRepository;
     @Autowired
     RequestLogService requestLogService;
+    @Autowired
+    RequestRepository requestRepository;
 
     public Design getDesignById(Integer id){
         Design design = designRepository.findDesignByDesignId(id);
@@ -79,6 +83,9 @@ public class DesignService {
         design.setUpdateBy(null);
         Design newDesign = designRepository.save(design);
         requestLogService.createRequestLog("Design made", "Please check your profile to view design detail!", designProfile.getQuotation().getConsult().getRequestDetail().getRequest());
+        Request request = designProfile.getQuotation().getConsult().getRequestDetail().getRequest();
+        request.setStatus("Designed");
+        requestRepository.save(request);
         return toResponse(newDesign);
     }
     public List<Design> getAll(){
