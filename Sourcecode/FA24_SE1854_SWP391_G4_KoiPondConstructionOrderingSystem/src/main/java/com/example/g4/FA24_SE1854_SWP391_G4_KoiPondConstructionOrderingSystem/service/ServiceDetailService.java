@@ -92,8 +92,18 @@ public class ServiceDetailService implements IServiceDetailService{
     }
 
     @Override
-    public void deleteServiceDetailById(Integer id) {
+    public void deleteServiceDetailById(Integer id)throws Exception {
+        ServiceDetail detail = serviceDetailRepository.findById(id)
+                .orElseThrow(()-> new DataNotFoundException("Cannot fin service-detail") );
+        ServiceRequest request = serviceRequestRepository.findServiceRequestByServiceRequestId(detail.getServiceQuotation().getServiceRequest().getServiceRequestId());
+        if (request == null)
+        {
 
+            throw new DataNotFoundException("ServiceRequest not found!");
+        }
+        request.setStatus("QUOTING");
+        serviceRequestRepository.save(request);
+        serviceRequestLogService.createServiceRequestLog(request,"Please wait for our next response","Assign staff deleted");
         serviceDetailRepository.deleteById(id);
     }
 }
