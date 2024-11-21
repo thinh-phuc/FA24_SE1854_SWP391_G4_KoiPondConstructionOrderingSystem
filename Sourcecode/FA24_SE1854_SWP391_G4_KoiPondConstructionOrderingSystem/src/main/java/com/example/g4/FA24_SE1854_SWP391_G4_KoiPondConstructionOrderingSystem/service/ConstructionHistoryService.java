@@ -124,9 +124,9 @@ public class ConstructionHistoryService {
             designProfileRepository.save(designProfile);
 
             requestLogService.createRequestLog("Construction finished", "Testing for acceptance.", designProfile.getQuotation().getConsult().getRequestDetail().getRequest());
-            Request request = designProfile.getQuotation().getConsult().getRequestDetail().getRequest();
-            request.setStatus("Construction finished");
-            requestRepository.save(request);
+            Request requestStatus = designProfile.getQuotation().getConsult().getRequestDetail().getRequest();
+            requestStatus.setStatus("Construction done");
+            requestRepository.save(requestStatus);
             return constructionHistoryRepository.save(complete);
         } catch (Exception e) {
             throw new NotFoundException(e.getMessage());
