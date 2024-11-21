@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class ServicePaymentRequest {
     private Integer serviceQuotationID;
+    private String transactionID;
     private String paymentMethod;
     private Integer maintenanceStaffID;
-//    private Integer serviceProgressID;
     private String status;
     //đổi service request status thành Finish
 }
