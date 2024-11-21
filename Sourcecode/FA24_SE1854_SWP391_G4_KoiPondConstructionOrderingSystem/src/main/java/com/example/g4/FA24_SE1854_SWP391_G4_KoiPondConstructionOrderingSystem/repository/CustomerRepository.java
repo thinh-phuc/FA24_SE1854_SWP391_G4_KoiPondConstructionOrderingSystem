@@ -20,4 +20,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
     @Query("SELECT c FROM Customer c WHERE c.role = 'CONSTRUCTOR' AND c.name LIKE %:name% ORDER BY SIZE(c.designProfiles) ASC")
     List<Customer> findConstructorsOrderedByDesignProfileCount(@Param("name") String name);
+
+    @Query("SELECT c FROM Customer c WHERE c.role = 'DESIGNER' AND c.name LIKE %:name% ORDER BY SIZE(c.designProfiles) ASC")
+    List<Customer> findDesignersOrderedByDesignProfileCount(@Param("name") String name);
 }

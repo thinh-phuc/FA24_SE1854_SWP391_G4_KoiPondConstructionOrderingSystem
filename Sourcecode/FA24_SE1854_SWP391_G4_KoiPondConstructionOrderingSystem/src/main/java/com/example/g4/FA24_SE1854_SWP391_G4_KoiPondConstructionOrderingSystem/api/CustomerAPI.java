@@ -64,4 +64,10 @@ public class CustomerAPI {
         List<Customer> constructors = customerService.findConstructorsOrderByDesignProfiles(name);
         return ResponseEntity.ok(constructors);
     }
+
+    @GetMapping("/getDesignersOrderByDesignProfiles")
+    public ResponseEntity getDesignersOrderByDesignProfiles(@RequestParam(required = false, defaultValue = "") String name){
+        List<Customer> constructors = customerService.findDesignersOrderByDesignProfiles(name);
+        return ResponseEntity.ok(constructors);
+    }
 }
